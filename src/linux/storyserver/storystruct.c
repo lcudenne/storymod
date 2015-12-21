@@ -90,6 +90,9 @@ _STORY_newParameters() {
   parameters = malloc(sizeof(_STORY_Parameters_t ));
   assert(parameters);
 
+  parameters->server_ip = "localhost";
+  parameters->server_port = CLIENT_PORT;
+  parameters->client_ip = "localhost";
   parameters->story_dir = NULL;
   parameters->local_trace = NULL;
   parameters->dump_trace = NULL;

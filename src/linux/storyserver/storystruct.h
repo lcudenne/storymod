@@ -35,6 +35,10 @@
 
 /* ----------------------------------------------------------------------------------- */
 
+#define CLIENT_PORT 8888
+
+/* ----------------------------------------------------------------------------------- */
+
 #define DATAGRAM_SIZE 512
 
 /* ----------------------------------------------------------------------------------- */
@@ -73,6 +77,15 @@ typedef struct _STORY_Context {
 
 
 typedef struct _STORY_Parameters {
+
+  /* IP of this server (how this machine can be reached by the simulator) */
+  char * server_ip;
+
+  /* UDP port of this server (this machine port the simulator has to contact) */
+  unsigned int server_port;
+
+  /* IP of the machine running the simulator */
+  char * client_ip;
 
   /* path to the stories directory */
   char * story_dir;
