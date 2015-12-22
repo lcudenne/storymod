@@ -182,6 +182,7 @@ _STORY_addXmlCondition(xmlDocPtr doc, xmlNodePtr conditionnode,
   xmlNodePtr distance = NULL;
   xmlNodePtr box = NULL;
   xmlNodePtr timer = NULL;
+  xmlNodePtr property = NULL;
 
   assert(doc);
   assert(conditionnode);
@@ -235,6 +236,22 @@ _STORY_addXmlCondition(xmlDocPtr doc, xmlNodePtr conditionnode,
     timer = _LIBXML2_getChild(conditionnode, "TIMER");
     if (timer != NULL) {
       condition->timer = _LIBXML2_getUnsignedIntProp(timer, "value");
+    }
+    property = _LIBXML2_getChild(conditionnode, "PROPERTY");
+    if (property != NULL) {
+      typestr = (char *) xmlGetProp(property, BAD_CAST "type");
+      assert(typestr);
+      if (strcmp(typestr, _STORY_TELEMETRY_PROPERTY_CARGO_STR) == 0) {
+        condition->property_type = _STORY_TELEMETRY_PROPERTY_CARGO;
+      } else if (strcmp(typestr, _STORY_TELEMETRY_PROPERTY_LBLINKER_STR) == 0) {
+        condition->property_type = _STORY_TELEMETRY_PROPERTY_LBLINKER;
+      } else if (strcmp(typestr, _STORY_TELEMETRY_PROPERTY_RBLINKER_STR) == 0) {
+        condition->property_type = _STORY_TELEMETRY_PROPERTY_RBLINKER;
+      } else if (strcmp(typestr, _STORY_TELEMETRY_PROPERTY_TRAILER_CONNECTED_STR) == 0) {
+        condition->property_type = _STORY_TELEMETRY_PROPERTY_TRAILER_CONNECTED;
+      }
+      free(typestr);
+      condition->property_value = (char *) xmlGetProp(property, BAD_CAST "value");
     }
 
   }
