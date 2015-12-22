@@ -32,9 +32,13 @@ periodically updates a local HTML file to display the current story
 state to the player. Stories are loaded from a given directory.
 
 Build the server (you need libxml2-dev):
-chmod u+x build.sh && ./build.sh
+
+chmod u+x build.sh
+
+./build.sh
 
 Start the server (once the ETS2 / ATS simulator is running):
+
 ./storyserver --ip this_machine_ip the_simulator_ip --story /path/to/my/stories/
 
 Open the resulting index.html file within a browser.
