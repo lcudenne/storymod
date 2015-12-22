@@ -162,6 +162,16 @@ typedef struct _STORY_Telemetry {
 #define _STORY_CONDITION_TYPE_PROPERTY_EQUAL_STR "property_equal"
 #define _STORY_CONDITION_TYPE_PROPERTY_DIFF 7
 #define _STORY_CONDITION_TYPE_PROPERTY_DIFF_STR "property_different"
+#define _STORY_CONDITION_TYPE_VISITED_INF 8
+#define _STORY_CONDITION_TYPE_VISITED_INF_STR "visited_inf"
+#define _STORY_CONDITION_TYPE_VISITED_SUP 9
+#define _STORY_CONDITION_TYPE_VISITED_SUP_STR "visited_sup"
+#define _STORY_CONDITION_TYPE_VISITED_EQUAL 10
+#define _STORY_CONDITION_TYPE_VISITED_EQUAL_STR "visited_equal"
+#define _STORY_CONDITION_TYPE_VISITED_DIFF 11
+#define _STORY_CONDITION_TYPE_VISITED_DIFF_STR "visited_different"
+
+
 
 typedef struct _STORY_Condition {
 
@@ -201,6 +211,12 @@ typedef struct _STORY_Condition {
   unsigned int property_type;
   char * property_value;
 
+  /* number of times the current state has been visited. used by:
+     _STORY_CONDITION_TYPE_VISITED_INF
+     _STORY_CONDITION_TYPE_VISITED_SUP
+     _STORY_CONDITION_TYPE_VISITED_EQUAL
+     _STORY_CONDITION_TYPE_VISITED_DIFF */
+  unsigned int visited;
 
 } _STORY_Condition_t;
 
@@ -276,6 +292,8 @@ typedef struct _STORY_State {
   /* transition list */  
   _STORY_TransitionList_t * transitions;
 
+  /* number of times this time has been visited */
+  unsigned int visited;
 
 } _STORY_State_t;
 

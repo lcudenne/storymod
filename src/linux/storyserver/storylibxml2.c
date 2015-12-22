@@ -183,6 +183,7 @@ _STORY_addXmlCondition(xmlDocPtr doc, xmlNodePtr conditionnode,
   xmlNodePtr box = NULL;
   xmlNodePtr timer = NULL;
   xmlNodePtr property = NULL;
+  xmlNodePtr visited = NULL;
 
   assert(doc);
   assert(conditionnode);
@@ -207,12 +208,21 @@ _STORY_addXmlCondition(xmlDocPtr doc, xmlNodePtr conditionnode,
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_PROPERTY_EQUAL);
   } else if (strcmp(typestr, _STORY_CONDITION_TYPE_PROPERTY_DIFF_STR) == 0) {
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_PROPERTY_DIFF);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_VISITED_INF_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_VISITED_INF);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_VISITED_SUP_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_VISITED_SUP);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_VISITED_EQUAL_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_VISITED_EQUAL);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_VISITED_DIFF_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_VISITED_DIFF);
   } else {
     fprintf(stdout, "Unrecognized condition type (%s)\n", typestr);
   }
 
   free(typestr);
-
+  typestr = NULL;
+  
   if (condition != NULL) {
     _STORY_addConditionToConditionList(condition, transition->conditions);
 
@@ -251,7 +261,12 @@ _STORY_addXmlCondition(xmlDocPtr doc, xmlNodePtr conditionnode,
         condition->property_type = _STORY_TELEMETRY_PROPERTY_TRAILER_CONNECTED;
       }
       free(typestr);
+      typestr = NULL;
       condition->property_value = (char *) xmlGetProp(property, BAD_CAST "value");
+    }
+    visited = _LIBXML2_getChild(conditionnode, "VISITED");
+    if (visited != NULL) {
+      condition->visited = _LIBXML2_getUnsignedIntProp(visited, "value");
     }
 
   }

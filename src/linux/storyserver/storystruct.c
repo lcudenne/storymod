@@ -216,6 +216,7 @@ _STORY_newCondition(unsigned int type) {
   condition->distance = 0.0;
   condition->property_type = 0;
   condition->property_value = NULL;
+  condition->visited = 0;
 
   return condition;
 
@@ -329,6 +330,28 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
       tostring = _UT_strCat(tostring, " != ");
     }
     tostring = _UT_strCat(tostring, condition->property_value);
+    tostring = _UT_strCat(tostring, ")");
+    break;
+  case _STORY_CONDITION_TYPE_VISITED_INF:
+  case _STORY_CONDITION_TYPE_VISITED_SUP:
+  case _STORY_CONDITION_TYPE_VISITED_EQUAL:
+  case _STORY_CONDITION_TYPE_VISITED_DIFF:
+    tostring = _UT_strCpy(tostring, "(visited");
+    switch (condition->type) {
+    case _STORY_CONDITION_TYPE_VISITED_INF:
+          tostring = _UT_strCpy(tostring, " < ");
+      break;
+    case _STORY_CONDITION_TYPE_VISITED_SUP:
+          tostring = _UT_strCpy(tostring, " > ");
+      break;
+    case _STORY_CONDITION_TYPE_VISITED_EQUAL:
+          tostring = _UT_strCpy(tostring, " == ");
+      break;
+    case _STORY_CONDITION_TYPE_VISITED_DIFF:
+          tostring = _UT_strCpy(tostring, " != ");
+      break;
+    }
+    tostring = _UT_strUnsignedIntCat(tostring, condition->visited);
     tostring = _UT_strCat(tostring, ")");
     break;
   default:
@@ -560,6 +583,7 @@ _STORY_newState(unsigned int id) {
   state->description = NULL;
   state->image = NULL;
   state->transitions = _STORY_newTransitionList(1);
+  state->visited = 0;
 
   return state;
 

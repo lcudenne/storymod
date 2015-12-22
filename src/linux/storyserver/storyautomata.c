@@ -55,11 +55,13 @@
 /* ----------------------------------------------------------------------------------- */
 
 static unsigned int
-_STORY_checkCondition(_STORY_Condition_t * condition,
+_STORY_checkCondition(_STORY_State_t * state,
+                      _STORY_Condition_t * condition,
                       _STORY_Telemetry_t * telemetry) {
 
   unsigned int res = 0;
 
+  assert(state);
   assert(condition);
   assert(telemetry);
 
@@ -136,6 +138,26 @@ _STORY_checkCondition(_STORY_Condition_t * condition,
       }
     }
     break;
+  case _STORY_CONDITION_TYPE_VISITED_INF:
+    if (condition->visited < state->visited) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_VISITED_SUP:
+    if (condition->visited > state->visited) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_VISITED_EQUAL:
+    if (condition->visited == state->visited) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_VISITED_DIFF:
+    if (condition->visited != state->visited) {
+      res = 1;
+    }
+    break;
   default:
     fprintf(stdout, "[STORY] Condition type not known (%d)\n", condition->type);
     break;
@@ -146,13 +168,15 @@ _STORY_checkCondition(_STORY_Condition_t * condition,
 
 
 static unsigned int
-_STORY_checkConditionList(_STORY_ConditionList_t * conditions,
+_STORY_checkConditionList(_STORY_State_t * state,
+                          _STORY_ConditionList_t * conditions,
                           _STORY_Telemetry_t * telemetry,
                           unsigned int type) {
   
   unsigned int res = 1;
   unsigned int i = 0;
 
+  assert(state);
   assert(conditions);
   assert(telemetry);
 
@@ -161,7 +185,7 @@ _STORY_checkConditionList(_STORY_ConditionList_t * conditions,
   case _STORY_TRANSITION_TYPE_AND:  
     res = 1;
     for (i = 0; i < conditions->size; i++) {
-      res = res * _STORY_checkCondition(conditions->tab[i], telemetry);
+      res = res * _STORY_checkCondition(state, conditions->tab[i], telemetry);
     }
     break;
 
@@ -169,7 +193,7 @@ _STORY_checkConditionList(_STORY_ConditionList_t * conditions,
     res = 0;
     i = 0;
     while ((i < conditions->size) && (res == 0)) {
-      res = _STORY_checkCondition(conditions->tab[i], telemetry);
+      res = _STORY_checkCondition(state, conditions->tab[i], telemetry);
       i++;
     }
     break;
@@ -198,7 +222,7 @@ _STORY_getAllNextState(_STORY_State_t * currentstate,
 
   for (i = 0; i < currentstate->transitions->size; i++) {
     transition = currentstate->transitions->tab[i];
-    if (_STORY_checkConditionList(transition->conditions, telemetry, transition->type) == 1) {
+    if (_STORY_checkConditionList(currentstate, transition->conditions, telemetry, transition->type) == 1) {
       _STORY_addStateToStateList(transition->nextstate, nextstatelist);
     }
   }
@@ -222,6 +246,7 @@ _STORY_getNextState(_STORY_State_t * currentstate,
 
   if (nextstatelist->size > 0) {
     nextstate = nextstatelist->tab[(_UT_getTimeSecond() % nextstatelist->size)];
+    nextstate->visited++;
   }
 
   _STORY_freeStateStructList(&nextstatelist);

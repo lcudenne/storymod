@@ -189,7 +189,7 @@ storymod(_STORY_Parameters_t * parameters) {
   if (context->parameters->local_trace == NULL) {
     _UDP_registerClient(context->parameters->server_ip, context->parameters->server_port,
                         context->parameters->client_ip, CLIENT_PORT);
-    _UDP_bindSocket(8888);
+    _UDP_bindSocket(context->parameters->server_port);
   } else {
     _STORY_openDrivingTrace(context->parameters->local_trace);
   }
