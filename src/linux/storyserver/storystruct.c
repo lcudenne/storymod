@@ -256,17 +256,19 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
     } else {
       tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_POSITION_BOX_OUT_STR);
     }
-    tostring = _UT_strCat(tostring, "({");
+    tostring = _UT_strCat(tostring, "(");
     if (condition->name != NULL) {
       tostring = _UT_strCat(tostring, condition->name);
     } else {
+      tostring = _UT_strCat(tostring, "{");
       tostring = _UT_strFloat1Cat(tostring, condition->x);
       tostring = _UT_strCat(tostring, ", ");
       tostring = _UT_strFloat1Cat(tostring, condition->y);
       tostring = _UT_strCat(tostring, ", ");
       tostring = _UT_strFloat1Cat(tostring, condition->z);
+      tostring = _UT_strCat(tostring, "}");
     }
-    tostring = _UT_strCat(tostring, "}, {");
+    tostring = _UT_strCat(tostring, ", {");
     tostring = _UT_strFloat1Cat(tostring, condition->boxx);
     tostring = _UT_strCat(tostring, ", ");
     tostring = _UT_strFloat1Cat(tostring, condition->boxy);
@@ -291,44 +293,47 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
     } else {
       tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_DISTANCE_SUP_STR);
     }
-    tostring = _UT_strCat(tostring, "({");
+    tostring = _UT_strCat(tostring, "(");
     if (condition->name != NULL) {
       tostring = _UT_strCat(tostring, condition->name);
     } else {
+      tostring = _UT_strCat(tostring, "{");
       tostring = _UT_strFloat1Cat(tostring, condition->x);
       tostring = _UT_strCat(tostring, ", ");
       tostring = _UT_strFloat1Cat(tostring, condition->y);
       tostring = _UT_strCat(tostring, ", ");
       tostring = _UT_strFloat1Cat(tostring, condition->z);
+      tostring = _UT_strCat(tostring, "}");
     }
-    tostring = _UT_strCat(tostring, "}, ");
+    tostring = _UT_strCat(tostring, ", ");
     tostring = _UT_strFloat1Cat(tostring, condition->distance);
     tostring = _UT_strCat(tostring, ")");
     break;
   case _STORY_CONDITION_TYPE_PROPERTY_EQUAL:
   case _STORY_CONDITION_TYPE_PROPERTY_DIFF:
-    tostring = _UT_strCpy(tostring, "(");
+    if (condition->type == _STORY_CONDITION_TYPE_PROPERTY_EQUAL) {
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_PROPERTY_EQUAL_STR);
+    } else {
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_PROPERTY_DIFF_STR);
+    }
+    tostring = _UT_strCat(tostring, "(");
     switch (condition->property_type) {
     case _STORY_TELEMETRY_PROPERTY_CARGO:
-      tostring = _UT_strCpy(tostring, _STORY_TELEMETRY_PROPERTY_CARGO_STR);
+      tostring = _UT_strCat(tostring, _STORY_TELEMETRY_PROPERTY_CARGO_STR);
       break;
     case _STORY_TELEMETRY_PROPERTY_LBLINKER:
-      tostring = _UT_strCpy(tostring, _STORY_TELEMETRY_PROPERTY_LBLINKER_STR);
+      tostring = _UT_strCat(tostring, _STORY_TELEMETRY_PROPERTY_LBLINKER_STR);
       break;
     case _STORY_TELEMETRY_PROPERTY_RBLINKER:
-      tostring = _UT_strCpy(tostring, _STORY_TELEMETRY_PROPERTY_RBLINKER_STR);
+      tostring = _UT_strCat(tostring, _STORY_TELEMETRY_PROPERTY_RBLINKER_STR);
       break;
     case _STORY_TELEMETRY_PROPERTY_TRAILER_CONNECTED:
-      tostring = _UT_strCpy(tostring, _STORY_TELEMETRY_PROPERTY_TRAILER_CONNECTED_STR);
+      tostring = _UT_strCat(tostring, _STORY_TELEMETRY_PROPERTY_TRAILER_CONNECTED_STR);
       break;
     default:
       break;
     }
-    if (condition->type == _STORY_CONDITION_TYPE_PROPERTY_EQUAL) {
-      tostring = _UT_strCat(tostring, " == ");
-    } else {
-      tostring = _UT_strCat(tostring, " != ");
-    }
+    tostring = _UT_strCat(tostring, ", ");
     tostring = _UT_strCat(tostring, condition->property_value);
     tostring = _UT_strCat(tostring, ")");
     break;
@@ -336,21 +341,21 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
   case _STORY_CONDITION_TYPE_VISITED_SUP:
   case _STORY_CONDITION_TYPE_VISITED_EQUAL:
   case _STORY_CONDITION_TYPE_VISITED_DIFF:
-    tostring = _UT_strCpy(tostring, "(visited");
     switch (condition->type) {
     case _STORY_CONDITION_TYPE_VISITED_INF:
-          tostring = _UT_strCpy(tostring, " < ");
+          tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_VISITED_INF_STR);
       break;
     case _STORY_CONDITION_TYPE_VISITED_SUP:
-          tostring = _UT_strCpy(tostring, " > ");
+          tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_VISITED_SUP_STR);
       break;
     case _STORY_CONDITION_TYPE_VISITED_EQUAL:
-          tostring = _UT_strCpy(tostring, " == ");
+          tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_VISITED_EQUAL_STR);
       break;
     case _STORY_CONDITION_TYPE_VISITED_DIFF:
-          tostring = _UT_strCpy(tostring, " != ");
+          tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_VISITED_DIFF_STR);
       break;
     }
+    tostring = _UT_strCat(tostring, "(");
     tostring = _UT_strUnsignedIntCat(tostring, condition->visited);
     tostring = _UT_strCat(tostring, ")");
     break;
@@ -486,9 +491,9 @@ _STORY_toStringTransition(_STORY_Transition_t * transition) {
     free(conditionstr);
     if (i < (transition->conditions->size - 1)) {
       if (transition->type == _STORY_TRANSITION_TYPE_AND) {
-        tostring = _UT_strCat(tostring, " &&\n");
+        tostring = _UT_strCat(tostring, " AND\n");
       } else if (transition->type == _STORY_TRANSITION_TYPE_OR) {
-        tostring = _UT_strCat(tostring, " ||\n");
+        tostring = _UT_strCat(tostring, " OR\n");
       }
     }
   }
