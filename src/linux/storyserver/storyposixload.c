@@ -51,11 +51,11 @@
 /* ------------------------------------------------------------------------- */
 
 void
-_STORY_loadStoryListFromDir(_STORY_StoryList_t * stories,
-                            char * dirname) {
+_STORY_loadStoryListFromDir(_STORY_Context_t * context, char * dirname) {
 
+  _STORY_StoryList_t * stories = NULL;
   _STORY_Story_t * story = NULL;
-
+  
   unsigned int i = 0;
 
   DIR * d = NULL;
@@ -66,9 +66,13 @@ _STORY_loadStoryListFromDir(_STORY_StoryList_t * stories,
 
   char * fullpath = NULL;
 
-  assert(stories);
+  assert(context);
+  assert(context->stories);
+  assert(context->parameters);
   assert(dirname);
-
+  
+  stories = context->stories;
+  
   d = opendir(dirname);
   if (d != NULL) {
     while ((dir = readdir(d)) != NULL) {
@@ -78,13 +82,13 @@ _STORY_loadStoryListFromDir(_STORY_StoryList_t * stories,
       if (dir->d_type == DT_DIR) {
         if ((strcmp(dir->d_name, ".") != 0) &&
             (strcmp(dir->d_name, "..") != 0)) {
-          _STORY_loadStoryListFromDir(stories, fullpath);
+          _STORY_loadStoryListFromDir(context, fullpath);
         }
       } else if (dir->d_type == DT_REG) {
         dnamesize = strlen(dir->d_name);
         if (fileextsize <= dnamesize) {
           if (strncmp(dir->d_name + dnamesize - fileextsize, fileext, fileextsize) == 0) {
-            story = _STORY_loadStoryFromFile(fullpath, dirname, i);
+            story = _STORY_loadStoryFromFile(context, fullpath, dirname, i);
             if (story != NULL) {
               _STORY_addStoryToStoryList(story, stories);
               i++;

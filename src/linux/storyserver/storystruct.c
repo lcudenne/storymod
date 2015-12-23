@@ -51,12 +51,13 @@ _STORY_newContext() {
   context = malloc(sizeof(_STORY_Context_t ));
   assert(context);
 
-  context->parameters = NULL;
+  context->parameters = _STORY_newParameters();
   context->telemetry = _STORY_newTelemetry();
   context->stories = _STORY_newStoryList(1);
   context->state = NULL;
   context->prevstate = NULL;
   context->story = NULL;
+  context->positions = NULL;
   context->lasthtmlupdate = 0;
   context->laststatechange = 0;
 
@@ -69,11 +70,17 @@ _STORY_freeContext(_STORY_Context_t ** context) {
 
   assert(*context);
 
+  if ((*context)->parameters) {
+    _STORY_freeParameters(&((*context)->parameters));
+  }
   if ((*context)->telemetry) {
     _STORY_freeTelemetry(&((*context)->telemetry));
   }
   if ((*context)->stories) {
     _STORY_freeStoryList(&((*context)->stories));
+  }
+  if ((*context)->positions) {
+    _STORY_freePositionList(&((*context)->positions));
   }
 
   free(*context);

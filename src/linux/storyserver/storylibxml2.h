@@ -36,7 +36,8 @@
 /* ----------------------------------------------------------------------------------- */
 
 _STORY_Story_t *
-_STORY_loadStoryFromFile(char * filename, char * dirname, unsigned int id);
+_STORY_loadStoryFromFile(_STORY_Context_t * context, char * filename,
+                         char * dirname, unsigned int id);
 
 /* ----------------------------------------------------------------------------------- */
 

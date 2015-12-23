@@ -64,6 +64,9 @@ typedef struct _STORY_Context {
   /* current story */
   struct _STORY_Story * story;
 
+  /* general positions database */
+  struct _STORY_PositionList * positions;
+  
   /* last html update time */
   unsigned int lasthtmlupdate;
 

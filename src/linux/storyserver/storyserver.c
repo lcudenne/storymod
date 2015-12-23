@@ -165,18 +165,15 @@ _STORY_updateTelemetry(_STORY_Telemetry_t * telemetry,
 
 
 static void
-storymod(_STORY_Parameters_t * parameters) {
-
-  _STORY_Context_t * context = NULL;
+storymod(_STORY_Context_t * context) {
 
   char * datagram = NULL;
   char * datagramptr = NULL;
 
-  context = _STORY_newContext();
-  context->parameters = parameters;
+  assert(context);
 
   if (context->parameters->story_dir != NULL) {
-    _STORY_loadStoryListFromDir(context->stories, context->parameters->story_dir);
+    _STORY_loadStoryListFromDir(context, context->parameters->story_dir);
   }
 
   _STORY_writeHTMLToDisk(context, context->stories);
@@ -229,7 +226,6 @@ storymod(_STORY_Parameters_t * parameters) {
 
   free(datagramptr);
 
-  _STORY_freeContext(&context);
 
 }
 
@@ -262,12 +258,14 @@ help(int argc, char ** argv)
 int
 main(int argc, char ** argv)
 {
+  _STORY_Context_t * context = NULL;
   _STORY_Parameters_t * parameters = NULL;
   _STORY_Story_t * story = NULL;
   unsigned int i = 0;
 
-  parameters = _STORY_newParameters();
-
+  context = _STORY_newContext();
+  parameters = context->parameters;
+  
   i = 1;
   while (i < argc) {
     if (strcmp(argv[i], "--ip") == 0) {
@@ -308,16 +306,22 @@ main(int argc, char ** argv)
     i++;
   }
 
-  if (parameters->story_dir != NULL) {
-    storymod(parameters);
+  if (parameters->positions_database != NULL) {
+    context->positions = _STORY_loadPositionListFromFile(parameters->positions_database);
   }
+  
   if (parameters->story_dot != NULL) {
-    story = _STORY_loadStoryFromFile(parameters->story_dot, "", 0);
-    _STORY_storyToDot(parameters, story);
-    _STORY_freeStory(&story);
+    story = _STORY_loadStoryFromFile(context, parameters->story_dot, "", 0);
+    if (story) {
+      _STORY_storyToDot(parameters, story);
+      _STORY_freeStory(&story);
+    }
+  }
+  if (parameters->story_dir != NULL) {
+    storymod(context);
   }
 
-  _STORY_freeParameters(&parameters);
+  _STORY_freeContext(&context);
 
   _LIBXML2_xmlTerminate();
 

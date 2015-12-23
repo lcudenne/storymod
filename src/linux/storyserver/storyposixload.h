@@ -34,9 +34,7 @@
 /* ------------------------------------------------------------------------- */
 
 void
-_STORY_loadStoryListFromDir(_STORY_StoryList_t * stories,
-                            char * dirname);
-
+_STORY_loadStoryListFromDir(_STORY_Context_t * context, char * dirname);
 
 /* ------------------------------------------------------------------------- */
 

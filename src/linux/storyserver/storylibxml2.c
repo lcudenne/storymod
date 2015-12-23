@@ -510,12 +510,14 @@ _STORY_resolveConditions(_STORY_Story_t * story) {
 
 
 _STORY_Story_t *
-_STORY_loadStoryFromFile(char * filename, char * dirname, unsigned int id) {
+_STORY_loadStoryFromFile(_STORY_Context_t * context, char * filename,
+                         char * dirname, unsigned int id) {
 
   _STORY_Story_t * story = NULL;
 
   xmlDocPtr doc = NULL;
 
+  assert(context);
   assert(filename);
   assert(dirname);
 
@@ -564,7 +566,7 @@ _STORY_xmlToPositionList(xmlDocPtr doc, _STORY_PositionList_t * positionlist) {
   if (strcmp((const char *) storymod_positions->name, "STORYMOD_POSITIONS") == 0) {
   
     positionsnode = _LIBXML2_XPathQueryCtx(doc, storymod_positions,
-                                           "STORYMOD_POSITIONS/POSITIONS/POSITION");
+                                           "POSITIONS/POSITION");
     assert(positionsnode);
     
     for (i = 0; i < positionsnode->nodeNr; i++) {
