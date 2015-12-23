@@ -85,9 +85,10 @@ _STORY_loadStoryListFromDir(_STORY_StoryList_t * stories,
         if (fileextsize <= dnamesize) {
           if (strncmp(dir->d_name + dnamesize - fileextsize, fileext, fileextsize) == 0) {
             story = _STORY_loadStoryFromFile(fullpath, dirname, i);
-            assert(story);
-            _STORY_addStoryToStoryList(story, stories);
-            i++;
+            if (story != NULL) {
+              _STORY_addStoryToStoryList(story, stories);
+              i++;
+            }
           }
         }
       }

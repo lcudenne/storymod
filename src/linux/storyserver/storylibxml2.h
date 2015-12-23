@@ -40,6 +40,11 @@ _STORY_loadStoryFromFile(char * filename, char * dirname, unsigned int id);
 
 /* ----------------------------------------------------------------------------------- */
 
+_STORY_PositionList_t *
+_STORY_loadPositionListFromFile(char * filename);
+
+/* ----------------------------------------------------------------------------------- */
+
 void
 _LIBXML2_xmlTerminate();
 

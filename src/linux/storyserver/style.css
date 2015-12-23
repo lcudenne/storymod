@@ -89,7 +89,7 @@ body {
 }
 
 .imagestory {
-    box-shadow: 4px 4px 4px 4px grey;
+    box-shadow: 8px 8px 8px black;
     width: 320px;
     height: 320px;
 }
@@ -110,7 +110,7 @@ body {
 }
 
 .imagestate {
-    box-shadow: 4px 4px 4px 4px grey;
+    box-shadow: 8px 8px 8px black;
     display: inline-block;
     width: 320px;
     height: 320px;

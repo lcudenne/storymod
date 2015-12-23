@@ -90,6 +90,9 @@ typedef struct _STORY_Parameters {
   /* path to the stories directory */
   char * story_dir;
 
+  /* path to the positions database file */
+  char * positions_database;
+  
   /* read driving trace from disk (filename or NULL otherwise) */
   char * local_trace;
 
@@ -102,6 +105,9 @@ typedef struct _STORY_Parameters {
   /* html page refresh time (seconds) */
   unsigned int html_refresh;
 
+  /* css style file */
+  char * css_file;
+  
   /* story file name to convert in dot */
   char * story_dot;
 
@@ -142,6 +148,42 @@ typedef struct _STORY_Telemetry {
   unsigned int stateruntime;
 
 } _STORY_Telemetry_t;
+
+
+/* ----------------------------------------------------------------------------------- */
+
+typedef struct _STORY_Position {
+
+  /* position name. used as a UUID */
+  char * name;
+
+  /* position coordinates */
+  float x;
+  float y;
+  float z;
+
+  /* default bounding box for position box condition */
+  float boxx;
+  float boxy;
+  float boxz;
+
+  /* default distance for position distance condition */
+  float distance;
+  
+} _STORY_Position_t;
+
+typedef struct _STORY_PositionList {
+
+  /* size, given as the number of positions */
+  unsigned int size;
+
+  /* capacity, given as the number of positions */
+  unsigned int capacity;
+
+  _STORY_Position_t ** tab;
+
+
+} _STORY_PositionList_t;
 
 
 /* ----------------------------------------------------------------------------------- */
@@ -378,6 +420,8 @@ typedef struct _STORY_StoryList {
 
 /* ----------------------------------------------------------------------------------- */
 
+
+
 _STORY_Context_t *
 _STORY_newContext();
 
@@ -410,6 +454,36 @@ void
 _STORY_displayTelemetry(_STORY_Telemetry_t * telemetry);
 
 /* ----------------------------------------------------------------------------------- */
+
+/* ----------------------------------------------------------------------------------- */
+
+_STORY_Position_t *
+_STORY_newPosition();
+
+void
+_STORY_freePosition(_STORY_Position_t ** position);
+
+_STORY_PositionList_t *
+_STORY_newPositionList(unsigned int capacity);
+
+void
+_STORY_freePositionList(_STORY_PositionList_t ** positionlist);
+
+void
+_STORY_freePositionStructList(_STORY_PositionList_t ** positionlist);
+
+unsigned int
+_STORY_addPositionToPositionList(_STORY_Position_t * position,
+                                 _STORY_PositionList_t * positionlist);
+
+_STORY_Position_t *
+_STORY_getPositionFromName(_STORY_PositionList_t * positionlist, char * name);
+
+
+/* ----------------------------------------------------------------------------------- */
+
+
+
 
 _STORY_Condition_t *
 _STORY_newCondition(unsigned int type);

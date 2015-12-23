@@ -427,12 +427,11 @@ _STORY_storyAutomata(_STORY_Context_t * context) {
   if (context->state != NULL) {
     context->state = _STORY_getNextState(context->state, context->telemetry);
     if (context->state != context->prevstate) {
-      _STORY_writeHTMLToDisk(context->parameters, context->stories, activestories,
-                             context->story, context->state, context->telemetry);
+      _STORY_writeHTMLToDisk(context, activestories);
       context->prevstate = context->state;
       context->laststatechange = timesec;
-      fprintf(stdout, "%d %s %s\n", timesec,
-              context->story->name, context->state->name);
+      fprintf(stdout, "%d %s [%d]%s\n", timesec,
+              context->story->name, context->state->id, context->state->name);
     }
   } else {
     activestories = _STORY_getActiveStoryList(context->telemetry, context->stories);
@@ -446,8 +445,7 @@ _STORY_storyAutomata(_STORY_Context_t * context) {
   
   if ((timesec - context->lasthtmlupdate) > context->parameters->html_refresh) {
     _STORY_sortCloseStoryList(context->telemetry, context->stories);
-    _STORY_writeHTMLToDisk(context->parameters, context->stories, activestories,
-                           context->story, context->state, context->telemetry);
+    _STORY_writeHTMLToDisk(context, activestories);
     context->lasthtmlupdate = timesec;
   }
   if (context->telemetry->stateruntime > TIME_FINAL_STATE) {

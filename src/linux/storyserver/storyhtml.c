@@ -139,18 +139,23 @@ _STORY_writeStoryListToDisk(_STORY_StoryList_t * stories,
 /* ------------------------------------------------------------------------- */
 
 void
-_STORY_writeHTMLToDisk(_STORY_Parameters_t * parameters,
-                       _STORY_StoryList_t * stories,
-                       _STORY_StoryList_t * activestories,
-                       _STORY_Story_t * story,
-                       _STORY_State_t * state,
-                       _STORY_Telemetry_t * telemetry) {
+_STORY_writeHTMLToDisk(_STORY_Context_t * context,
+                       _STORY_StoryList_t * activestories) {
 
   FILE * html = NULL;
 
-  assert(parameters);
-  assert(stories);
-  assert(telemetry);
+  _STORY_Parameters_t * parameters = NULL;
+  _STORY_StoryList_t * stories = NULL;
+  _STORY_Telemetry_t * telemetry = NULL;
+  
+  assert(context);
+  assert(context->parameters);
+  assert(context->stories);
+  assert(context->telemetry);
+
+  parameters = context->parameters;
+  stories = context->stories;
+  telemetry = context->telemetry;
 
   if (parameters->html_file != NULL) {
     html = fopen(parameters->html_file, "w");
@@ -160,7 +165,7 @@ _STORY_writeHTMLToDisk(_STORY_Parameters_t * parameters,
 
   if (html != NULL) {
 
-    fprintf(html, "<html>\n<head>\n<title>Story Mod</title>\n<meta http-equiv=\"refresh\" content=\"%d; URL=index.html\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"style.css\" />\n</head>\n<body>\n", parameters->html_refresh);
+    fprintf(html, "<html>\n<head>\n<title>Story Mod</title>\n<meta http-equiv=\"refresh\" content=\"%d; URL=index.html\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\" />\n</head>\n<body>\n", parameters->html_refresh, parameters->css_file);
     
     fprintf(html, "<div class=\"telemetry\">\n<h class=\"texttype\">Timer</h>: %d <h class=\"texttype\">Position</h>: <h class=\"texttype\">x</h> %f <h class=\"texttype\">y</h> %f <h class=\"texttype\">z</h> %f",
             telemetry->stateruntime,
@@ -174,15 +179,15 @@ _STORY_writeHTMLToDisk(_STORY_Parameters_t * parameters,
     fprintf(html, " <h class=\"texttype\">Trailer</h>: %d", telemetry->trailer_connected);
     fprintf(html, "\n</div>\n");
     
-    if ((story != NULL) && (state != NULL)) {
+    if ((context->story != NULL) && (context->state != NULL)) {
       fprintf(html, "<div class=\"currentstatus\">\n");
-      _STORY_writeStoryToDisk(story, "currentstory", html);
-      _STORY_writeStateToDisk(state, html);
+      _STORY_writeStoryToDisk(context->story, "currentstory", html);
+      _STORY_writeStateToDisk(context->state, html);
       fprintf(html, "</div>\n");
     }
     
     
-    if ((story == NULL) || ((state != NULL) && (_STORY_isFinalState(state) == 1))) {
+    if ((context->story == NULL) || ((context->state != NULL) && (_STORY_isFinalState(context->state) == 1))) {
       
       _STORY_writeStoryListToDisk(activestories, "activestory", html);
       

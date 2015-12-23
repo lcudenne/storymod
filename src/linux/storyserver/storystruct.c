@@ -35,7 +35,8 @@
 #include <assert.h>
 /* fprintf */
 #include <stdio.h>
-
+/* strcmp */
+#include <string.h>
 
 #include "storystruct.h"
 #include "utils.h"
@@ -94,10 +95,12 @@ _STORY_newParameters() {
   parameters->server_port = CLIENT_PORT;
   parameters->client_ip = "localhost";
   parameters->story_dir = NULL;
+  parameters->positions_database = "positions_database.xml";
   parameters->local_trace = NULL;
   parameters->dump_trace = NULL;
   parameters->html_file = NULL;
   parameters->html_refresh = 2;
+  parameters->css_file = "style.css";
   parameters->story_dot = NULL;
 
   return parameters;
@@ -192,6 +195,155 @@ _STORY_displayTelemetry(_STORY_Telemetry_t * telemetry) {
 
   free(tostring);
 }
+
+
+/* ----------------------------------------------------------------------------------- */
+
+_STORY_Position_t *
+_STORY_newPosition() {
+
+  _STORY_Position_t * position = NULL;
+
+  position = malloc(sizeof(_STORY_Position_t ));
+  assert(position);
+
+  position->name = NULL;
+  position->x = 0.0;
+  position->y = 0.0;
+  position->z = 0.0;
+  position->boxx = 0.0;
+  position->boxy = 0.0;
+  position->boxz = 0.0;
+  position->distance = 0.0;
+
+  return position;
+
+}
+
+
+void
+_STORY_freePosition(_STORY_Position_t ** position) {
+
+  assert(*position);
+
+  if ((*position)->name) {
+    free((*position)->name);
+    (*position)->name = NULL;
+  }
+
+  free(*position);
+  *position = NULL;
+
+}
+
+
+
+_STORY_PositionList_t *
+_STORY_newPositionList(unsigned int capacity) {
+
+  _STORY_PositionList_t * positionlist = NULL;
+
+  assert(capacity > 0);
+
+  positionlist = malloc(sizeof(_STORY_PositionList_t));
+  assert(positionlist);
+
+  positionlist->size = 0;
+  positionlist->capacity = capacity;
+
+  positionlist->tab = NULL;
+  positionlist->tab = malloc(sizeof(_STORY_Position_t *) * capacity);
+  assert(positionlist->tab);
+
+  return positionlist;
+
+}
+
+
+void
+_STORY_freePositionList(_STORY_PositionList_t ** positionlist) {
+
+  unsigned int i = 0;
+
+  assert(*positionlist);
+
+  if (((*positionlist)->size > 0) && ((*positionlist)->tab != NULL)) {
+    for (i = 0; i < (*positionlist)->size; i++) {
+      if (((*positionlist)->tab[i]) != NULL) {
+	_STORY_freePosition(&((*positionlist)->tab[i]));
+      }
+    }
+  }
+
+  free((*positionlist)->tab);
+  free(*positionlist);
+
+  *positionlist = NULL;
+
+}
+
+void
+_STORY_freePositionStructList(_STORY_PositionList_t ** positionlist) {
+
+  assert(*positionlist);
+
+  free((*positionlist)->tab);
+  free(*positionlist);
+
+  *positionlist = NULL;
+
+}
+
+
+unsigned int
+_STORY_addPositionToPositionList(_STORY_Position_t * position,
+                           _STORY_PositionList_t * positionlist) {
+
+  unsigned int slot = positionlist->size;
+
+  assert(position);
+  assert(positionlist);
+
+  if (positionlist->size == positionlist->capacity) {
+    positionlist->capacity += positionlist->capacity;
+    positionlist->tab = realloc(positionlist->tab,
+                                sizeof(_STORY_Position_t *) * positionlist->capacity);
+  }
+
+  positionlist->tab[slot] = position;
+
+  positionlist->size++;
+
+  return slot;
+}
+
+
+
+_STORY_Position_t *
+_STORY_getPositionFromName(_STORY_PositionList_t * positionlist, char * name) {
+
+  _STORY_Position_t * position = NULL;
+  unsigned int i = 0;
+
+  assert(name);
+
+  assert(positionlist);
+
+  while ((i < positionlist->size) && (position == NULL)) {
+    if ((positionlist->tab[i] != NULL) && (strcmp(positionlist->tab[i]->name, name) == 0)) {
+      position = positionlist->tab[i];
+    } else {
+      i++;
+    }
+  }
+
+  return position;
+}
+
+
+
+
+/* ----------------------------------------------------------------------------------- */
 
 
 /* ----------------------------------------------------------------------------------- */

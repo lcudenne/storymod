@@ -39,6 +39,6 @@ chmod u+x build.sh
 
 Start the server (once the ETS2 / ATS simulator is running):
 
-./storyserver --ip this_machine_ip the_simulator_ip --story /path/to/my/stories/
+./storyserver --ip this_machine_ip the_simulator_ip --stories /path/to/my/stories/
 
 Open the resulting index.html file within a browser.

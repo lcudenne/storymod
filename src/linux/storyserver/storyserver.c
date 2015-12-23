@@ -179,8 +179,7 @@ storymod(_STORY_Parameters_t * parameters) {
     _STORY_loadStoryListFromDir(context->stories, context->parameters->story_dir);
   }
 
-  _STORY_writeHTMLToDisk(context->parameters, context->stories, context->stories,
-                         NULL, NULL, context->telemetry);
+  _STORY_writeHTMLToDisk(context, context->stories);
 
   datagram = malloc(sizeof(char) * DATAGRAM_SIZE);
   assert(datagram);
@@ -245,13 +244,15 @@ help(int argc, char ** argv)
   fprintf(stdout, "Usage: %s [Options]\nOptions:\n", argv[0]);
   fprintf(stdout, "%s", "--ip\t\t<IP> <IP>\tIP of this server (how this machine can be reached by the simulator) and IP of the machine running the simulator.\n");
   fprintf(stdout, "%s", "--port\t\t<PORT>\t\tUDP port of this server (this machine port the simulator has to contact).\n");
-  fprintf(stdout, "%s", "--story\t\t<PATH>\t\tPath to the directory containing story files. The program will recursively explore sub-directories.\n");
+  fprintf(stdout, "%s", "--stories\t<PATH>\t\tPath to the directory containing story files. The program will recursively explore sub-directories.\n");
+  fprintf(stdout, "%s", "--positions\t<FILE>\t\tPath to the positions database file (positions_database.xml).\n");
   fprintf(stdout, "%s", "--trace\t\t<FILE>\t\tPath to a driving trace file. The story server will read this file as input.\n");
   fprintf(stdout, "%s", "--dump\t\t<FILE>\t\tPath to a driving trace file. The story server will write this file as output.\n");
   fprintf(stdout, "%s", "--html\t\t<FILE>\t\tPath to a HTML file. The story server will periodically write this file as output.\n");
   fprintf(stdout, "%s", "--html-refresh\t<DELAY>\t\tSet the delay in seconds to refresh the HTML file.\n");
+  fprintf(stdout, "%s", "--css\t\t<FILE>\t\tPath to a CSS style file. Default is style.css.\n");
   fprintf(stdout, "%s", "--story-dot\t<FILE>\t\tPath to a story file. The server will write the corresponding DOT file.\n");
-  fprintf(stdout, "Examples:\n%s --ip 192.168.1.13 192.168.1.37 --port 8888 --story ../stories/\n%s --story-dot ../stories/parking/parking.xml\n", argv[0], argv[0]);
+  fprintf(stdout, "Examples:\n%s --ip 192.168.1.13 192.168.1.37 --port 8888 --story ../stories/ --positions positions_database.xml\n%s --story-dot ../stories/parking/parking.xml\n", argv[0], argv[0]);
   
 }
 
@@ -277,9 +278,12 @@ main(int argc, char ** argv)
     } else if (strcmp(argv[i], "--port") == 0) {
       i++;
       parameters->server_port = atoi(argv[i]);
-    } else if ((strcmp(argv[i], "--story") == 0) || (strcmp(argv[i], "-s") == 0)) {
+    } else if ((strcmp(argv[i], "--stories") == 0) || (strcmp(argv[i], "-s") == 0)) {
       i++;
       parameters->story_dir = argv[i];
+    } else if (strcmp(argv[i], "--positions") == 0) {
+      i++;
+      parameters->positions_database = argv[i];
     } else if (strcmp(argv[i], "--trace") == 0) {
       i++;
       parameters->local_trace = argv[i];
@@ -292,6 +296,9 @@ main(int argc, char ** argv)
     } else if ((strcmp(argv[i], "--html-refresh") == 0) || (strcmp(argv[i], "-r") == 0)) {
       i++;
       parameters->html_refresh = atoi(argv[i]);
+    } else if (strcmp(argv[i], "--css") == 0) {
+      i++;
+      parameters->css_file = argv[i];
     } else if (strcmp(argv[i], "--story-dot") == 0) {
       i++;
       parameters->story_dot = argv[i];

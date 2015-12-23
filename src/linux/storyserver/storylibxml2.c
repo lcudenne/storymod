@@ -378,9 +378,11 @@ _STORY_addXmlState(xmlDocPtr doc, xmlNodePtr statenode,
 
 
 
-static void
+static unsigned int
 _STORY_xmlToStory(xmlDocPtr doc, _STORY_Story_t * story, char * dirname) {
 
+  unsigned int success = 1;
+  
   xmlNodePtr storymod = NULL;
   xmlNodePtr storynode = NULL;
   xmlNodePtr anode = NULL;
@@ -396,74 +398,82 @@ _STORY_xmlToStory(xmlDocPtr doc, _STORY_Story_t * story, char * dirname) {
 
   storymod = xmlDocGetRootElement(doc);
   assert(storymod);
-  storynode = _LIBXML2_getChild(storymod, "STORY");
-  assert(storynode);
-  anode = _LIBXML2_getChild(storynode, "NAME");
-  assert(anode);
-  story->name = (char *) xmlNodeGetContent(anode);
-  anode = NULL;
-  anode = _LIBXML2_getChild(storynode, "AUTHOR");
-  if (anode) {
-    story->author = (char *) xmlNodeGetContent(anode);
-    anode = NULL;
-  }
-  anode = _LIBXML2_getChild(storynode, "MEETING");
-  if (anode) {
-    story->meeting = (char *) xmlNodeGetContent(anode);
-    anode = NULL;
-  }
-  anode = _LIBXML2_getChild(storynode, "CATEGORY");
-  if (anode) {
-    story->category = (char *) xmlNodeGetContent(anode);
-    anode = NULL;
-  }
-  anode = _LIBXML2_getChild(storynode, "TIME");
-  if (anode) {
-    story->time = (char *) xmlNodeGetContent(anode);
-    anode = NULL;
-  }
-  anode = _LIBXML2_getChild(storynode, "DIFFICULTY");
-  if (anode) {
-    story->difficulty = (char *) xmlNodeGetContent(anode);
-    anode = NULL;
-  }
-  anode = _LIBXML2_getChild(storynode, "REQUIRED");
-  if (anode) {
-    story->required = (char *) xmlNodeGetContent(anode);
-    anode = NULL;
-  }
-  anode = _LIBXML2_getChild(storynode, "DESCRIPTION");
-  if (anode) {
-    story->description = (char *) xmlNodeGetContent(anode);
-    anode = NULL;
-  }
-  anode = _LIBXML2_getChild(storynode, "IMAGE");
-  if (anode) {
-    imagefile = (char *) xmlNodeGetContent(anode);
-    story->image = _UT_strCpy(story->image, dirname);
-    story->image = _UT_strCat(story->image, "/");
-    story->image = _UT_strCat(story->image, imagefile);
-    free(imagefile);
-    anode = NULL;
-  }
-  anode = _LIBXML2_getChild(storynode, "STARTSTATE");
-  assert(anode);
-  strstartstate = (char *) xmlNodeGetContent(anode);
-  anode = NULL;
-  numstartstate = atoi(strstartstate);
-  assert(numstartstate >= 0);
-  free(strstartstate);
 
-  statesnode = _LIBXML2_XPathQueryCtx(doc, storynode, "STATES/STATE");
-  assert(statesnode);
+  if (strcmp((const char *) storymod->name, "STORYMOD") == 0) {
 
-  for (i = 0; i < statesnode->nodeNr; i++) {
-    _STORY_addXmlState(doc, statesnode->nodeTab[i],
-                       story, numstartstate, dirname);
+    storynode = _LIBXML2_getChild(storymod, "STORY");
+    assert(storynode);
+    anode = _LIBXML2_getChild(storynode, "NAME");
+    assert(anode);
+    story->name = (char *) xmlNodeGetContent(anode);
+    anode = NULL;
+    anode = _LIBXML2_getChild(storynode, "AUTHOR");
+    if (anode) {
+      story->author = (char *) xmlNodeGetContent(anode);
+      anode = NULL;
+    }
+    anode = _LIBXML2_getChild(storynode, "MEETING");
+    if (anode) {
+      story->meeting = (char *) xmlNodeGetContent(anode);
+      anode = NULL;
+    }
+    anode = _LIBXML2_getChild(storynode, "CATEGORY");
+    if (anode) {
+      story->category = (char *) xmlNodeGetContent(anode);
+      anode = NULL;
+    }
+    anode = _LIBXML2_getChild(storynode, "TIME");
+    if (anode) {
+      story->time = (char *) xmlNodeGetContent(anode);
+      anode = NULL;
+    }
+    anode = _LIBXML2_getChild(storynode, "DIFFICULTY");
+    if (anode) {
+      story->difficulty = (char *) xmlNodeGetContent(anode);
+      anode = NULL;
+    }
+    anode = _LIBXML2_getChild(storynode, "REQUIRED");
+    if (anode) {
+      story->required = (char *) xmlNodeGetContent(anode);
+      anode = NULL;
+    }
+    anode = _LIBXML2_getChild(storynode, "DESCRIPTION");
+    if (anode) {
+      story->description = (char *) xmlNodeGetContent(anode);
+      anode = NULL;
+    }
+    anode = _LIBXML2_getChild(storynode, "IMAGE");
+    if (anode) {
+      imagefile = (char *) xmlNodeGetContent(anode);
+      story->image = _UT_strCpy(story->image, dirname);
+      story->image = _UT_strCat(story->image, "/");
+      story->image = _UT_strCat(story->image, imagefile);
+      free(imagefile);
+      anode = NULL;
+    }
+    anode = _LIBXML2_getChild(storynode, "STARTSTATE");
+    assert(anode);
+    strstartstate = (char *) xmlNodeGetContent(anode);
+    anode = NULL;
+    numstartstate = atoi(strstartstate);
+    assert(numstartstate >= 0);
+    free(strstartstate);
+
+    statesnode = _LIBXML2_XPathQueryCtx(doc, storynode, "STATES/STATE");
+    assert(statesnode);
+
+    for (i = 0; i < statesnode->nodeNr; i++) {
+      _STORY_addXmlState(doc, statesnode->nodeTab[i],
+                         story, numstartstate, dirname);
+    }
+
+    xmlXPathFreeNodeSet(statesnode);
+
+  } else {
+    success = 0;
   }
 
-  xmlXPathFreeNodeSet(statesnode);
-
+  return success;
 }
 
 
@@ -509,16 +519,19 @@ _STORY_loadStoryFromFile(char * filename, char * dirname, unsigned int id) {
   assert(filename);
   assert(dirname);
 
-  fprintf(stdout, "Loading story %s\n", filename);
-
   doc = _LIBXML2_loadXmlDoc(filename);
 
   story = _STORY_newStory(id);
 
   if (doc != NULL) {
-    _STORY_xmlToStory(doc, story, dirname);
+
+    if (_STORY_xmlToStory(doc, story, dirname) == 1) {
+      fprintf(stdout, "Loading story %s by %s (%s)\n", story->name, story->author, filename);
+      _STORY_resolveConditions(story);
+    } else {
+      _STORY_freeStory(&story);
+    }
     _LIBXML2_freeXmlTree(doc);
-    _STORY_resolveConditions(story);
   }
 
   return story;
@@ -526,5 +539,85 @@ _STORY_loadStoryFromFile(char * filename, char * dirname, unsigned int id) {
 }
 
 
+
+/* ----------------------------------------------------------------------------------- */
+
+static unsigned int
+_STORY_xmlToPositionList(xmlDocPtr doc, _STORY_PositionList_t * positionlist) {
+
+  unsigned int success = 1;
+  
+  xmlNodePtr storymod_positions = NULL;
+  xmlNodeSetPtr positionsnode = NULL;
+  xmlNodePtr positionnode = NULL;
+
+  _STORY_Position_t * position = NULL;
+
+  unsigned int i = 0;
+  
+  assert(doc);
+  assert(positionlist);
+
+  storymod_positions = xmlDocGetRootElement(doc);
+  assert(storymod_positions);
+
+  if (strcmp((const char *) storymod_positions->name, "STORYMOD_POSITIONS") == 0) {
+  
+    positionsnode = _LIBXML2_XPathQueryCtx(doc, storymod_positions,
+                                           "STORYMOD_POSITIONS/POSITIONS/POSITION");
+    assert(positionsnode);
+    
+    for (i = 0; i < positionsnode->nodeNr; i++) {
+      positionnode = positionsnode->nodeTab[i];
+
+      position = _STORY_newPosition();
+      position->name = (char *) xmlGetProp(positionnode, BAD_CAST "name");
+      position->x = _LIBXML2_getFloatProp(positionnode, "x");
+      position->y = _LIBXML2_getFloatProp(positionnode, "y");
+      position->z = _LIBXML2_getFloatProp(positionnode, "z");
+      position->boxx = _LIBXML2_getFloatProp(positionnode, "boxx");
+      position->boxy = _LIBXML2_getFloatProp(positionnode, "boxy");
+      position->boxz = _LIBXML2_getFloatProp(positionnode, "boxz");
+      position->distance = _LIBXML2_getFloatProp(positionnode, "distance");
+
+      _STORY_addPositionToPositionList(position, positionlist);
+    }
+    
+    xmlXPathFreeNodeSet(positionsnode);
+
+  } else {
+    success = 0;
+  }
+
+  return success;
+}
+
+
+/* ----------------------------------------------------------------------------------- */
+
+
+_STORY_PositionList_t *
+_STORY_loadPositionListFromFile(char * filename) {
+
+  _STORY_PositionList_t * positionlist = NULL;
+  xmlDocPtr doc = NULL;
+
+  assert(filename);
+
+  doc = _LIBXML2_loadXmlDoc(filename);
+
+  positionlist = _STORY_newPositionList(1);
+  
+  if (doc != NULL) {
+    if (_STORY_xmlToPositionList(doc, positionlist) == 1) {
+      fprintf(stdout, "Loading %d positions from file (%s)\n", positionlist->size, filename);
+    } else {
+      _STORY_freePositionList(&positionlist);
+    }
+    _LIBXML2_freeXmlTree(doc);
+  }
+
+  return positionlist;
+}
 
 /* ----------------------------------------------------------------------------------- */
