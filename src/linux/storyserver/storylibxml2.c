@@ -172,19 +172,23 @@ _LIBXML2_getFloatProp(xmlNodePtr node, char * name) {
 /* ----------------------------------------------------------------------------------- */
 
 static void
-_STORY_addXmlCondition(xmlDocPtr doc, xmlNodePtr conditionnode,
-                       _STORY_Transition_t * transition) {
+_STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr conditionnode,
+                       _STORY_Transition_t * transition, _STORY_PositionList_t * storypositions) {
 
   _STORY_Condition_t * condition = NULL;
   char * typestr = NULL;
-
-  xmlNodePtr position = NULL;
+  _STORY_Position_t * position = NULL;
+  
+  xmlNodePtr positionnode = NULL;
   xmlNodePtr distance = NULL;
   xmlNodePtr box = NULL;
   xmlNodePtr timer = NULL;
   xmlNodePtr property = NULL;
   xmlNodePtr visited = NULL;
 
+  float value = 0.0;
+  
+  assert(context);
   assert(doc);
   assert(conditionnode);
   assert(transition);
@@ -226,22 +230,64 @@ _STORY_addXmlCondition(xmlDocPtr doc, xmlNodePtr conditionnode,
   if (condition != NULL) {
     _STORY_addConditionToConditionList(condition, transition->conditions);
 
-    position = _LIBXML2_getChild(conditionnode, "POSITION");
-    if (position != NULL) {
-      condition->name = (char *) xmlGetProp(position, BAD_CAST "name");
-      condition->x = _LIBXML2_getFloatProp(position, "x");
-      condition->y = _LIBXML2_getFloatProp(position, "y");
-      condition->z = _LIBXML2_getFloatProp(position, "z");
+    positionnode = _LIBXML2_getChild(conditionnode, "POSITION");
+    if (positionnode != NULL) {
+      condition->name = (char *) xmlGetProp(positionnode, BAD_CAST "name");
+      if (condition->name != NULL) {
+        position = _STORY_getPositionFromName(context->positions, condition->name);
+        if (position != NULL) {
+          _STORY_positionToCondition(position, condition);
+          fprintf(stdout, "%s using global position\n", condition->name);
+        }
+        if (storypositions != NULL) {
+          position = _STORY_getPositionFromName(storypositions, condition->name);
+          if (position != NULL) {
+            _STORY_positionToCondition(position, condition);
+            fprintf(stdout, "%s using local position\n", condition->name);
+          }
+        }
+      }
+      value = _LIBXML2_getFloatProp(positionnode, "x");
+      if (value != 0) {
+        condition->x = value;
+        fprintf(stdout, "%s using story x position\n", condition->name);
+      }
+      value = _LIBXML2_getFloatProp(positionnode, "y");
+      if (value != 0) {
+        condition->y = value;
+        fprintf(stdout, "%s using story y position\n", condition->name);
+      }
+      value = _LIBXML2_getFloatProp(positionnode, "z");
+      if (value != 0) {
+        condition->z = value;
+        fprintf(stdout, "%s using story z position\n", condition->name);
+      }
     }
     box = _LIBXML2_getChild(conditionnode, "BOX");
     if (box != NULL) {
-      condition->boxx = _LIBXML2_getFloatProp(box, "x");
-      condition->boxy = _LIBXML2_getFloatProp(box, "y");
-      condition->boxz = _LIBXML2_getFloatProp(box, "z");
+      value = _LIBXML2_getFloatProp(box, "x");
+      if (value != 0) {
+        condition->boxx = value;
+        fprintf(stdout, "%s using story boxx position\n", condition->name);
+      }
+      value = _LIBXML2_getFloatProp(box, "y");
+      if (value != 0) {
+        condition->boxy = value;
+        fprintf(stdout, "%s using story boxy position\n", condition->name);
+      }
+      value = _LIBXML2_getFloatProp(box, "z");
+      if (value != 0) {
+        condition->boxz = value;
+        fprintf(stdout, "%s using story z position\n", condition->name);
+      }
     }
     distance = _LIBXML2_getChild(conditionnode, "DISTANCE");
     if (distance != NULL) {
-      condition->distance = _LIBXML2_getFloatProp(distance, "value");
+      value = _LIBXML2_getFloatProp(distance, "value");
+      if (value != 0) {
+        condition->distance = value;
+        fprintf(stdout, "%s using story distance\n", condition->name);
+      }
     }
     timer = _LIBXML2_getChild(conditionnode, "TIMER");
     if (timer != NULL) {
@@ -275,8 +321,8 @@ _STORY_addXmlCondition(xmlDocPtr doc, xmlNodePtr conditionnode,
 
 
 static void
-_STORY_addXmlTransition(xmlDocPtr doc, xmlNodePtr transitionnode,
-                        _STORY_State_t * state) {
+_STORY_addXmlTransition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr transitionnode,
+                        _STORY_State_t * state, _STORY_PositionList_t * storypositions) {
 
   _STORY_Transition_t * transition = NULL;
 
@@ -288,6 +334,7 @@ _STORY_addXmlTransition(xmlDocPtr doc, xmlNodePtr transitionnode,
 
   unsigned int i = 0;
 
+  assert(context);
   assert(doc);
   assert(transitionnode);
   assert(state);
@@ -311,7 +358,7 @@ _STORY_addXmlTransition(xmlDocPtr doc, xmlNodePtr transitionnode,
   assert(conditionsnode);
 
   for (i = 0; i < conditionsnode->nodeNr; i++) {
-    _STORY_addXmlCondition(doc, conditionsnode->nodeTab[i], transition);
+    _STORY_addXmlCondition(context, doc, conditionsnode->nodeTab[i], transition, storypositions);
   }
 
   xmlXPathFreeNodeSet(conditionsnode);
@@ -320,9 +367,9 @@ _STORY_addXmlTransition(xmlDocPtr doc, xmlNodePtr transitionnode,
 
 
 static void
-_STORY_addXmlState(xmlDocPtr doc, xmlNodePtr statenode,
+_STORY_addXmlState(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr statenode,
                    _STORY_Story_t * story, unsigned int numstartstate,
-                   char * dirname) {
+                   char * dirname, _STORY_PositionList_t * storypositions) {
 
   _STORY_State_t * state = NULL;
   unsigned int id = 0;
@@ -333,6 +380,7 @@ _STORY_addXmlState(xmlDocPtr doc, xmlNodePtr statenode,
 
   unsigned int i = 0;
 
+  assert(context);
   assert(doc);
   assert(statenode);
   assert(story);
@@ -369,7 +417,7 @@ _STORY_addXmlState(xmlDocPtr doc, xmlNodePtr statenode,
   assert(transitionsnode);
 
   for (i = 0; i < transitionsnode->nodeNr; i++) {
-    _STORY_addXmlTransition(doc, transitionsnode->nodeTab[i], state);
+    _STORY_addXmlTransition(context, doc, transitionsnode->nodeTab[i], state, storypositions);
   }
 
   xmlXPathFreeNodeSet(transitionsnode);
@@ -379,9 +427,12 @@ _STORY_addXmlState(xmlDocPtr doc, xmlNodePtr statenode,
 
 
 static unsigned int
-_STORY_xmlToStory(xmlDocPtr doc, _STORY_Story_t * story, char * dirname) {
+_STORY_xmlToStory(_STORY_Context_t * context, xmlDocPtr doc,
+                  _STORY_Story_t * story, char * dirname) {
 
   unsigned int success = 1;
+
+  _STORY_PositionList_t * storypositions = NULL;
   
   xmlNodePtr storymod = NULL;
   xmlNodePtr storynode = NULL;
@@ -394,8 +445,14 @@ _STORY_xmlToStory(xmlDocPtr doc, _STORY_Story_t * story, char * dirname) {
 
   char * imagefile = NULL;
 
+  char * positionscontent = NULL;
+  char * storypositionsfile = NULL;
+  
   unsigned int i = 0;
 
+  assert(context);
+  assert(doc);
+  
   storymod = xmlDocGetRootElement(doc);
   assert(storymod);
 
@@ -442,6 +499,19 @@ _STORY_xmlToStory(xmlDocPtr doc, _STORY_Story_t * story, char * dirname) {
       story->description = (char *) xmlNodeGetContent(anode);
       anode = NULL;
     }
+    anode = _LIBXML2_getChild(storynode, "POSITIONS");
+    if (anode) {
+      positionscontent = (char *) xmlNodeGetContent(anode);
+      if (positionscontent != NULL) {
+        storypositionsfile = _UT_strCpy(storypositionsfile, dirname);
+        storypositionsfile = _UT_strCat(storypositionsfile, "/");
+        storypositionsfile = _UT_strCat(storypositionsfile, positionscontent);
+        storypositions = _STORY_loadPositionListFromFile(storypositionsfile);
+        free(storypositionsfile);
+        free(positionscontent);
+      }
+      anode = NULL;
+    }
     anode = _LIBXML2_getChild(storynode, "IMAGE");
     if (anode) {
       imagefile = (char *) xmlNodeGetContent(anode);
@@ -463,10 +533,14 @@ _STORY_xmlToStory(xmlDocPtr doc, _STORY_Story_t * story, char * dirname) {
     assert(statesnode);
 
     for (i = 0; i < statesnode->nodeNr; i++) {
-      _STORY_addXmlState(doc, statesnode->nodeTab[i],
-                         story, numstartstate, dirname);
+      _STORY_addXmlState(context, doc, statesnode->nodeTab[i],
+                         story, numstartstate, dirname, storypositions);
     }
 
+    if (storypositions != NULL) {
+      _STORY_freePositionList(&storypositions);
+    }
+    
     xmlXPathFreeNodeSet(statesnode);
 
   } else {
@@ -527,7 +601,7 @@ _STORY_loadStoryFromFile(_STORY_Context_t * context, char * filename,
 
   if (doc != NULL) {
 
-    if (_STORY_xmlToStory(doc, story, dirname) == 1) {
+    if (_STORY_xmlToStory(context, doc, story, dirname) == 1) {
       fprintf(stdout, "Loading story %s by %s (%s)\n", story->name, story->author, filename);
       _STORY_resolveConditions(story);
     } else {

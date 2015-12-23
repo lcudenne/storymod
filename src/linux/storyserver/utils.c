@@ -260,3 +260,25 @@ _UT_getNextToken(void * haystack, size_t haystacklen, char ** token) {
 
 
 /* ----------------------------------------------------------------------------------- */
+
+char *
+_UT_getPathFromFilePath(char * filename) {
+
+  char * path = NULL;
+  char * rchr = NULL;
+  size_t i = 0;
+
+  rchr = strrchr(filename, '/');
+  
+  if (rchr != NULL) {
+    i = (rchr - filename);
+    path = malloc(sizeof(char) * (i + 1));
+    assert(path);
+    memcpy(path, filename, i);
+    path[i] = '\0';
+  }
+
+  return path;
+}
+
+/* ----------------------------------------------------------------------------------- */

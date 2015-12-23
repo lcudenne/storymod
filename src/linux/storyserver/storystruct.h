@@ -485,8 +485,11 @@ _STORY_getPositionFromName(_STORY_PositionList_t * positionlist, char * name);
 
 /* ----------------------------------------------------------------------------------- */
 
+void
+_STORY_positionToCondition(_STORY_Position_t * position,
+                           _STORY_Condition_t * condition);
 
-
+/* ----------------------------------------------------------------------------------- */
 
 _STORY_Condition_t *
 _STORY_newCondition(unsigned int type);

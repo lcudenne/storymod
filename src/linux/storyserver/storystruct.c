@@ -352,6 +352,36 @@ _STORY_getPositionFromName(_STORY_PositionList_t * positionlist, char * name) {
 
 /* ----------------------------------------------------------------------------------- */
 
+void
+_STORY_positionToCondition(_STORY_Position_t * position,
+                           _STORY_Condition_t * condition) {
+  assert(position);
+  assert(condition);
+
+  if (position->x != 0) {
+    condition->x = position->x;
+  }
+  if (position->y != 0) {
+    condition->y = position->y;
+  }
+  if (position->z != 0) {
+    condition->z = position->z;
+  }
+  if (position->boxx != 0) {
+    condition->boxx = position->boxx;
+  }
+  if (position->boxy != 0) {
+    condition->boxy = position->boxy;
+  }
+  if (position->boxz != 0) {
+    condition->boxz = position->boxz;
+  }
+  if (position->distance != 0) {
+    condition->distance = position->distance;
+  }
+
+}
+
 
 /* ----------------------------------------------------------------------------------- */
 

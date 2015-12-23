@@ -261,6 +261,7 @@ main(int argc, char ** argv)
   _STORY_Context_t * context = NULL;
   _STORY_Parameters_t * parameters = NULL;
   _STORY_Story_t * story = NULL;
+  char * path = NULL;
   unsigned int i = 0;
 
   context = _STORY_newContext();
@@ -311,7 +312,9 @@ main(int argc, char ** argv)
   }
   
   if (parameters->story_dot != NULL) {
-    story = _STORY_loadStoryFromFile(context, parameters->story_dot, "", 0);
+    path = _UT_getPathFromFilePath(parameters->story_dot);
+    story = _STORY_loadStoryFromFile(context, parameters->story_dot, path, 0);
+    free(path);
     if (story) {
       _STORY_storyToDot(parameters, story);
       _STORY_freeStory(&story);
