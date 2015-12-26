@@ -1,0 +1,239 @@
+<?xml version="1.0"?>
+<!DOCTYPE STORYMOD>
+<STORYMOD>
+ <STORY>
+  <NAME>Paris Places</NAME>
+  <AUTHOR>Eskolaite</AUTHOR>
+  <MEETING>Office, Paris, France</MEETING>
+  <CATEGORY>Tourism</CATEGORY>
+  <TIME>10mn</TIME>
+  <DIFFICULTY>*</DIFFICULTY>
+  <DESCRIPTION>Display all places in Paris. Meet at the office to start the mission.</DESCRIPTION>
+  <STARTSTATE>0</STARTSTATE>
+  <STATES>
+    <STATE id="0">
+      <NAME>StartParisPlaces</NAME>
+      <DESCRIPTION>Start state.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:office" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="1">
+      <NAME>ParisPlacesDistributor</NAME>
+      <DESCRIPTION>Find the places.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="2" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:busstation" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+        <TRANSITION nextstate="3" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:hotel" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+        <TRANSITION nextstate="5" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:bcp" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+        <TRANSITION nextstate="6" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:job@net" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+        <TRANSITION nextstate="7" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:office" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+        <TRANSITION nextstate="8" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:posped" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+        <TRANSITION nextstate="9" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:renault" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+        <TRANSITION nextstate="10" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:sanbuilders" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+        <TRANSITION nextstate="11" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:tradeaux" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+        <TRANSITION nextstate="12" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="france:paris:tree-et" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="12">
+      <NAME>ParisPlacesTreeEt</NAME>
+      <DESCRIPTION>This is Tree-Et [france:paris:tree-et].</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="10" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="11">
+      <NAME>ParisPlacesTradeaux</NAME>
+      <DESCRIPTION>This is Tradeaux [france:paris:tradeaux].</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="10" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="10">
+      <NAME>ParisPlacesSanBuilders</NAME>
+      <DESCRIPTION>This is San Builders [france:paris:sanbuilders].</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="10" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="9">
+      <NAME>ParisPlacesRenault</NAME>
+      <DESCRIPTION>This is Renault Trucks [france:paris:renault].</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="10" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="8">
+      <NAME>ParisPlacesPosped</NAME>
+      <DESCRIPTION>This is Posped [france:paris:posped].</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="10" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="7">
+      <NAME>ParisPlacesOffice</NAME>
+      <DESCRIPTION>This is the Office [france:paris:office].</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="10" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="6">
+      <NAME>ParisPlacesJob@Net</NAME>
+      <DESCRIPTION>This is Job@Net [france:paris:job@net].</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="10" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="5">
+      <NAME>ParisPlacesBCP</NAME>
+      <DESCRIPTION>This is BCP [france:paris:bcp].</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="10" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="2">
+      <NAME>ParisPlacesBusStation</NAME>
+      <DESCRIPTION>This is the bus station [france:paris:busstation].</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="10" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="3">
+      <NAME>ParisPlacesHotel</NAME>
+      <DESCRIPTION>This is the hotel [france:paris:hotel].</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="10" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="4">
+      <NAME>EndParisPlaces</NAME>
+      <DESCRIPTION>End state.</DESCRIPTION>
+    </STATE>
+  </STATES>
+ </STORY>
+</STORYMOD>
