@@ -1,7 +1,19 @@
 <?xml version="1.0"?>
 <!DOCTYPE STORYMOD_POSITIONS>
 <STORYMOD_POSITIONS>
- <POSITIONS>
-  <POSITION name="germany:kiel:repair" x="-80" y="8.5" z="-21000" />
+  <POSITIONS>
+   <POSITION name="france:a4:restarea:paris-reims" x="-26210.123047" y="44.427143" z="6061.907227" boxx="100" />
+   <POSITION name="france:a4:toll:paris-reims" x="-27675.933594" y="46.419720" z="7020.478516" boxx="100" />
+   <POSITION name="france:a4:toll:reims-paris" x="-25808.521484" y="45.034588" z="5628.615234" boxx="100" />
+   <POSITION name="france:paris:bcp" x="-30220.109375" y="43.860710" z="7182.210449" />
+   <POSITION name="france:paris:busstation" x="-30352.550781" y="44.122417" z="6968.219238" />
+   <POSITION name="france:paris:hotel" x="-30561.468750" y="49.923203" z="7176.507324" />
+   <POSITION name="france:paris:job@net" x="-30130.644531" y="43.856808" z="7184.943359" />
+   <POSITION name="france:paris:office" x="-30270.064453" y="43.856815" z="6879.524902" />
+   <POSITION name="france:paris:posped" x="-30017.355469" y="43.857086" z="7222.930176" />
+   <POSITION name="france:paris:renault" x="-30195.998047" y="43.856819" z="6946.019531" />
+   <POSITION name="france:paris:sanbuilders" x="-30594.589844" y="40.576977" z="7394.330566" />
+   <POSITION name="france:paris:tradeaux" x="-30384.238281" y="47.763065" z="7419.499512" />
+   <POSITION name="france:paris:tree-et" x="-29989.394531" y="46.401615" z="6010.807617" />
  </POSITIONS>
 </STORYMOD_POSITIONS>

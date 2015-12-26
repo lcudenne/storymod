@@ -68,7 +68,7 @@ _STORY_storyToDot(_STORY_Parameters_t * parameters, _STORY_Story_t * story) {
 
   if (dot != NULL) {
 
-    fprintf(dot, "digraph %s {\n", story->name);
+    fprintf(dot, "digraph \"%s\" {\n", story->name);
 
     for (i = 0; i < story->states->size; i++) {
       fprintf(dot, " state%d [shape=box label=\"[%d]%s\"];\n",
