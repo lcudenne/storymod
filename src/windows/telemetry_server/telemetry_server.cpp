@@ -122,6 +122,11 @@ struct telemetry_state_t
 	*/
 	scs_value_bool_t trailer_connected;
 
+	/**
+	* @brief Truck speed.
+	*/
+	scs_value_float_t truck_speed;
+
 
 } telemetry;
 
@@ -257,7 +262,7 @@ SCSAPI_VOID telemetry_frame_end(const scs_event_t UNUSED(event), const void *con
 	const scs_value_fvector_t head_position_in_vehicle_space = add(add(telemetry.cabin_position, telemetry.cabin_offset.position), rotate(telemetry.cabin_offset.orientation, head_position_in_cabin_space));
 	const scs_value_dvector_t head_position_in_world_space = add(telemetry.truck_placement.position, rotate(telemetry.truck_placement.orientation, head_position_in_vehicle_space));
 
-	sendPositionToUDP(head_position_in_world_space.x, head_position_in_world_space.y, head_position_in_world_space.z);
+	sendPositionToUDP(head_position_in_world_space.x, head_position_in_world_space.y, head_position_in_world_space.z, telemetry.truck_speed.value);
 
 	// log_line("%f;%f;%f", head_position_in_world_space.x, head_position_in_world_space.y, head_position_in_world_space.z);
 }
@@ -378,6 +383,16 @@ SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index,
 }
 
 
+SCSAPI_VOID telemetry_store_float(const scs_string_t name, const scs_u32_t index, const scs_value_t *const value, const scs_context_t context)
+{
+	assert(context);
+	assert(value);
+	assert(value->type == SCS_VALUE_TYPE_float);
+	scs_value_float_t *const property = static_cast<scs_value_float_t *>(context);
+	*property = value->value_float;
+
+}
+
 /**
  * @brief Telemetry API initialization function.
  *
@@ -454,6 +469,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_lblinker, SCS_U32_NIL, SCS_VALUE_TYPE_bool, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_bool, &telemetry.lblinker);
 	version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_rblinker, SCS_U32_NIL, SCS_VALUE_TYPE_bool, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_bool, &telemetry.rblinker);
 	version_params->register_for_channel(SCS_TELEMETRY_TRAILER_CHANNEL_connected, SCS_U32_NIL, SCS_VALUE_TYPE_bool, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_bool, &telemetry.trailer_connected);
+	version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_speed, SCS_U32_NIL, SCS_VALUE_TYPE_float, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_float, &telemetry.truck_speed);
 
 	game_log = version_params->common.log;
 

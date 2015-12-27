@@ -27,14 +27,17 @@
  * 
  **************************************************************************************/
 
-#define CLIENT_PORT 8888
+#define CLIENT_VERSION_MAJ 0
+#define CLIENT_VERSION_MIN 1
 
+#define CLIENT_PORT 8888
 
 #define DATAGRAM_TYPE_POSITION 0
 #define DATAGRAM_TYPE_CARGO 1
 #define DATAGRAM_TYPE_LBLINKER 2
 #define DATAGRAM_TYPE_RBLINKER 3
 #define DATAGRAM_TYPE_TRAILER_CONNECTED 4
+#define DATAGRAM_TYPE_CLIENT_VERSION 5
 
 
 void
@@ -44,7 +47,10 @@ void
 closeNetwork();
 
 void
-sendPositionToUDP(float x, float y, float z);
+sendClientVersionToUDP();
+
+void
+sendPositionToUDP(float x, float y, float z, float speed);
 
 void
 sendConfigToUDP(unsigned int type, char * value);

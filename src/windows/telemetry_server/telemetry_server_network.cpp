@@ -168,6 +168,7 @@ getIP() {
 		remote_server_port = atoi(subport.c_str());
 		closeGetIP();
 		initSendUDP();
+		sendClientVersionToUDP();
 	}
 
 	free(datagram);
@@ -187,9 +188,8 @@ isConnected() {
 
 /***********************************************************************************/
 
-
 void
-sendPositionToUDP(float x, float y, float z) {
+sendClientVersionToUDP() {
 
 	char * datagram = NULL;
 
@@ -198,7 +198,27 @@ sendPositionToUDP(float x, float y, float z) {
 		datagram = (char *)malloc(sizeof(char) * UDP_DATAGRAM_SIZE);
 		assert(datagram);
 
-		sprintf(datagram, "%d %f %f %f ", DATAGRAM_TYPE_POSITION, x, y, z);
+		sprintf(datagram, "%d %d %d ", DATAGRAM_TYPE_CLIENT_VERSION, CLIENT_VERSION_MAJ, CLIENT_VERSION_MIN);
+
+		sendto(udpsocket, datagram, strlen(datagram), 0, (struct sockaddr *) &si_other, sizeof(si_other));
+
+		free(datagram);
+	}
+
+}
+
+
+void
+sendPositionToUDP(float x, float y, float z, float speed) {
+
+	char * datagram = NULL;
+
+	if (isConnected() == 1) {
+
+		datagram = (char *)malloc(sizeof(char) * UDP_DATAGRAM_SIZE);
+		assert(datagram);
+
+		sprintf(datagram, "%d %f %f %f %f ", DATAGRAM_TYPE_POSITION, x, y, z, speed);
 
 		sendto(udpsocket, datagram, strlen(datagram), 0, (struct sockaddr *) &si_other, sizeof(si_other));
 
