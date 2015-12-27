@@ -123,9 +123,19 @@ struct telemetry_state_t
 	scs_value_bool_t trailer_connected;
 
 	/**
+	* @brief Cargo id and value.
+	*/
+	char * cargo;
+
+	/**
 	* @brief Truck speed.
 	*/
 	scs_value_float_t truck_speed;
+
+	/**
+	* @brief Engine enabled.
+	*/
+	scs_value_bool_t engine_enabled;
 
 
 } telemetry;
@@ -324,11 +334,14 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const e
 	const scs_named_value_t *const cargo_id = find_attribute(*info, SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_id, SCS_U32_NIL, SCS_VALUE_TYPE_string);
 	const scs_named_value_t *const cargo = find_attribute(*info, SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo, SCS_U32_NIL, SCS_VALUE_TYPE_string);
 	if (cargo_id && cargo) {
-		char * cargostr = (char *) malloc(sizeof(char) * (strlen(cargo_id->value.value_string.value) + strlen(cargo->value.value_string.value + 2)));
-		assert(cargostr);
-		sprintf(cargostr, "%s %s", cargo_id->value.value_string.value, cargo->value.value_string.value);
-		sendConfigToUDP(DATAGRAM_TYPE_CARGO, cargostr);
-		free(cargostr);
+		if (telemetry.cargo != NULL) {
+			free(telemetry.cargo);
+			telemetry.cargo = NULL;
+		}
+		telemetry.cargo = (char *) malloc(sizeof(char) * (strlen(cargo_id->value.value_string.value) + strlen(cargo->value.value_string.value + 2)));
+		assert(telemetry.cargo);
+		sprintf(telemetry.cargo, "%s %s", cargo_id->value.value_string.value, cargo->value.value_string.value);
+		sendConfigToUDP(DATAGRAM_TYPE_CARGO, telemetry.cargo);
 	}
 
 
@@ -375,9 +388,18 @@ SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index,
 	}
 	if (telemetry.trailer_connected.value) {
 		sendConfigToUDP(DATAGRAM_TYPE_TRAILER_CONNECTED, "1");
+		if (telemetry.cargo != NULL) {
+			sendConfigToUDP(DATAGRAM_TYPE_CARGO, telemetry.cargo);
+		}
 	}
 	else {
 		sendConfigToUDP(DATAGRAM_TYPE_TRAILER_CONNECTED, "0");
+	}
+	if (telemetry.engine_enabled.value) {
+		sendConfigToUDP(DATAGRAM_TYPE_ENGINE_ENABLED, "1");
+	}
+	else {
+		sendConfigToUDP(DATAGRAM_TYPE_ENGINE_ENABLED, "0");
 	}
 
 }
@@ -470,10 +492,13 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_rblinker, SCS_U32_NIL, SCS_VALUE_TYPE_bool, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_bool, &telemetry.rblinker);
 	version_params->register_for_channel(SCS_TELEMETRY_TRAILER_CHANNEL_connected, SCS_U32_NIL, SCS_VALUE_TYPE_bool, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_bool, &telemetry.trailer_connected);
 	version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_speed, SCS_U32_NIL, SCS_VALUE_TYPE_float, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_float, &telemetry.truck_speed);
+	version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_engine_enabled, SCS_U32_NIL, SCS_VALUE_TYPE_bool, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_bool, &telemetry.engine_enabled);
 
 	game_log = version_params->common.log;
 
 	// Set the structure with defaults.
+
+	telemetry.cargo = NULL;
 
 	memset(&telemetry, 0, sizeof(telemetry));
 
@@ -496,6 +521,10 @@ SCSAPI_VOID scs_telemetry_shutdown(void)
 {
 	// Any cleanup needed. The registrations will be removed automatically
 	// so there is no need to do that manually.
+
+	if (telemetry.cargo != NULL) {
+		free(telemetry.cargo);
+	}
 
 	game_log = NULL;
 	finish_log();
