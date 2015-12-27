@@ -158,6 +158,41 @@ _STORY_checkCondition(_STORY_State_t * state,
       res = 1;
     }
     break;
+  case _STORY_CONDITION_TYPE_SPEED_INF:
+    if (telemetry->speed < condition->speed) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_SPEED_SUP:
+    if (telemetry->speed > condition->speed) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_SPEED_MAX_INF:
+    if (telemetry->speed_max < condition->speed) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_SPEED_MAX_SUP:
+    if (telemetry->speed_max > condition->speed) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_SPEED_MIN_INF:
+    if (telemetry->speed_min < condition->speed) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_SPEED_MIN_SUP:
+    if (telemetry->speed_min > condition->speed) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_SPEED_RESET:
+    telemetry->speed_max = 0.0;
+    telemetry->speed_min = 0.0;
+    res = 1;
+    break;
   default:
     fprintf(stdout, "[STORY] Condition type not known (%d)\n", condition->type);
     break;

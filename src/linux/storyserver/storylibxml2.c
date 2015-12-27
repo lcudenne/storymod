@@ -185,6 +185,7 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
   xmlNodePtr timer = NULL;
   xmlNodePtr property = NULL;
   xmlNodePtr visited = NULL;
+  xmlNodePtr speed = NULL;
 
   float value = 0.0;
   
@@ -220,6 +221,20 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_VISITED_EQUAL);
   } else if (strcmp(typestr, _STORY_CONDITION_TYPE_VISITED_DIFF_STR) == 0) {
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_VISITED_DIFF);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_SPEED_INF_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_INF);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_SPEED_SUP_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_SUP);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_SPEED_MAX_INF_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_MAX_INF);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_SPEED_MAX_SUP_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_MAX_SUP);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_SPEED_MIN_INF_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_MIN_INF);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_SPEED_MIN_SUP_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_MIN_SUP);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_SPEED_RESET_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_RESET);
   } else {
     fprintf(stdout, "Unrecognized condition type (%s)\n", typestr);
   }
@@ -237,30 +252,25 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
         position = _STORY_getPositionFromName(context->positions, condition->name);
         if (position != NULL) {
           _STORY_positionToCondition(position, condition);
-          fprintf(stdout, "%s using global position\n", condition->name);
         }
         if (storypositions != NULL) {
           position = _STORY_getPositionFromName(storypositions, condition->name);
           if (position != NULL) {
             _STORY_positionToCondition(position, condition);
-            fprintf(stdout, "%s using local position\n", condition->name);
           }
         }
       }
       value = _LIBXML2_getFloatProp(positionnode, "x");
       if (value != 0) {
         condition->x = value;
-        fprintf(stdout, "%s using story x position\n", condition->name);
       }
       value = _LIBXML2_getFloatProp(positionnode, "y");
       if (value != 0) {
         condition->y = value;
-        fprintf(stdout, "%s using story y position\n", condition->name);
       }
       value = _LIBXML2_getFloatProp(positionnode, "z");
       if (value != 0) {
         condition->z = value;
-        fprintf(stdout, "%s using story z position\n", condition->name);
       }
     }
     box = _LIBXML2_getChild(conditionnode, "BOX");
@@ -268,17 +278,14 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
       value = _LIBXML2_getFloatProp(box, "x");
       if (value != 0) {
         condition->boxx = value;
-        fprintf(stdout, "%s using story boxx position\n", condition->name);
       }
       value = _LIBXML2_getFloatProp(box, "y");
       if (value != 0) {
         condition->boxy = value;
-        fprintf(stdout, "%s using story boxy position\n", condition->name);
       }
       value = _LIBXML2_getFloatProp(box, "z");
       if (value != 0) {
         condition->boxz = value;
-        fprintf(stdout, "%s using story z position\n", condition->name);
       }
     }
     distance = _LIBXML2_getChild(conditionnode, "DISTANCE");
@@ -286,7 +293,6 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
       value = _LIBXML2_getFloatProp(distance, "value");
       if (value != 0) {
         condition->distance = value;
-        fprintf(stdout, "%s using story distance\n", condition->name);
       }
     }
     timer = _LIBXML2_getChild(conditionnode, "TIMER");
@@ -313,6 +319,10 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
     visited = _LIBXML2_getChild(conditionnode, "VISITED");
     if (visited != NULL) {
       condition->visited = _LIBXML2_getUnsignedIntProp(visited, "value");
+    }
+    speed = _LIBXML2_getChild(conditionnode, "SPEED");
+    if (speed != NULL) {
+      condition->speed = _LIBXML2_getUnsignedIntProp(speed, "value");
     }
 
   }

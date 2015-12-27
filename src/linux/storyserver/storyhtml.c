@@ -167,9 +167,10 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
 
     fprintf(html, "<html>\n<head>\n<title>Story Mod</title>\n<meta http-equiv=\"refresh\" content=\"%d; URL=index.html\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\" />\n</head>\n<body>\n", parameters->html_refresh, parameters->css_file);
     
-    fprintf(html, "<div class=\"telemetry\">\n<h class=\"texttype\">Timer</h>: %d <h class=\"texttype\">Position</h>: <h class=\"texttype\">x</h> %f <h class=\"texttype\">y</h> %f <h class=\"texttype\">z</h> %f",
+    fprintf(html, "<div class=\"telemetry\">\n<h class=\"texttype\">Timer</h>: %d <h class=\"texttype\">Position</h>: <h class=\"texttype\">x</h> %f <h class=\"texttype\">y</h> %f <h class=\"texttype\">z</h> %f <h class=\"texttype\">speed</h> %f (%f %f)</br>",
             telemetry->stateruntime,
-            telemetry->x, telemetry->y, telemetry->z);
+            telemetry->x, telemetry->y, telemetry->z,
+            telemetry->speed, telemetry->speed_min, telemetry->speed_max);
     if ((telemetry->cargo_id != NULL) && (telemetry->cargo != NULL)) {
       fprintf(html, " <h class=\"texttype\">Cargo</h>: %s (%s)",
               telemetry->cargo, telemetry->cargo_id);

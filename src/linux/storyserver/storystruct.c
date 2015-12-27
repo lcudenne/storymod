@@ -139,7 +139,11 @@ _STORY_newTelemetry() {
   telemetry->x = 0.0;
   telemetry->y = 0.0;
   telemetry->z = 0.0;
-
+  
+  telemetry->speed = 0.0;
+  telemetry->speed_min = 0.0;
+  telemetry->speed_max = 0.0;
+  
   telemetry->cargo_id = NULL;
   telemetry->cargo = NULL;
 
@@ -401,6 +405,7 @@ _STORY_newCondition(unsigned int type) {
   condition->boxx = 10.0;
   condition->boxy = 1;
   condition->boxz = 100.0;
+  condition->speed = 0.0;
   condition->timer = 0;
   condition->distance = 0.0;
   condition->property_type = 0;
@@ -548,6 +553,40 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
     tostring = _UT_strUnsignedIntCat(tostring, condition->visited);
     tostring = _UT_strCat(tostring, ")");
     break;
+  case _STORY_CONDITION_TYPE_SPEED_INF:
+  case _STORY_CONDITION_TYPE_SPEED_SUP:
+  case _STORY_CONDITION_TYPE_SPEED_MAX_INF:
+  case _STORY_CONDITION_TYPE_SPEED_MAX_SUP:
+  case _STORY_CONDITION_TYPE_SPEED_MIN_INF:
+  case _STORY_CONDITION_TYPE_SPEED_MIN_SUP:
+    switch (condition->type) {
+    case _STORY_CONDITION_TYPE_SPEED_INF:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_SPEED_INF_STR);
+      break;
+    case _STORY_CONDITION_TYPE_SPEED_SUP:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_SPEED_SUP_STR);
+      break;
+    case _STORY_CONDITION_TYPE_SPEED_MAX_INF:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_SPEED_MAX_INF_STR);
+      break;
+    case _STORY_CONDITION_TYPE_SPEED_MAX_SUP:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_SPEED_MAX_SUP_STR);
+      break;
+    case _STORY_CONDITION_TYPE_SPEED_MIN_INF:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_SPEED_MIN_INF_STR);
+      break;
+    case _STORY_CONDITION_TYPE_SPEED_MIN_SUP:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_SPEED_MIN_SUP_STR);
+      break;
+    }
+    tostring = _UT_strCat(tostring, "(");
+    tostring = _UT_strFloat1Cat(tostring, condition->speed);
+    tostring = _UT_strCat(tostring, ")");    
+    break;
+  case _STORY_CONDITION_TYPE_SPEED_RESET:
+    tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_SPEED_RESET_STR);
+    break;
+
   default:
     break;
   }

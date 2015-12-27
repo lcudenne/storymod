@@ -35,6 +35,11 @@
 
 /* ----------------------------------------------------------------------------------- */
 
+#define SERVER_VERSION_MAJ 0
+#define SERVER_VERSION_MIN 1
+
+/* ----------------------------------------------------------------------------------- */
+
 #define CLIENT_PORT 8888
 
 /* ----------------------------------------------------------------------------------- */
@@ -130,11 +135,20 @@ typedef struct _STORY_Parameters {
 
 typedef struct _STORY_Telemetry {
 
+  /* client version */
+  unsigned int client_version_maj;
+  unsigned int client_version_min;
+  
   /* (x,y,z) coordinates */
   float x;
   float y;
   float z;
 
+  /* speed */
+  float speed;
+  float speed_min;
+  float speed_max;
+  
   /* current cargo id and name (NULL if no cargo) */
   char * cargo_id;
   char * cargo;
@@ -215,6 +229,20 @@ typedef struct _STORY_PositionList {
 #define _STORY_CONDITION_TYPE_VISITED_EQUAL_STR "visited_equal"
 #define _STORY_CONDITION_TYPE_VISITED_DIFF 11
 #define _STORY_CONDITION_TYPE_VISITED_DIFF_STR "visited_different"
+#define _STORY_CONDITION_TYPE_SPEED_INF 12
+#define _STORY_CONDITION_TYPE_SPEED_INF_STR "speed_inf"
+#define _STORY_CONDITION_TYPE_SPEED_SUP 13
+#define _STORY_CONDITION_TYPE_SPEED_SUP_STR "speed_sup"
+#define _STORY_CONDITION_TYPE_SPEED_MAX_INF 14
+#define _STORY_CONDITION_TYPE_SPEED_MAX_INF_STR "speed_max_inf"
+#define _STORY_CONDITION_TYPE_SPEED_MAX_SUP 15
+#define _STORY_CONDITION_TYPE_SPEED_MAX_SUP_STR "speed_max_sup"
+#define _STORY_CONDITION_TYPE_SPEED_MIN_INF 16
+#define _STORY_CONDITION_TYPE_SPEED_MIN_INF_STR "speed_min_inf"
+#define _STORY_CONDITION_TYPE_SPEED_MIN_SUP 17
+#define _STORY_CONDITION_TYPE_SPEED_MIN_SUP_STR "speed_min_sup"
+#define _STORY_CONDITION_TYPE_SPEED_RESET 18
+#define _STORY_CONDITION_TYPE_SPEED_RESET_STR "speed_reset"
 
 
 
@@ -240,6 +268,15 @@ typedef struct _STORY_Condition {
   float boxy;
   float boxz;
 
+  /* speed (km/h). used by
+     _STORY_CONDITION_TYPE_SPEED_INF
+     _STORY_CONDITION_TYPE_SPEED_SUP
+     _STORY_CONDITION_TYPE_SPEED_MAX_INF
+     _STORY_CONDITION_TYPE_SPEED_MAX_SUP
+     _STORY_CONDITION_TYPE_SPEED_MIN_INF
+     _STORY_CONDITION_TYPE_SPEED_MIN_SUP */
+  float speed;
+  
   /* timer (seconds). used by:
      _STORY_CONDITION_TYPE_TIMER_INF
      _STORY_CONDITION_TYPE_TIMER_SUP */

@@ -60,6 +60,7 @@
 #define DATAGRAM_TYPE_LBLINKER 2
 #define DATAGRAM_TYPE_RBLINKER 3
 #define DATAGRAM_TYPE_TRAILER_CONNECTED 4
+#define DATAGRAM_TYPE_CLIENT_VERSION 5
 
 /* ------------------------------------------------------------------------- */
 
@@ -96,6 +97,18 @@ _STORY_updateTelemetry(_STORY_Telemetry_t * telemetry,
     token = NULL;
     _UT_getNextToken(&(datagram[index]), rsize, &token);
     telemetry->z = atof(token);
+    index += strlen(token) + 1;
+    rsize = rsize - (strlen(token) + 1);
+    free(token);
+    token = NULL;
+    _UT_getNextToken(&(datagram[index]), rsize, &token);
+    telemetry->speed = (atof(token) * 3.6);
+    if (telemetry->speed > telemetry->speed_max) {
+      telemetry->speed_max = telemetry->speed;
+    }
+    if (telemetry->speed < telemetry->speed_min) {
+      telemetry->speed_min = telemetry->speed;
+    }
     free(token);
     token = NULL;
     break;
@@ -148,6 +161,24 @@ _STORY_updateTelemetry(_STORY_Telemetry_t * telemetry,
     telemetry->trailer_connected = atoi(token);
     free(token);
     token = NULL;
+    break;
+  case DATAGRAM_TYPE_CLIENT_VERSION:
+    index = strlen(token) + 1;
+    rsize = rsize - (strlen(token) + 1);
+    free(token);
+    token = NULL;
+    _UT_getNextToken(&(datagram[index]), rsize, &token);
+    telemetry->client_version_maj = atoi(token);
+    index += strlen(token) + 1;
+    rsize = rsize - (strlen(token) + 1);
+    free(token);
+    token = NULL;
+    _UT_getNextToken(&(datagram[index]), rsize, &token);
+    telemetry->client_version_min = atoi(token);
+    free(token);
+    token = NULL;
+    fprintf(stdout, "StoryMod Client v%d.%d\n",
+            telemetry->client_version_maj, telemetry->client_version_min);
     break;
   default:
     fprintf(stdout, "Unknown datagram type (%s)\n", token);
@@ -264,6 +295,8 @@ main(int argc, char ** argv)
   char * path = NULL;
   unsigned int i = 0;
 
+  fprintf(stdout, "StoryMod Server v%d.%d\n", SERVER_VERSION_MAJ, SERVER_VERSION_MIN);
+  
   context = _STORY_newContext();
   parameters = context->parameters;
   

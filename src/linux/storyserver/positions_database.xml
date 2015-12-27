@@ -2,6 +2,7 @@
 <!DOCTYPE STORYMOD_POSITIONS>
 <STORYMOD_POSITIONS>
   <POSITIONS>
+   <POSITION name="france:a16:toll:paris-calais" x="-30843.000000" y="47.878368" z="4212.306152" boxx="100" />
    <POSITION name="france:a4:restarea:paris-reims" x="-26210.123047" y="44.427143" z="6061.907227" boxx="100" />
    <POSITION name="france:a4:toll:paris-reims" x="-27675.933594" y="46.419720" z="7020.478516" boxx="100" />
    <POSITION name="france:a4:toll:reims-paris" x="-25808.521484" y="45.034588" z="5628.615234" boxx="100" />
