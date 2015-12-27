@@ -152,6 +152,8 @@ _STORY_newTelemetry() {
 
   telemetry->trailer_connected = 0;
 
+  telemetry->engine_enabled = 0;
+  
   telemetry->stateruntime = 0;
 
   return telemetry;

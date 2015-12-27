@@ -175,6 +175,7 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
       fprintf(html, " <h class=\"texttype\">Cargo</h>: %s (%s)",
               telemetry->cargo, telemetry->cargo_id);
     }
+    fprintf(html, " <h class=\"texttype\">Engine</h>: %d", telemetry->engine_enabled);
     fprintf(html, " <h class=\"texttype\">LBlinker</h>: %d", telemetry->lblinker);
     fprintf(html, " <h class=\"texttype\">RBlinker</h>: %d", telemetry->rblinker);
     fprintf(html, " <h class=\"texttype\">Trailer</h>: %d", telemetry->trailer_connected);

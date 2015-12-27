@@ -46,6 +46,16 @@
 
 #define DATAGRAM_SIZE 512
 
+/* ------------------------------------------------------------------------- */
+
+#define DATAGRAM_TYPE_POSITION 0
+#define DATAGRAM_TYPE_CARGO 1
+#define DATAGRAM_TYPE_LBLINKER 2
+#define DATAGRAM_TYPE_RBLINKER 3
+#define DATAGRAM_TYPE_TRAILER_CONNECTED 4
+#define DATAGRAM_TYPE_CLIENT_VERSION 5
+#define DATAGRAM_TYPE_ENGINE_ENABLED 6
+
 /* ----------------------------------------------------------------------------------- */
 
 
@@ -161,6 +171,9 @@ typedef struct _STORY_Telemetry {
   /* trailer_connected (O/1) */
   unsigned int trailer_connected;
 
+  /* truck engine enabled (0/1) */
+  unsigned int engine_enabled;
+  
   /* running time for current state (seconds) */
   unsigned int stateruntime;
 

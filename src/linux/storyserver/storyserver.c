@@ -53,14 +53,6 @@
 #include "udpstream.h"
 #include "utils.h"
 
-/* ------------------------------------------------------------------------- */
-
-#define DATAGRAM_TYPE_POSITION 0
-#define DATAGRAM_TYPE_CARGO 1
-#define DATAGRAM_TYPE_LBLINKER 2
-#define DATAGRAM_TYPE_RBLINKER 3
-#define DATAGRAM_TYPE_TRAILER_CONNECTED 4
-#define DATAGRAM_TYPE_CLIENT_VERSION 5
 
 /* ------------------------------------------------------------------------- */
 
@@ -179,6 +171,16 @@ _STORY_updateTelemetry(_STORY_Telemetry_t * telemetry,
     token = NULL;
     fprintf(stdout, "StoryMod Client v%d.%d\n",
             telemetry->client_version_maj, telemetry->client_version_min);
+    break;
+  case DATAGRAM_TYPE_ENGINE_ENABLED:
+    index = strlen(token) + 1;
+    rsize = rsize - (strlen(token) + 1);
+    free(token);
+    token = NULL;
+    _UT_getNextToken(&(datagram[index]), rsize, &token);
+    telemetry->engine_enabled = atoi(token);
+    free(token);
+    token = NULL;
     break;
   default:
     fprintf(stdout, "Unknown datagram type (%s)\n", token);
