@@ -16,5 +16,17 @@
    <POSITION name="france:paris:sanbuilders" x="-30594.589844" y="40.576977" z="7394.330566" />
    <POSITION name="france:paris:tradeaux" x="-30384.238281" y="47.763065" z="7419.499512" />
    <POSITION name="france:paris:tree-et" x="-29989.394531" y="46.401615" z="6010.807617" />
- </POSITIONS>
+   
+   <POSITION name="sweden:kalmar:hotel" x="20222.164062" y="6.781563" z="-33748.101562" />
+   <POSITION name="sweden:kalmar:nsoil" x="21038.458984" y="5.239526" z="-32918.863281" />
+   <POSITION name="sweden:road:roundabout:kalmar-vaxjo" x="18003.570312" y="8.308074" z="-33932.031250" />
+   <POSITION name="sweden:road:station:kalmar-vaxjo" x="17785.390625" y="4.114625" z="-33897.031250" />
+   <POSITION name="sweden:road:station:vaxjo-karlskrona" x="16377.192383" y="8.073101" z="-33105.898438" />
+   <POSITION name="sweden:road:restarea:vaxjo-karlskrona" x="16450.828125" y="4.208101" z="-32710.046875" />
+   <POSITION name="sweden:karlskrona:station" x="16989.976562" y="-0.399774" z="-30832.267578" />   
+   <POSITION name="sweden:karlskrona:polarislines" x="17523.597656" y="2.151080" z="-29700.826172" />
+   <POSITION name="sweden:karlskrona:port" x="17544.150391" y="2.256789" z="-29629.720703" />
+   <POSITION name="sweden:e22:station:karlskrona-kalmar" x="18557.041016" y="11.943753" z="-31635.078125" />
+
+  </POSITIONS>
 </STORYMOD_POSITIONS>

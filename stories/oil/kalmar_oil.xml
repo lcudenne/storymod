@@ -1,0 +1,347 @@
+<?xml version="1.0"?>
+<!DOCTYPE STORYMOD>
+<STORYMOD>
+ <STORY>
+  <NAME>Kalmar Oil</NAME>
+  <AUTHOR>Eskolaite</AUTHOR>
+  <MEETING>Hotel, Kalmar, Sweden</MEETING>
+  <CATEGORY>Oil Delivery</CATEGORY>
+  <TIME>45mn</TIME>
+  <DIFFICULTY>*</DIFFICULTY>
+  <REQUIRED>Scandinavia</REQUIRED>
+  <DESCRIPTION>Start your journey in Kalmar with a full tank of oil and deliver stations in the area.</DESCRIPTION>
+  <STARTSTATE>0</STARTSTATE>
+  <STATES>
+    <STATE id="0">
+      <NAME>StartKalmarOil</NAME>
+      <DESCRIPTION>Start state.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:kalmar:hotel" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="1">
+      <NAME>LoadOilTrailer</NAME>
+      <DESCRIPTION>Hello Driver! Today's assignment is about delivering oil to the stations and rest area around Kalmar. Let's meet at the NSOil refinery, at the very end of the industrial pier. Check that you can find a Oil trailer out there or go find one somewhere else before.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="2" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:kalmar:nsoil" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="2">
+      <NAME>FirstDelivery0</NAME>
+      <DESCRIPTION>We are ready to go! The first delivery is expected on a station between Kalmar and Vaxjo, just after a round-about. Open your GPS and add a waypoint.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="3" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:road:roundabout:kalmar-vaxjo" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="3">
+      <NAME>FirstDelivery1</NAME>
+      <DESCRIPTION>The station is right ahead. Use the main entry and park along the connectors just after the shop.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="4" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:road:station:kalmar-vaxjo" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="4">
+      <NAME>FirstDelivery2</NAME>
+      <DESCRIPTION>Turn the engine off and wait a little bit to drop some gas.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="5" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:road:station:kalmar-vaxjo" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="5">
+      <NAME>SecondDelivery0</NAME>
+      <DESCRIPTION>Well done! The next delivery is on the road between Vaxjo and Karlskrona. Do not cut the road while exiting the first station, use the round-about ahead.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="6" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION x="16489.269531" y="9.180442" z="-33871.195312" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="6">
+      <NAME>SecondDelivery1</NAME>
+      <DESCRIPTION>Hey! Nice view on the left side! But keep an eye on the road. This station is the same asset than the first one, park at the same place.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="7" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:road:station:vaxjo-karlskrona" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="7">
+      <NAME>SecondDelivery2</NAME>
+      <DESCRIPTION>Here you are. Turn off the engine and wait a little bit.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="8" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:road:station:vaxjo-karlskrona" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="8">
+      <NAME>SecondDelivery3</NAME>
+      <DESCRIPTION>That's it! You can have a coffee or a sandwitch and enjoy the view at the next rest area. Then, you can head to the next delivery, in Karlskrona.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="9" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:karlskrona:station" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="9">
+      <NAME>ThirdDelivery0</NAME>
+      <DESCRIPTION>OK! As usual, turn off the engine and drop some gas.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="10" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:karlskrona:station" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="10">
+      <NAME>ThirdDelivery1</NAME>
+      <DESCRIPTION>You are good for the last duty. Open your map and pin the station between Karlskrona and Kalmar. You will be on time for the game on TV!</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="11" type="and">
+          <CONDITIONS>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="60" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="11">
+      <NAME>PolarisDelivery</NAME>
+      <DESCRIPTION>There is a change in the plan! We got a call from Polaris Lines: WGCC did not make it today and Polaris need some extra gas. You are the closest truck to Karlskrona harbour, do a quick stop out there.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="12" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:karlskrona:polarislines" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="12">
+      <NAME>PolarisDelivery0</NAME>
+      <DESCRIPTION>There is a change in the plan! We got a call from Polaris Lines: WGCC did not make it today and Polaris need some extra gas. You are the closest truck to Karlskrona Port, do a quick stop out there.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="13" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:karlskrona:polarislines" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="13">
+      <NAME>PolarisDelivery1</NAME>
+      <DESCRIPTION>Polaris Lines uses a small tank for their trucks in this place. You can park close to the green tank and drop some gas.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="14" type="and">
+          <CONDITIONS>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="14">
+      <NAME>FourthDelivery0</NAME>
+      <DESCRIPTION>Well done! Let's finish the job with the station on your way back to Kalmar.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="15" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:e22:station:karlskrona-kalmar" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="15">
+      <NAME>FourthDelivery1</NAME>
+      <DESCRIPTION>That's the last refill. Stop your engine and wait a little bit.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="16" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:e22:station:karlskrona-kalmar" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="1" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="16">
+      <NAME>EndState0</NAME>
+      <DESCRIPTION>You are done with today's job. Drive your trailer back to NSOil Kalmar and detach within the facility.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="17" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:kalmar:nsoil" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="0" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="17">
+      <NAME>EndState1</NAME>
+      <DESCRIPTION>Thank you for driving and see you another time!</DESCRIPTION>
+    </STATE>
+  </STATES>
+ </STORY>
+</STORYMOD>
