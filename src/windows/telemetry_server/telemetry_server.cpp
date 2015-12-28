@@ -137,6 +137,10 @@ struct telemetry_state_t
 	*/
 	scs_value_bool_t engine_enabled;
 
+	/**
+	* @brief Parking brake.
+	*/
+	scs_value_bool_t parking_brake;
 
 } telemetry;
 
@@ -401,6 +405,12 @@ SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index,
 	else {
 		sendConfigToUDP(DATAGRAM_TYPE_ENGINE_ENABLED, "0");
 	}
+	if (telemetry.parking_brake.value) {
+		sendConfigToUDP(DATAGRAM_TYPE_PARKING_BRAKE, "1");
+	}
+	else {
+		sendConfigToUDP(DATAGRAM_TYPE_PARKING_BRAKE, "0");
+	}
 
 }
 
@@ -493,6 +503,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	version_params->register_for_channel(SCS_TELEMETRY_TRAILER_CHANNEL_connected, SCS_U32_NIL, SCS_VALUE_TYPE_bool, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_bool, &telemetry.trailer_connected);
 	version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_speed, SCS_U32_NIL, SCS_VALUE_TYPE_float, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_float, &telemetry.truck_speed);
 	version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_engine_enabled, SCS_U32_NIL, SCS_VALUE_TYPE_bool, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_bool, &telemetry.engine_enabled);
+	version_params->register_for_channel(SCS_TELEMETRY_TRUCK_CHANNEL_parking_brake, SCS_U32_NIL, SCS_VALUE_TYPE_bool, SCS_TELEMETRY_CHANNEL_FLAG_none, telemetry_store_bool, &telemetry.parking_brake);
 
 	game_log = version_params->common.log;
 
@@ -501,6 +512,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	telemetry.trailer_connected.value = false;
 	telemetry.truck_speed.value = 0.0;
 	telemetry.engine_enabled.value = false;
+	telemetry.parking_brake.value = false;
 	telemetry.cargo = NULL;
 
 	memset(&telemetry, 0, sizeof(telemetry));
