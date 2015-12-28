@@ -496,8 +496,11 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 
 	game_log = version_params->common.log;
 
-	// Set the structure with defaults.
-
+	telemetry.lblinker.value = false;
+	telemetry.rblinker.value = false;
+	telemetry.trailer_connected.value = false;
+	telemetry.truck_speed.value = 0.0;
+	telemetry.engine_enabled.value = false;
 	telemetry.cargo = NULL;
 
 	memset(&telemetry, 0, sizeof(telemetry));
