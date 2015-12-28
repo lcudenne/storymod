@@ -158,7 +158,9 @@ _STORY_newTelemetry() {
   telemetry->trailer_connected = 0;
 
   telemetry->engine_enabled = 0;
-  
+
+  telemetry->parking_brake = 0;
+
   telemetry->stateruntime = 0;
 
   return telemetry;
@@ -533,6 +535,9 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
       break;
     case _STORY_TELEMETRY_PROPERTY_ENGINE_ENABLED:
       tostring = _UT_strCat(tostring, _STORY_TELEMETRY_PROPERTY_ENGINE_ENABLED_STR);
+      break;
+    case _STORY_TELEMETRY_PROPERTY_PARKING_BRAKE:
+      tostring = _UT_strCat(tostring, _STORY_TELEMETRY_PROPERTY_PARKING_BRAKE_STR);
       break;
     default:
       break;

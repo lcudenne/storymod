@@ -314,6 +314,8 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
         condition->property_type = _STORY_TELEMETRY_PROPERTY_TRAILER_CONNECTED;
       } else if (strcmp(typestr, _STORY_TELEMETRY_PROPERTY_ENGINE_ENABLED_STR) == 0) {
         condition->property_type = _STORY_TELEMETRY_PROPERTY_ENGINE_ENABLED;
+      } else if (strcmp(typestr, _STORY_TELEMETRY_PROPERTY_PARKING_BRAKE_STR) == 0) {
+        condition->property_type = _STORY_TELEMETRY_PROPERTY_PARKING_BRAKE;
       }
       free(typestr);
       typestr = NULL;

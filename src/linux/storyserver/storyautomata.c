@@ -131,6 +131,11 @@ _STORY_checkCondition(_STORY_State_t * state,
         res = 1;
       }
       break;
+    case _STORY_TELEMETRY_PROPERTY_PARKING_BRAKE:
+      if (telemetry->parking_brake == atoi(condition->property_value)) {
+        res = 1;
+      }
+      break;
     default:
       fprintf(stdout, "[STORY] Condition property type (%d) not known\n",
               condition->property_type);

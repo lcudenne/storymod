@@ -182,6 +182,16 @@ _STORY_updateTelemetry(_STORY_Telemetry_t * telemetry,
     free(token);
     token = NULL;
     break;
+  case DATAGRAM_TYPE_PARKING_BRAKE:
+    index = strlen(token) + 1;
+    rsize = rsize - (strlen(token) + 1);
+    free(token);
+    token = NULL;
+    _UT_getNextToken(&(datagram[index]), rsize, &token);
+    telemetry->parking_brake = atoi(token);
+    free(token);
+    token = NULL;
+    break;
   default:
     fprintf(stdout, "Unknown datagram type (%s)\n", token);
     free(token);

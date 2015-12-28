@@ -55,6 +55,7 @@
 #define DATAGRAM_TYPE_TRAILER_CONNECTED 4
 #define DATAGRAM_TYPE_CLIENT_VERSION 5
 #define DATAGRAM_TYPE_ENGINE_ENABLED 6
+#define DATAGRAM_TYPE_PARKING_BRAKE 7
 
 /* ----------------------------------------------------------------------------------- */
 
@@ -147,6 +148,8 @@ typedef struct _STORY_Parameters {
 #define _STORY_TELEMETRY_PROPERTY_TRAILER_CONNECTED_STR "trailer_connected"
 #define _STORY_TELEMETRY_PROPERTY_ENGINE_ENABLED 4
 #define _STORY_TELEMETRY_PROPERTY_ENGINE_ENABLED_STR "engine_enabled"
+#define _STORY_TELEMETRY_PROPERTY_PARKING_BRAKE 5
+#define _STORY_TELEMETRY_PROPERTY_PARKING_BRAKE_STR "parking_brake"
 
 typedef struct _STORY_Telemetry {
 
@@ -178,6 +181,9 @@ typedef struct _STORY_Telemetry {
 
   /* truck engine enabled (0/1) */
   unsigned int engine_enabled;
+
+  /* truck parking brake (0/1) */
+  unsigned int parking_brake;
   
   /* running time for current state (seconds) */
   unsigned int stateruntime;
