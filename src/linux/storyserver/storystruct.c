@@ -526,6 +526,9 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
     case _STORY_TELEMETRY_PROPERTY_TRAILER_CONNECTED:
       tostring = _UT_strCat(tostring, _STORY_TELEMETRY_PROPERTY_TRAILER_CONNECTED_STR);
       break;
+    case _STORY_TELEMETRY_PROPERTY_ENGINE_ENABLED:
+      tostring = _UT_strCat(tostring, _STORY_TELEMETRY_PROPERTY_ENGINE_ENABLED_STR);
+      break;
     default:
       break;
     }

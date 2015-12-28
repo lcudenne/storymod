@@ -102,6 +102,9 @@
             <CONDITION type="property_equal">
               <PROPERTY type="cargo" value="oil" />
             </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="engine_enabled" value="0" />
+            </CONDITION>
             <CONDITION type="timer_sup">
               <TIMER value="120" />
             </CONDITION>
@@ -165,6 +168,9 @@
             <CONDITION type="property_equal">
               <PROPERTY type="cargo" value="oil" />
             </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="engine_enabled" value="0" />
+            </CONDITION>
             <CONDITION type="timer_sup">
               <TIMER value="120" />
             </CONDITION>
@@ -175,7 +181,7 @@
     <STATE id="8">
       <NAME>SecondDelivery3</NAME>
       <IMAGE>pictures/sweden_karlskrona_station.jpg</IMAGE>
-      <DESCRIPTION>That's it! You can have a coffee or a sandwitch and enjoy the view at the next rest area. Then, you can head to the next delivery, in Karlskrona.</DESCRIPTION>
+      <DESCRIPTION>That's it! You can have a coffee or a sandwitch and enjoy the view at the next rest area. Then, you can head to the next delivery, in the gas station of Karlskrona. Drive to the city the center.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="9" type="and">
           <CONDITIONS>
@@ -208,6 +214,9 @@
             <CONDITION type="property_equal">
               <PROPERTY type="cargo" value="oil" />
             </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="engine_enabled" value="0" />
+            </CONDITION>
             <CONDITION type="timer_sup">
               <TIMER value="120" />
             </CONDITION>
@@ -218,7 +227,7 @@
     <STATE id="10">
       <NAME>ThirdDelivery1</NAME>
       <IMAGE>pictures/sweden_e22_station_karlskrona_kalmar.jpg</IMAGE>
-      <DESCRIPTION>You are good for the last duty. Open your map and pin the station between Karlskrona and Kalmar. You will be on time for the game on TV!</DESCRIPTION>
+      <DESCRIPTION>You are good for the last duty. Open your map and pin the station between Karlskrona and Kalmar.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="11" type="and">
           <CONDITIONS>
@@ -238,12 +247,12 @@
     <STATE id="11">
       <NAME>PolarisDelivery0</NAME>
       <IMAGE>pictures/sweden_karlskrona_polarislines.jpg</IMAGE>
-      <DESCRIPTION>There is a change in the plan! We got a call from Polaris Lines: WGCC did not make it today and Polaris need some extra gas. You are the closest truck to Polaris at Karlskrona Port, do a quick stop out there.</DESCRIPTION>
+      <DESCRIPTION>There is a change in the plan! We got a call from Polaris Lines: WGCC did not make it today and Polaris need some extra gas. You are the closest truck to Polaris Lines at Karlskrona Port, do a quick stop out there.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="12" type="and">
           <CONDITIONS>
             <CONDITION type="timer_sup">
-              <TIMER value="20" />
+              <TIMER value="30" />
             </CONDITION>
           </CONDITIONS>
         </TRANSITION>
@@ -272,7 +281,7 @@
     <STATE id="13">
       <NAME>PolarisDelivery2</NAME>
       <IMAGE>pictures/sweden_karlskrona_polarislines.jpg</IMAGE>
-      <DESCRIPTION>You can park close to the green tank and drop some gas.</DESCRIPTION>
+      <DESCRIPTION>You can park close to the green tank. Then turn off the engine and drop some gas.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="14" type="and">
           <CONDITIONS>
@@ -281,6 +290,9 @@
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="engine_enabled" value="0" />
             </CONDITION>
             <CONDITION type="timer_sup">
               <TIMER value="120" />
@@ -324,6 +336,9 @@
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="engine_enabled" value="0" />
             </CONDITION>
             <CONDITION type="timer_sup">
               <TIMER value="120" />
