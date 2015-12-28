@@ -10,7 +10,7 @@
   <TIME>60mn</TIME>
   <DIFFICULTY>*</DIFFICULTY>
   <REQUIRED>Scandinavia</REQUIRED>
-  <DESCRIPTION>Start your journey in Kalmar with a full tank of oil and deliver stations in the area. Meet at the Kalmar Hotel to start this mission.</DESCRIPTION>
+  <DESCRIPTION>Start your journey in Kalmar with a full tank of fuel and deliver stations in the area. Meet at the Kalmar Hotel and turn the right blinker on to start this mission.</DESCRIPTION>
   <STARTSTATE>0</STARTSTATE>
   <STATES>
     <STATE id="0">
@@ -22,14 +22,43 @@
             <CONDITION type="position_box_in">
               <POSITION name="sweden:kalmar:hotel" />
             </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="rblinker" value="1" />
+            </CONDITION>
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
     </STATE>
     <STATE id="1">
-      <NAME>LoadOilTrailer</NAME>
+      <NAME>LoadOilTrailer0</NAME>
       <IMAGE>pictures/sweden_kalmar_nsoil_in.jpg</IMAGE>
-      <DESCRIPTION>Hello Driver! Today's assignment is about delivering oil to the stations and rest area around Kalmar. Let's meet at the NSOil refinery, at the very end of the industrial pier. Check that you can find a Oil trailer out there or go find one somewhere else before.</DESCRIPTION>
+      <DESCRIPTION>Hello Driver! Today's assignment is about delivering fuel to the stations and rest area around Kalmar. First, find and attach the appropriate trailer: oil, fuel tanker, petrol, diesel or kerosene.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="100" type="or">
+          <CONDITIONS>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="oil" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="fueltanker" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="petrol" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="diesel" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="cargo" value="kerosene" />
+            </CONDITION>
+          </CONDITIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="100">
+      <NAME>LoadOilTrailer1</NAME>
+      <IMAGE>pictures/sweden_kalmar_nsoil_in.jpg</IMAGE>
+      <DESCRIPTION>This trailer will do the job. Let's meet at the Kalmar NSOil refinery, at the very end of the industrial pier. You will load fuel in there to deliver.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="2" type="and">
           <CONDITIONS>
@@ -38,9 +67,6 @@
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
-            </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
             </CONDITION>
           </CONDITIONS>
         </TRANSITION>
@@ -59,9 +85,6 @@
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
             </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
-            </CONDITION>
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -79,9 +102,6 @@
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
             </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
-            </CONDITION>
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -89,7 +109,7 @@
     <STATE id="4">
       <NAME>FirstDelivery2</NAME>
       <IMAGE>pictures/sweden_road_station_kalmar_vaxjo.jpg</IMAGE>
-      <DESCRIPTION>Turn the engine off and wait a little bit to drop some gas.</DESCRIPTION>
+      <DESCRIPTION>Turn the engine off and wait a few minutes to unload fuel.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="5" type="and">
           <CONDITIONS>
@@ -98,9 +118,6 @@
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
-            </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="engine_enabled" value="0" />
@@ -125,9 +142,6 @@
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
             </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
-            </CONDITION>
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -145,9 +159,6 @@
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
             </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
-            </CONDITION>
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -155,7 +166,7 @@
     <STATE id="7">
       <NAME>SecondDelivery2</NAME>
       <IMAGE>pictures/sweden_road_station_vaxjo_karlskrona.jpg</IMAGE>
-      <DESCRIPTION>Here you are. Turn off the engine and wait a little bit.</DESCRIPTION>
+      <DESCRIPTION>Here you are. Turn off the engine and wait a few minutes to unload fuel.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="8" type="and">
           <CONDITIONS>
@@ -164,9 +175,6 @@
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
-            </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="engine_enabled" value="0" />
@@ -181,7 +189,7 @@
     <STATE id="8">
       <NAME>SecondDelivery3</NAME>
       <IMAGE>pictures/sweden_karlskrona_station.jpg</IMAGE>
-      <DESCRIPTION>That's it! You can have a coffee or a sandwitch and enjoy the view at the next rest area. Then, you can head to the next delivery, in the gas station of Karlskrona. Drive to the city the center.</DESCRIPTION>
+      <DESCRIPTION>That's it! You can have a coffee or a sandwitch and enjoy the view at the next rest area. Then, head to the next delivery, in Karlskrona. Drive to the city center and find the gas station. You can park close to the pumps.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="9" type="and">
           <CONDITIONS>
@@ -191,9 +199,6 @@
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
             </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
-            </CONDITION>
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -201,7 +206,7 @@
     <STATE id="9">
       <NAME>ThirdDelivery0</NAME>
       <IMAGE>pictures/sweden_karlskrona_station.jpg</IMAGE>
-      <DESCRIPTION>OK! As usual, turn off the engine and drop some gas.</DESCRIPTION>
+      <DESCRIPTION>OK! As usual, turn off the engine and wait a few minutes to unload fuel.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="10" type="and">
           <CONDITIONS>
@@ -210,9 +215,6 @@
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
-            </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="engine_enabled" value="0" />
@@ -234,9 +236,6 @@
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
             </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
-            </CONDITION>
             <CONDITION type="timer_sup">
               <TIMER value="60" />
             </CONDITION>
@@ -247,12 +246,12 @@
     <STATE id="11">
       <NAME>PolarisDelivery0</NAME>
       <IMAGE>pictures/sweden_karlskrona_polarislines.jpg</IMAGE>
-      <DESCRIPTION>There is a change in the plan! We got a call from Polaris Lines: WGCC did not make it today and Polaris need some extra gas. You are the closest truck to Polaris Lines at Karlskrona Port, do a quick stop out there.</DESCRIPTION>
+      <DESCRIPTION>There is a change in the plan! We got a call from Polaris Lines: WGCC did not make its delivery today and Polaris Lines need some extra fuel. You are the closest driver to Polaris Lines at Karlskrona Port, would you mind doing a quick stop out there?</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="12" type="and">
           <CONDITIONS>
             <CONDITION type="timer_sup">
-              <TIMER value="30" />
+              <TIMER value="60" />
             </CONDITION>
           </CONDITIONS>
         </TRANSITION>
@@ -261,7 +260,7 @@
     <STATE id="12">
       <NAME>PolarisDelivery1</NAME>
       <IMAGE>pictures/sweden_karlskrona_polarislines.jpg</IMAGE>
-      <DESCRIPTION>Polaris Lines uses a small emergency tank for their trucks in this place.</DESCRIPTION>
+      <DESCRIPTION>Polaris Lines uses a small emergency fuel tank for their trucks in this place. You will have to park close to it.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="13" type="and">
           <CONDITIONS>
@@ -271,9 +270,6 @@
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
             </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
-            </CONDITION>
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -281,15 +277,12 @@
     <STATE id="13">
       <NAME>PolarisDelivery2</NAME>
       <IMAGE>pictures/sweden_karlskrona_polarislines.jpg</IMAGE>
-      <DESCRIPTION>You can park close to the green tank. Then turn off the engine and drop some gas.</DESCRIPTION>
+      <DESCRIPTION>Can you see the green tank? Park the trailer close to it, then turn off the engine and wait a few minutes to unload fuel.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="14" type="and">
           <CONDITIONS>
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
-            </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="engine_enabled" value="0" />
@@ -304,7 +297,7 @@
     <STATE id="14">
       <NAME>FourthDelivery0</NAME>
       <IMAGE>pictures/sweden_e22_station_karlskrona_kalmar.jpg</IMAGE>
-      <DESCRIPTION>Well done! Let's finish the job with the station on your way back to Kalmar.</DESCRIPTION>
+      <DESCRIPTION>Well done! Let's finish the job with the gas station located on road E22 on your way back to Kalmar.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="15" type="and">
           <CONDITIONS>
@@ -314,9 +307,6 @@
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
             </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
-            </CONDITION>
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -324,7 +314,7 @@
     <STATE id="15">
       <NAME>FourthDelivery1</NAME>
       <IMAGE>pictures/sweden_e22_station_karlskrona_kalmar.jpg</IMAGE>
-      <DESCRIPTION>That's the last refill. Stop your engine and wait a little bit.</DESCRIPTION>
+      <DESCRIPTION>That's the last refill. Stop your engine and wait a few minutes to unload fuel.</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="16" type="and">
           <CONDITIONS>
@@ -333,9 +323,6 @@
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
-            </CONDITION>
-            <CONDITION type="property_equal">
-              <PROPERTY type="cargo" value="oil" />
             </CONDITION>
             <CONDITION type="property_equal">
               <PROPERTY type="engine_enabled" value="0" />
