@@ -6,11 +6,11 @@
   <AUTHOR>Eskolaite</AUTHOR>
   <IMAGE>pictures/sweden_e22_station_karlskrona_kalmar.jpg</IMAGE>
   <MEETING>Hotel, Kalmar, Sweden</MEETING>
-  <CATEGORY>Oil Delivery</CATEGORY>
-  <TIME>60mn</TIME>
+  <CATEGORY>Fuel Delivery</CATEGORY>
+  <TIME>50mn</TIME>
   <DIFFICULTY>*</DIFFICULTY>
   <REQUIRED>Scandinavia</REQUIRED>
-  <DESCRIPTION>Start your journey in Kalmar with a full tank of fuel and deliver stations in the area. Meet at the Kalmar Hotel and turn the right blinker on to start this mission.</DESCRIPTION>
+  <DESCRIPTION>Start your journey in Kalmar with a full tank of fuel and deliver stations in the area. Meet at the Kalmar Hotel and turn on the right blinker to start this mission.</DESCRIPTION>
   <STARTSTATE>0</STARTSTATE>
   <STATES>
     <STATE id="0">

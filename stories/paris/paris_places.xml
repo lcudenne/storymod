@@ -4,11 +4,12 @@
  <STORY>
   <NAME>Paris Places</NAME>
   <AUTHOR>Eskolaite</AUTHOR>
+  <IMAGE>paris_places.jpg</IMAGE>
   <MEETING>Office, Paris, France</MEETING>
   <CATEGORY>Tourism</CATEGORY>
   <TIME>10mn</TIME>
   <DIFFICULTY>*</DIFFICULTY>
-  <DESCRIPTION>Display all places in Paris. Meet at the office to start the mission.</DESCRIPTION>
+  <DESCRIPTION>Display all places in Paris. Meet at the office and turn on your right blinker to start the mission.</DESCRIPTION>
   <STARTSTATE>0</STARTSTATE>
   <STATES>
     <STATE id="0">
@@ -19,6 +20,9 @@
           <CONDITIONS>
             <CONDITION type="position_box_in">
               <POSITION name="france:paris:office" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="rblinker" value="1" />
             </CONDITION>
           </CONDITIONS>
         </TRANSITION>
