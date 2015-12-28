@@ -197,3 +197,31 @@ _STORY_closeDumpDrivingTrace() {
 
 
 /* ------------------------------------------------------------------------- */
+
+char *
+_STORY_loadFileToChar(char * filename) {
+
+  FILE * fp = NULL;
+  long lSize = 0;
+  char * buffer = NULL;
+
+  assert(filename);
+  
+  fp = fopen (filename, "rb");
+
+  if (fp != NULL) {
+    fseek(fp ,0L , SEEK_END);
+    lSize = ftell(fp) ;
+    rewind(fp);
+
+    buffer = calloc(1, lSize+1);
+    assert(buffer);
+
+    fread(buffer ,lSize,1 ,fp);
+    fclose(fp);
+  }
+
+  return buffer;
+}
+
+/* ------------------------------------------------------------------------- */

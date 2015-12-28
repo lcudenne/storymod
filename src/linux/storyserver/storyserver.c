@@ -332,7 +332,7 @@ main(int argc, char ** argv)
       parameters->html_refresh = atoi(argv[i]);
     } else if (strcmp(argv[i], "--css") == 0) {
       i++;
-      parameters->css_file = argv[i];
+      parameters->css_filename = argv[i];
     } else if (strcmp(argv[i], "--story-dot") == 0) {
       i++;
       parameters->story_dot = argv[i];
@@ -342,6 +342,9 @@ main(int argc, char ** argv)
     i++;
   }
 
+  parameters->css_file = _STORY_loadFileToChar(parameters->css_filename);
+  fprintf(stdout, "Loading general css (%s)\n", parameters->css_filename);
+  
   if (parameters->positions_database != NULL) {
     context->positions = _STORY_loadPositionListFromFile(parameters->positions_database);
   }

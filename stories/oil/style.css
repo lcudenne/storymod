@@ -29,39 +29,101 @@
  * 
  **************************************************************************************/
 
-#include "storystruct.h"
 
-/* ------------------------------------------------------------------------- */
+body {
+    background-color: #441111;
+    color: #CDCDCD;
+    font-family: "Lucida Console", Monaco, monospace;
+    font-variant: small-caps;
+}
 
-void
-_STORY_loadStoryListFromDir(_STORY_Context_t * context, char * dirname);
+.currentstatus {
+    text-align: center;
+    overflow: hidden;
+    width: 1060px;
+}
 
-/* ------------------------------------------------------------------------- */
+.currentstatus > * {
+    vertical-align: top;
+}
 
-void
-_STORY_openDrivingTrace(char * filename);
+.activestorylist {
+    text-align: center;
+    overflow: hidden;
+    width: 1060px;
+}
 
-void
-_STORY_closeDrivingTrace();
+.activestorylist > * {
+    vertical-align: top;
+}
 
-void
-_STORY_getNextDrivingTrace(char ** buffer, unsigned int size);
+.allstorylist {
+    text-align: center;
+    overflow: hidden;
+    width: 1060px;
+}
 
-/* ------------------------------------------------------------------------- */
+.allstorylist > * {
+    vertical-align: top;
+}
 
+.currentstory {
+    text-align: justify;
+    margin: 5px;
+    display: inline-block;
+    width: 330px;
+}
 
-void
-_STORY_openDumpDrivingTrace(char * filename);
+.activestory {
+    text-align: justify;
+    margin: 5px;
+    display: inline-block;
+    width: 330px;
+}
 
-void
-_STORY_dumpDrivingTrace(char * datagram);
+.allstory {
+    text-align: justify;
+    margin: 5px;
+    display: inline-block;
+    width: 330px;
+}
 
-void
-_STORY_closeDumpDrivingTrace();
+.imagestory {
+    box-shadow: 8px 8px 8px black;
+    width: 320px;
+    height: 320px;
+}
 
-/* ------------------------------------------------------------------------- */
+.texttype {
+    color: #EFEFEF;   
+}
 
-char *
-_STORY_loadFileToChar(char * filename);
+.state {
+    text-align: justify;
+    margin: 5px;
+    display: inline-block;
+    width: 660px;
+}
 
-/* ------------------------------------------------------------------------- */
+.state > * {
+    vertical-align: top;
+}
+
+.imagestate {
+    box-shadow: 8px 8px 8px black;
+    display: inline-block;
+    width: 320px;
+    height: 320px;
+}
+
+.statedesc {
+    text-align: justify;
+    margin: 5px;
+}
+
+img {
+    border: 0px;
+    width: 320px;
+    height: 320px;
+    opacity: 1.0;
+}

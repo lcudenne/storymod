@@ -43,6 +43,7 @@
 
 
 #include "storylibxml2.h"
+#include "storyposixload.h"
 #include "utils.h"
 
 
@@ -457,9 +458,12 @@ _STORY_xmlToStory(_STORY_Context_t * context, xmlDocPtr doc,
 
   char * imagefile = NULL;
 
+  char * csscontent = NULL;
+  char * storycssfile = NULL;
+
   char * positionscontent = NULL;
   char * storypositionsfile = NULL;
-  
+
   unsigned int i = 0;
 
   assert(context);
@@ -509,6 +513,20 @@ _STORY_xmlToStory(_STORY_Context_t * context, xmlDocPtr doc,
     anode = _LIBXML2_getChild(storynode, "DESCRIPTION");
     if (anode) {
       story->description = (char *) xmlNodeGetContent(anode);
+      anode = NULL;
+    }
+    anode = _LIBXML2_getChild(storynode, "STYLE");
+    if (anode) {
+      csscontent = (char *) xmlNodeGetContent(anode);
+      if (csscontent != NULL) {
+        storycssfile = _UT_strCpy(storycssfile, dirname);
+        storycssfile = _UT_strCat(storycssfile, "/");
+        storycssfile = _UT_strCat(storycssfile, csscontent);
+        story->css_filename = storycssfile;
+        free(csscontent);
+        fprintf(stdout, "Loading css for story %s (%s)\n", story->name, story->css_filename);
+        story->css_file = _STORY_loadFileToChar(story->css_filename);
+      }
       anode = NULL;
     }
     anode = _LIBXML2_getChild(storynode, "POSITIONS");

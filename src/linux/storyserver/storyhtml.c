@@ -36,9 +36,12 @@
 #include <assert.h>
 /* strcmp */
 #include <string.h>
+/* free */
+#include <stdlib.h>
 
 #include "storyhtml.h"
 #include "storyautomata.h"
+#include "storyposixload.h"
 
 
 #define HTML_FILE_NAME "index.html"
@@ -147,6 +150,8 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
   _STORY_Parameters_t * parameters = NULL;
   _STORY_StoryList_t * stories = NULL;
   _STORY_Telemetry_t * telemetry = NULL;
+
+  char * css_file = NULL;
   
   assert(context);
   assert(context->parameters);
@@ -157,6 +162,13 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
   stories = context->stories;
   telemetry = context->telemetry;
 
+  css_file = parameters->css_file;
+  if (context->story != NULL) {
+    if (context->story->css_file != NULL) {
+      css_file = context->story->css_file;
+    }
+  }
+  
   if (parameters->html_file != NULL) {
     html = fopen(parameters->html_file, "w");
   } else {
@@ -165,8 +177,8 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
 
   if (html != NULL) {
 
-    fprintf(html, "<html>\n<head>\n<title>Story Mod</title>\n<meta http-equiv=\"refresh\" content=\"%d; URL=index.html\">\n<link rel=\"stylesheet\" type=\"text/css\" href=\"%s\" />\n</head>\n<body>\n", parameters->html_refresh, parameters->css_file);
-    
+    fprintf(html, "<html>\n<head>\n<title>Story Mod</title>\n<meta http-equiv=\"refresh\" content=\"%d; URL=index.html\">\n<style media=\"screen\" type=\"text/css\">\n%s\n</style>\n</head>\n<body>\n", parameters->html_refresh, css_file);
+
     fprintf(html, "<div class=\"telemetry\">\n<h class=\"texttype\">Timer</h>: %d <h class=\"texttype\">Position</h>: <h class=\"texttype\">x</h> %f <h class=\"texttype\">y</h> %f <h class=\"texttype\">z</h> %f <h class=\"texttype\">speed</h> %f (%f %f)</br>",
             telemetry->stateruntime,
             telemetry->x, telemetry->y, telemetry->z,
@@ -207,6 +219,9 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
   }
 
 }
+
+
+
 
 
 /* ------------------------------------------------------------------------- */

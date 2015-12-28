@@ -107,7 +107,8 @@ _STORY_newParameters() {
   parameters->dump_trace = NULL;
   parameters->html_file = NULL;
   parameters->html_refresh = 2;
-  parameters->css_file = "style.css";
+  parameters->css_filename = "style.css";
+  parameters->css_file = NULL;
   parameters->story_dot = NULL;
 
   return parameters;
@@ -119,6 +120,10 @@ _STORY_freeParameters(_STORY_Parameters_t ** parameters) {
 
   assert(*parameters);
 
+  if ((*parameters)->css_file) {
+    free((*parameters)->css_file);
+  }
+  
   free(*parameters);
   *parameters = NULL;
 
@@ -979,6 +984,8 @@ _STORY_newStory(unsigned int id) {
   story->required = NULL;
   story->description = NULL;
   story->image = NULL;
+  story->css_filename = NULL;
+  story->css_file = NULL;
   story->startstate = NULL;
   story->states = _STORY_newStateList(1);
   story->distance = 0.0;
@@ -1024,6 +1031,14 @@ _STORY_freeStory(_STORY_Story_t ** story) {
   if ((*story)->description) {
     free((*story)->description);
     (*story)->description = NULL;
+  }
+  if ((*story)->css_filename) {
+    free((*story)->css_filename);
+    (*story)->css_filename = NULL;
+  }
+  if ((*story)->css_file) {
+    free((*story)->css_file);
+    (*story)->css_file = NULL;
   }
   if ((*story)->image) {
     free((*story)->image);

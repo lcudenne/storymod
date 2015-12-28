@@ -123,9 +123,12 @@ typedef struct _STORY_Parameters {
   /* html page refresh time (seconds) */
   unsigned int html_refresh;
 
-  /* css style file */
+  /* url to css style file */
+  char * css_filename;
+
+    /* css style file content */
   char * css_file;
-  
+
   /* story file name to convert in dot */
   char * story_dot;
 
@@ -445,6 +448,12 @@ typedef struct _STORY_Story {
   /* url of the associated image */
   char * image;
 
+  /* url of the CSS style file */
+  char * css_filename;
+
+  /* css file content */
+  char * css_file;
+  
   /* start state */
   _STORY_State_t * startstate;
 
