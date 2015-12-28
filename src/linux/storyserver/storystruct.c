@@ -37,6 +37,9 @@
 #include <stdio.h>
 /* strcmp */
 #include <string.h>
+/* fabs */
+#include <math.h>
+
 
 #include "storystruct.h"
 #include "utils.h"
@@ -360,6 +363,29 @@ _STORY_getPositionFromName(_STORY_PositionList_t * positionlist, char * name) {
   return position;
 }
 
+_STORY_Position_t *
+_STORY_getPositionFromCoordinates(_STORY_PositionList_t * positionlist,
+                                  float x, float y, float z) {
+
+  _STORY_Position_t * position = NULL;
+  unsigned int i = 0;
+
+  assert(positionlist);
+
+  while ((i < positionlist->size) && (position == NULL)) {
+    if ((positionlist->tab[i] != NULL) &&
+        (fabs(x - positionlist->tab[i]->x) <= _STORY_POSITION_BOXX_DEFAULT) &&
+        (fabs(y - positionlist->tab[i]->y) <= _STORY_POSITION_BOXY_DEFAULT) &&
+        (fabs(z - positionlist->tab[i]->z) <= _STORY_POSITION_BOXZ_DEFAULT)) {
+      position = positionlist->tab[i];
+    } else {
+      i++;
+    }
+  }
+
+  return position;
+}
+
 
 
 
@@ -411,9 +437,9 @@ _STORY_newCondition(unsigned int type) {
   condition->x = 0.0;
   condition->y = 0.0;
   condition->z = 0.0;
-  condition->boxx = 10.0;
-  condition->boxy = 1;
-  condition->boxz = 100.0;
+  condition->boxx = _STORY_POSITION_BOXX_DEFAULT;
+  condition->boxy = _STORY_POSITION_BOXY_DEFAULT;
+  condition->boxz = _STORY_POSITION_BOXZ_DEFAULT;
   condition->speed = 0.0;
   condition->timer = 0;
   condition->distance = 0.0;

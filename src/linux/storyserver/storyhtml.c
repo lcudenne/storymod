@@ -151,6 +151,8 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
   _STORY_StoryList_t * stories = NULL;
   _STORY_Telemetry_t * telemetry = NULL;
 
+  _STORY_Position_t * position = NULL;
+  
   char * css_file = NULL;
   
   assert(context);
@@ -162,6 +164,11 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
   stories = context->stories;
   telemetry = context->telemetry;
 
+  if (context->positions != NULL) {
+    position = _STORY_getPositionFromCoordinates(context->positions,
+                                                 telemetry->x, telemetry->y, telemetry->z);
+  }
+  
   css_file = parameters->css_file;
   if (context->story != NULL) {
     if (context->story->css_file != NULL) {
@@ -177,21 +184,28 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
 
   if (html != NULL) {
 
-    fprintf(html, "<html>\n<head>\n<title>Story Mod</title>\n<meta http-equiv=\"refresh\" content=\"%d; URL=index.html\">\n<style media=\"screen\" type=\"text/css\">\n%s\n</style>\n</head>\n<body>\n", parameters->html_refresh, css_file);
+    fprintf(html, "<html>\n<head>\n<title>ETS2/ATS Truck Simulator StoryMod Server v%d.%d</title>\n<meta http-equiv=\"refresh\" content=\"%d; URL=index.html\">\n<style media=\"screen\" type=\"text/css\">\n%s\n</style>\n</head>\n<body>\n", SERVER_VERSION_MAJ, SERVER_VERSION_MIN, parameters->html_refresh, css_file);
 
     fprintf(html, "<div class=\"telemetry\">\n<h class=\"texttype\">Timer</h>: %d <h class=\"texttype\">Position</h>: <h class=\"texttype\">x</h> %f <h class=\"texttype\">y</h> %f <h class=\"texttype\">z</h> %f <h class=\"texttype\">speed</h> %f (%f %f)</br>",
             telemetry->stateruntime,
             telemetry->x, telemetry->y, telemetry->z,
             telemetry->speed, telemetry->speed_min, telemetry->speed_max);
-    if ((telemetry->cargo_id != NULL) && (telemetry->cargo != NULL)) {
-      fprintf(html, " <h class=\"texttype\">Cargo</h>: %s (%s)",
-              telemetry->cargo, telemetry->cargo_id);
-    }
+
     fprintf(html, " <h class=\"texttype\">Engine</h>: %d", telemetry->engine_enabled);
     fprintf(html, " <h class=\"texttype\">PBrake</h>: %d", telemetry->parking_brake);
     fprintf(html, " <h class=\"texttype\">LBlinker</h>: %d", telemetry->lblinker);
     fprintf(html, " <h class=\"texttype\">RBlinker</h>: %d", telemetry->rblinker);
     fprintf(html, " <h class=\"texttype\">Trailer</h>: %d", telemetry->trailer_connected);
+
+    if (position != NULL) {
+      fprintf(html, " <h class=\"texttype\">Position</h>: %s", position->name);
+    }
+    
+    if ((telemetry->cargo_id != NULL) && (telemetry->cargo != NULL)) {
+      fprintf(html, " <h class=\"texttype\">Cargo</h>: %s (%s)",
+              telemetry->cargo, telemetry->cargo_id);
+    }
+
     fprintf(html, "\n</div>\n");
     
     if ((context->story != NULL) && (context->state != NULL)) {

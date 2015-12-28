@@ -17,6 +17,7 @@
    <POSITION name="france:paris:tradeaux" x="-30384.238281" y="47.763065" z="7419.499512" />
    <POSITION name="france:paris:tree-et" x="-29989.394531" y="46.401615" z="6010.807617" />
    
+   <POSITION name="sweden:helsingborg:konstnorr" x="9668.593750" y="17.358809" z="29737.062500" />
    <POSITION name="sweden:kalmar:hotel" x="20222.164062" y="6.781563" z="-33748.101562" />
    <POSITION name="sweden:kalmar:nsoil" x="21038.458984" y="5.239526" z="-32918.863281" />
    <POSITION name="sweden:road:roundabout:kalmar-vaxjo" x="18003.570312" y="8.308074" z="-33932.031250" />
@@ -27,6 +28,9 @@
    <POSITION name="sweden:karlskrona:polarislines" x="17523.597656" y="2.151080" z="-29700.826172" />
    <POSITION name="sweden:karlskrona:port" x="17544.150391" y="2.256789" z="-29629.720703" />
    <POSITION name="sweden:e22:station:karlskrona-kalmar" x="18557.041016" y="11.943753" z="-31635.078125" />
+   <POSITION name="sweden:stockholm:konstnorr" x="24552.068359" y="1.439234" z="-47899.613281" />
+   <POSITION name="sweden:vaxjo:nordicstenbrott" x="15061.511719" y="-14.801597" z="-34228.277344" />
 
+   
   </POSITIONS>
 </STORYMOD_POSITIONS>

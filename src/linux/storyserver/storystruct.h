@@ -193,6 +193,10 @@ typedef struct _STORY_Telemetry {
 
 /* ----------------------------------------------------------------------------------- */
 
+#define _STORY_POSITION_BOXX_DEFAULT 10.0
+#define _STORY_POSITION_BOXY_DEFAULT 1.0
+#define _STORY_POSITION_BOXZ_DEFAULT 100.0
+
 typedef struct _STORY_Position {
 
   /* position name. used as a UUID */
@@ -549,6 +553,9 @@ _STORY_addPositionToPositionList(_STORY_Position_t * position,
 _STORY_Position_t *
 _STORY_getPositionFromName(_STORY_PositionList_t * positionlist, char * name);
 
+_STORY_Position_t *
+_STORY_getPositionFromCoordinates(_STORY_PositionList_t * positionlist,
+                                  float x, float y, float z);
 
 /* ----------------------------------------------------------------------------------- */
 
