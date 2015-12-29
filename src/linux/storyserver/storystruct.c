@@ -387,6 +387,114 @@ _STORY_getPositionFromCoordinates(_STORY_PositionList_t * positionlist,
 }
 
 
+/* ----------------------------------------------------------------------------------- */
+
+_STORY_Action_t *
+_STORY_newAction(unsigned int type) {
+
+  _STORY_Action_t * action = NULL;
+
+  action = malloc(sizeof(_STORY_Action_t ));
+  assert(action);
+
+  action->type = type;
+  
+  return action;
+
+}
+
+
+void
+_STORY_freeAction(_STORY_Action_t ** action) {
+
+  assert(*action);
+
+  free(*action);
+  *action = NULL;
+
+}
+
+
+
+_STORY_ActionList_t *
+_STORY_newActionList(unsigned int capacity) {
+
+  _STORY_ActionList_t * actionlist = NULL;
+
+  assert(capacity > 0);
+
+  actionlist = malloc(sizeof(_STORY_ActionList_t));
+  assert(actionlist);
+
+  actionlist->size = 0;
+  actionlist->capacity = capacity;
+
+  actionlist->tab = NULL;
+  actionlist->tab = malloc(sizeof(_STORY_Action_t *) * capacity);
+  assert(actionlist->tab);
+
+  return actionlist;
+
+}
+
+
+void
+_STORY_freeActionList(_STORY_ActionList_t ** actionlist) {
+
+  unsigned int i = 0;
+
+  assert(*actionlist);
+
+  if (((*actionlist)->size > 0) && ((*actionlist)->tab != NULL)) {
+    for (i = 0; i < (*actionlist)->size; i++) {
+      if (((*actionlist)->tab[i]) != NULL) {
+	_STORY_freeAction(&((*actionlist)->tab[i]));
+      }
+    }
+  }
+
+  free((*actionlist)->tab);
+  free(*actionlist);
+
+  *actionlist = NULL;
+
+}
+
+void
+_STORY_freeActionStructList(_STORY_ActionList_t ** actionlist) {
+
+  assert(*actionlist);
+
+  free((*actionlist)->tab);
+  free(*actionlist);
+
+  *actionlist = NULL;
+
+}
+
+
+unsigned int
+_STORY_addActionToActionList(_STORY_Action_t * action,
+                           _STORY_ActionList_t * actionlist) {
+
+  unsigned int slot = actionlist->size;
+
+  assert(action);
+  assert(actionlist);
+
+  if (actionlist->size == actionlist->capacity) {
+    actionlist->capacity += actionlist->capacity;
+    actionlist->tab = realloc(actionlist->tab,
+                                sizeof(_STORY_Action_t *) * actionlist->capacity);
+  }
+
+  actionlist->tab[slot] = action;
+
+  actionlist->size++;
+
+  return slot;
+}
+
 
 
 /* ----------------------------------------------------------------------------------- */
@@ -624,9 +732,6 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
     tostring = _UT_strFloat1Cat(tostring, condition->speed);
     tostring = _UT_strCat(tostring, ")");    
     break;
-  case _STORY_CONDITION_TYPE_SPEED_RESET:
-    tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_SPEED_RESET_STR);
-    break;
 
   default:
     break;
@@ -720,6 +825,7 @@ _STORY_newTransition(unsigned int nextstateid) {
   assert(transition);
 
   transition->conditions = _STORY_newConditionList(1);
+  transition->actions = _STORY_newActionList(1);
   transition->nextstate = NULL;
   transition->nextstateid = nextstateid;
   transition->type = _STORY_TRANSITION_TYPE_AND;
@@ -735,6 +841,7 @@ _STORY_freeTransition(_STORY_Transition_t ** transition) {
   assert(*transition);
 
   _STORY_freeConditionList(&((*transition)->conditions));
+  _STORY_freeActionList(&((*transition)->actions));
 
   free(*transition);
   *transition = NULL;
@@ -808,6 +915,18 @@ _STORY_freeTransitionList(_STORY_TransitionList_t ** transitionlist) {
       }
     }
   }
+
+  free((*transitionlist)->tab);
+  free(*transitionlist);
+
+  *transitionlist = NULL;
+
+}
+
+void
+_STORY_freeTransitionStructList(_STORY_TransitionList_t ** transitionlist) {
+
+  assert(*transitionlist);
 
   free((*transitionlist)->tab);
   free(*transitionlist);

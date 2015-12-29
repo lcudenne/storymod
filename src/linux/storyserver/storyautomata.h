@@ -39,6 +39,10 @@ _STORY_StateList_t *
 _STORY_getAllNextState(_STORY_State_t * currentstate,
                        _STORY_Telemetry_t * telemetry);
 
+_STORY_TransitionList_t *
+_STORY_getAllNextTransitions(_STORY_State_t * currentstate,
+                             _STORY_Telemetry_t * telemetry);
+
 _STORY_State_t *
 _STORY_getNextState(_STORY_State_t * currentstate,
                     _STORY_Telemetry_t * telemetry);

@@ -27,6 +27,9 @@
               <PROPERTY type="rblinker" value="1" />
             </CONDITION>
           </CONDITIONS>
+          <ACTIONS>
+            <ACTION type="speed_reset" />
+          </ACTIONS>
         </TRANSITION>
       </TRANSITIONS>
     </STATE>
@@ -70,6 +73,9 @@
               <PROPERTY type="trailer_connected" value="1" />
             </CONDITION>
           </CONDITIONS>
+          <ACTIONS>
+            <ACTION type="speed_reset" />
+          </ACTIONS>
         </TRANSITION>
       </TRANSITIONS>
     </STATE>

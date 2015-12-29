@@ -173,6 +173,37 @@ _LIBXML2_getFloatProp(xmlNodePtr node, char * name) {
 /* ----------------------------------------------------------------------------------- */
 
 static void
+_STORY_addXmlAction(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr actionnode,
+                    _STORY_Transition_t * transition) {
+
+  _STORY_Action_t * action = NULL;
+  char * typestr = NULL;
+  
+  assert(context);
+  assert(doc);
+  assert(actionnode);
+  assert(transition);
+
+  typestr = (char *) xmlGetProp(actionnode, BAD_CAST "type");
+  assert(typestr);
+
+  if (strcmp(typestr, _STORY_ACTION_TYPE_SPEED_RESET_STR) == 0) {
+    action = _STORY_newAction(_STORY_ACTION_TYPE_SPEED_RESET);
+  } else {
+    fprintf(stdout, "Unrecognized action type (%s)\n", typestr);
+  }
+
+  free(typestr);
+  typestr = NULL;
+  
+  if (action != NULL) {
+    _STORY_addActionToActionList(action, transition->actions);
+  }
+    
+}
+
+
+static void
 _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr conditionnode,
                        _STORY_Transition_t * transition, _STORY_PositionList_t * storypositions) {
 
@@ -234,8 +265,6 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_MIN_INF);
   } else if (strcmp(typestr, _STORY_CONDITION_TYPE_SPEED_MIN_SUP_STR) == 0) {
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_MIN_SUP);
-  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_SPEED_RESET_STR) == 0) {
-    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_RESET);
   } else {
     fprintf(stdout, "Unrecognized condition type (%s)\n", typestr);
   }
@@ -344,6 +373,7 @@ _STORY_addXmlTransition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr tr
   unsigned int nextstateid = 0;
 
   xmlNodeSetPtr conditionsnode = NULL;
+  xmlNodeSetPtr actionsnode = NULL;
 
   char * typestr = NULL;
 
@@ -377,7 +407,16 @@ _STORY_addXmlTransition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr tr
   }
 
   xmlXPathFreeNodeSet(conditionsnode);
-  
+
+  actionsnode = _LIBXML2_XPathQueryCtx(doc, transitionnode,
+                                       "ACTIONS/ACTION");
+  if (actionsnode) {
+    for (i = 0; i < actionsnode->nodeNr; i++) {
+      _STORY_addXmlAction(context, doc, actionsnode->nodeTab[i], transition);
+    }    
+    xmlXPathFreeNodeSet(actionsnode);
+  }
+
 }
 
 

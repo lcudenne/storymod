@@ -233,6 +233,33 @@ typedef struct _STORY_PositionList {
 
 /* ----------------------------------------------------------------------------------- */
 
+#define _STORY_ACTION_TYPE_SPEED_RESET 0
+#define _STORY_ACTION_TYPE_SPEED_RESET_STR "speed_reset"
+
+
+typedef struct _STORY_Action {
+
+  /* action type */
+  unsigned int type;
+
+} _STORY_Action_t;
+
+typedef struct _STORY_ActionList {
+
+  /* size, given as the number of actions */
+  unsigned int size;
+
+  /* capacity, given as the number of actions */
+  unsigned int capacity;
+
+  _STORY_Action_t ** tab;
+
+} _STORY_ActionList_t;
+
+
+/* ----------------------------------------------------------------------------------- */
+
+
 #define _STORY_CONDITION_TYPE_POSITION_BOX_IN 0
 #define _STORY_CONDITION_TYPE_POSITION_BOX_IN_STR "position_box_in"
 #define _STORY_CONDITION_TYPE_POSITION_BOX_OUT 1
@@ -269,8 +296,6 @@ typedef struct _STORY_PositionList {
 #define _STORY_CONDITION_TYPE_SPEED_MIN_INF_STR "speed_min_inf"
 #define _STORY_CONDITION_TYPE_SPEED_MIN_SUP 17
 #define _STORY_CONDITION_TYPE_SPEED_MIN_SUP_STR "speed_min_sup"
-#define _STORY_CONDITION_TYPE_SPEED_RESET 18
-#define _STORY_CONDITION_TYPE_SPEED_RESET_STR "speed_reset"
 
 
 
@@ -357,6 +382,8 @@ typedef struct _STORY_Transition {
 
   _STORY_ConditionList_t * conditions;
 
+  _STORY_ActionList_t * actions;
+  
   struct _STORY_State * nextstate;
 
   unsigned int nextstateid;
@@ -559,6 +586,27 @@ _STORY_getPositionFromCoordinates(_STORY_PositionList_t * positionlist,
 
 /* ----------------------------------------------------------------------------------- */
 
+_STORY_Action_t *
+_STORY_newAction(unsigned int type);
+
+void
+_STORY_freeAction(_STORY_Action_t ** action);
+
+_STORY_ActionList_t *
+_STORY_newActionList(unsigned int capacity);
+
+void
+_STORY_freeActionList(_STORY_ActionList_t ** actionlist);
+
+void
+_STORY_freeActionStructList(_STORY_ActionList_t ** actionlist);
+
+unsigned int
+_STORY_addActionToActionList(_STORY_Action_t * action,
+                             _STORY_ActionList_t * actionlist);
+
+/* ----------------------------------------------------------------------------------- */
+
 void
 _STORY_positionToCondition(_STORY_Position_t * position,
                            _STORY_Condition_t * condition);
@@ -603,6 +651,10 @@ _STORY_newTransitionList(unsigned int capacity);
 
 void
 _STORY_freeTransitionList(_STORY_TransitionList_t ** transitionlist);
+
+void
+_STORY_freeTransitionStructList(_STORY_TransitionList_t ** transitionlist);
+
 
 unsigned int
 _STORY_addTransitionToTransitionList(_STORY_Transition_t * transition,

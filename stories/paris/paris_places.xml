@@ -113,7 +113,6 @@
             <CONDITION type="timer_sup">
               <TIMER value="10" />
             </CONDITION>
-            <CONDITION type="speed_reset" />
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -127,7 +126,6 @@
             <CONDITION type="timer_sup">
               <TIMER value="10" />
             </CONDITION>
-            <CONDITION type="speed_reset" />
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -141,7 +139,6 @@
             <CONDITION type="timer_sup">
               <TIMER value="10" />
             </CONDITION>
-            <CONDITION type="speed_reset" />
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -155,7 +152,6 @@
             <CONDITION type="timer_sup">
               <TIMER value="10" />
             </CONDITION>
-            <CONDITION type="speed_reset" />
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -169,7 +165,6 @@
             <CONDITION type="timer_sup">
               <TIMER value="10" />
             </CONDITION>
-            <CONDITION type="speed_reset" />
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -183,7 +178,6 @@
             <CONDITION type="timer_sup">
               <TIMER value="10" />
             </CONDITION>
-            <CONDITION type="speed_reset" />
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -197,7 +191,6 @@
             <CONDITION type="timer_sup">
               <TIMER value="10" />
             </CONDITION>
-            <CONDITION type="speed_reset" />
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -211,7 +204,6 @@
             <CONDITION type="timer_sup">
               <TIMER value="10" />
             </CONDITION>
-            <CONDITION type="speed_reset" />
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -225,7 +217,6 @@
             <CONDITION type="timer_sup">
               <TIMER value="10" />
             </CONDITION>
-            <CONDITION type="speed_reset" />
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>
@@ -239,7 +230,6 @@
             <CONDITION type="timer_sup">
               <TIMER value="10" />
             </CONDITION>
-            <CONDITION type="speed_reset" />
           </CONDITIONS>
         </TRANSITION>
       </TRANSITIONS>

@@ -198,11 +198,6 @@ _STORY_checkCondition(_STORY_State_t * state,
       res = 1;
     }
     break;
-  case _STORY_CONDITION_TYPE_SPEED_RESET:
-    telemetry->speed_max = 0.0;
-    telemetry->speed_min = 0.0;
-    res = 1;
-    break;
   default:
     fprintf(stdout, "[STORY] Condition type not known (%d)\n", condition->type);
     break;
@@ -252,6 +247,31 @@ _STORY_checkConditionList(_STORY_State_t * state,
 
 /* ----------------------------------------------------------------------------------- */
 
+void
+_STORY_performActions(_STORY_Telemetry_t * telemetry, _STORY_ActionList_t * actions) {
+
+  unsigned int i = 0;
+  
+  assert(telemetry);
+  assert(actions);
+
+  for (i = 0; i < actions->size; i++) {
+    switch (actions->tab[i]->type) {
+    case _STORY_ACTION_TYPE_SPEED_RESET:
+      telemetry->speed_min = 0;
+      telemetry->speed_max = 0;
+      break;
+    default:
+      fprintf(stdout, "[STORY] Action type not known (%d)\n", actions->tab[i]->type);
+      break;
+    }
+  }
+  
+}
+
+
+/* ----------------------------------------------------------------------------------- */
+
 _STORY_StateList_t *
 _STORY_getAllNextState(_STORY_State_t * currentstate,
                        _STORY_Telemetry_t * telemetry) {
@@ -276,25 +296,53 @@ _STORY_getAllNextState(_STORY_State_t * currentstate,
 
 }
 
+_STORY_TransitionList_t *
+_STORY_getAllNextTransitions(_STORY_State_t * currentstate,
+                             _STORY_Telemetry_t * telemetry) {
+
+  _STORY_TransitionList_t * transitionlist = NULL;
+  _STORY_Transition_t * transition = NULL;
+  unsigned int i = 0;
+
+  assert(currentstate);
+  assert(telemetry);
+
+  transitionlist = _STORY_newTransitionList(1);
+
+  for (i = 0; i < currentstate->transitions->size; i++) {
+    transition = currentstate->transitions->tab[i];
+    if (_STORY_checkConditionList(currentstate, transition->conditions, telemetry, transition->type) == 1) {
+      _STORY_addTransitionToTransitionList(transition, transitionlist);
+    }
+  }
+
+  return transitionlist;
+
+}
+
 
 _STORY_State_t *
 _STORY_getNextState(_STORY_State_t * currentstate,
                     _STORY_Telemetry_t * telemetry) {
 
   _STORY_State_t * nextstate = currentstate;
-  _STORY_StateList_t * nextstatelist = NULL;
+  _STORY_TransitionList_t * transitionlist = NULL;
 
+  unsigned int nsid = 0;
+  
   assert(currentstate);
   assert(telemetry);
 
-  nextstatelist = _STORY_getAllNextState(currentstate, telemetry);
+  transitionlist = _STORY_getAllNextTransitions(currentstate, telemetry);
 
-  if (nextstatelist->size > 0) {
-    nextstate = nextstatelist->tab[(_UT_getTimeSecond() % nextstatelist->size)];
+  if (transitionlist->size > 0) {
+    nsid = _UT_getTimeSecond() % transitionlist->size;
+    _STORY_performActions(telemetry, transitionlist->tab[nsid]->actions);
+    nextstate = transitionlist->tab[nsid]->nextstate;
     nextstate->visited++;
   }
 
-  _STORY_freeStateStructList(&nextstatelist);
+  _STORY_freeTransitionStructList(&transitionlist);
 
   return nextstate;
 
