@@ -28,7 +28,20 @@
    <POSITION name="sweden:karlskrona:polarislines" x="17523.597656" y="2.151080" z="-29700.826172" />
    <POSITION name="sweden:karlskrona:port" x="17544.150391" y="2.256789" z="-29629.720703" />
    <POSITION name="sweden:e22:station:karlskrona-kalmar" x="18557.041016" y="11.943753" z="-31635.078125" />
+   <POSITION name="sweden:nynashamn:station" x="25045.494141" y="8.924362" z="-46479.957031" />
+   <POSITION name="sweden:nynashamn:residential" x="24935.941406" y="7.620199" z="-46128.695312" />
+   <POSITION name="sweden:nynashamn:harbour-facility" x="24963.162109" y="4.268143" z="-45817.179688" />
+   <POSITION name="sweden:nynashamn:office" x="25052.167969" y="8.736647" z="-46320.355469" />
+   <POSITION name="sweden:sodertalje:skania-parcel" x="23398.738281" y="1.916384" z="-46376.273438" />
+   <POSITION name="sweden:stockholm:bhv" x="24654.332031" y="2.979102" z="-48215.339844" />
+   <POSITION name="sweden:stockholm:bridge" x="24332.574219" y="12.003934" z="-48059.789062" />
+   <POSITION name="sweden:stockholm:hotel" x="24563.744141" y="1.214926" z="-47950.375000" />
+   <POSITION name="sweden:stockholm:ika-parcel" x="24869.859375" y="13.529453" z="-47410.214844" />
+   <POSITION name="sweden:stockholm:job@net" x="24603.412109" y="2.217196" z="-48018.371094" />
    <POSITION name="sweden:stockholm:konstnorr" x="24552.068359" y="1.439234" z="-47899.613281" />
+   <POSITION name="sweden:stockholm:marina-residential" x="24577.162109" y="17.214380" z="-49155.703125" />
+   <POSITION name="sweden:stockholm:marina" x="24426.382812" y="5.129739" z="-49347.953125" />
+   <POSITION name="sweden:stockholm:redwarehouse" x="24788.990234" y="2.219248" z="-47966.074219" />
    <POSITION name="sweden:vaxjo:nordicstenbrott" x="15061.511719" y="-14.801597" z="-34228.277344" />
 
    

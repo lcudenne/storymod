@@ -1,0 +1,429 @@
+<?xml version="1.0"?>
+<!DOCTYPE STORYMOD>
+<STORYMOD>
+ <STORY>
+  <NAME>Stockholm Parcel</NAME>
+  <AUTHOR>Eskolaite</AUTHOR>
+  <STYLE>style.css</STYLE>
+  <MEETING>BHV, Stockholm, Sweden</MEETING>
+  <IMAGE>pictures/bhv_end.jpg</IMAGE>
+  <CATEGORY>Parcel Delivery</CATEGORY>
+  <TIME>50mn</TIME>
+  <DIFFICULTY>*</DIFFICULTY>
+  <REQUIRED>Scandinavia, BDF Tandem Truck Pack</REQUIRED>
+  <DESCRIPTION>Start your journey in Stockholm with a rigid truck full of parcels and deliver clients in the area. Meet at the first loading dock of BHV Stockholm and turn on the right blinker to start this mission.</DESCRIPTION>
+  <STARTSTATE>0</STARTSTATE>
+  <STATES>
+    <STATE id="0">
+      <NAME>StartStockholmParcel</NAME>
+      <DESCRIPTION>Start state.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="1" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:bhv" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="rblinker" value="1" />
+            </CONDITION>
+          </CONDITIONS>
+          <ACTIONS>
+            <ACTION type="speed_reset" />
+          </ACTIONS>
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="1">
+      <NAME>bhv0</NAME>
+      <IMAGE>pictures/bhv_start.jpg</IMAGE>
+      <DESCRIPTION>Welcome to this parcel delivery mission. Make sure you have a well adapted vehicle with either a rigid truck or a delivery van without a trailer attached to it. Here at BVH you will load parcels and plan your journey in Stockholm area.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="2" type="and">
+          <CONDITIONS>
+            <CONDITION type="timer_sup">
+              <TIMER value="30" />
+            </CONDITION>
+            <CONDITION type="property_equal">
+              <PROPERTY type="trailer_connected" value="0" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="2">
+      <NAME>job0</NAME>
+       <IMAGE>pictures/jobanet.jpg</IMAGE>
+      <DESCRIPTION>The first delivery is located at the job agency in the city center of Stockholm. Park close to the access ramp.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="3" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:job@net" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="3">
+      <NAME>job1</NAME>
+      <IMAGE>pictures/jobanet.jpg</IMAGE>
+      <DESCRIPTION>That's the place! It takes a few minutes to deliver the parcel.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="4" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:job@net" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="4">
+      <NAME>hotel0</NAME>
+      <IMAGE>pictures/hotel.jpg</IMAGE>
+      <DESCRIPTION>The next client is the hotel close to this place. Park in front of the lobby.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="5" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:hotel" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="5">
+      <NAME>hotel1</NAME>
+      <IMAGE>pictures/hotel.jpg</IMAGE>
+      <DESCRIPTION>There are some parcels to drop here.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="6" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:hotel" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="6">
+      <NAME>warehouse0</NAME>
+      <IMAGE>pictures/redwarehouse.jpg</IMAGE>
+      <DESCRIPTION>Next parcel has an incomplete address but it is most likely for the red warehouse close to here.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="7" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:redwarehouse" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="7">
+      <NAME>warehouse1</NAME>
+      <IMAGE>pictures/redwarehouse.jpg</IMAGE>
+      <DESCRIPTION>That was not that hard to find. Take a few minutes to deliver.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="8" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:redwarehouse" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="8">
+      <NAME>ika0</NAME>
+      <IMAGE>pictures/ika.jpg</IMAGE>
+      <DESCRIPTION>It's time to move out from Stockholm. Take the E4 South to Nynashamn. There is a IKA store. The parcel reception is located at the back of the warehouse. It is a different location than regular loading docks.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="9" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:redwarehouse" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="9">
+      <NAME>ika1</NAME>
+      <IMAGE>pictures/ika.jpg</IMAGE>
+      <DESCRIPTION>Take a few minutes to deliver.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="10" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:redwarehouse" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="10">
+      <NAME>station0</NAME>
+      <IMAGE>pictures/station.jpg</IMAGE>
+      <DESCRIPTION>On your way to Nynashamn harbour there is a gas station. This station is used as a delivery point for e-commerce. Park in front of the shop.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="11" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:nynashamn:station" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="11">
+      <NAME>station1</NAME>
+      <IMAGE>pictures/station.jpg</IMAGE>
+      <DESCRIPTION>Take a few minutes to deliver.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="12" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:nynashamn:station" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="12">
+      <NAME>nynashamn0</NAME>
+      <IMAGE>pictures/nynashamnresidential.jpg</IMAGE>
+      <DESCRIPTION>In Nynashamn there is a parcel to deliver at the first apartment block in the residential area. Use your warning lights if you park on the road.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="13" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:nynashamn:residential" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="13">
+      <NAME>nynashamn1</NAME>
+      <IMAGE>pictures/nynashamnresidential.jpg</IMAGE>
+      <DESCRIPTION>Take a few minutes to deliver.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="14" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:nynashamn:residential" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="14">
+      <NAME>nynashamn2</NAME>
+      <IMAGE>pictures/nynashamnharbour.jpg</IMAGE>
+      <DESCRIPTION>Next client is the Nynashamn Harbour. The facilities are located in front of the ferry lines car entrance.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="15" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:nynashamn:harbour-facility" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="15">
+      <NAME>nynashamn3</NAME>
+      <IMAGE>pictures/nynashamnharbour.jpg</IMAGE>
+      <DESCRIPTION>Take a few minutes to deliver.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="16" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:nynashamn:harbour-facility" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="16">
+      <NAME>nynashamn4</NAME>
+      <IMAGE>pictures/nynashamnoffice.jpg</IMAGE>
+      <DESCRIPTION>Next parcel is for one company located at the entrance of Nynashamn. You will find it on the main road. This road is busy so try to get into the delivery area.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="17" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:nynashamn:office" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="17">
+      <NAME>nynashamn5</NAME>
+      <IMAGE>pictures/nynashamnoffice.jpg</IMAGE>
+      <DESCRIPTION>Take a few minutes to deliver.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="18" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:nynashamn:office" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="18">
+      <NAME>scania0</NAME>
+      <IMAGE>pictures/scania.jpg</IMAGE>
+      <DESCRIPTION>It's time to take the E4 South to the Scania production site in Sodertalje. There is a small gate for daily delivery on the first warehouse after the Chassiporten.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="19" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:sodertalje:skania-parcel" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="19">
+      <NAME>scania1</NAME>
+      <IMAGE>pictures/scania.jpg</IMAGE>
+      <DESCRIPTION>Take a few minutes to deliver.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="20" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:sodertalje:skania-parcel" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="20">
+      <NAME>bridge</NAME>
+      <IMAGE>pictures/bridge.jpg</IMAGE>
+      <DESCRIPTION>Head back North on the E4. The last two deliveries are expected in the Marina area.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="21" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:bridge" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="21">
+      <NAME>marina0</NAME>
+      <IMAGE>pictures/marinaresidential.jpg</IMAGE>
+      <DESCRIPTION>Nice view! But do not miss the Marina exit. The next client is in this residential area.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="22" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:marina-residential" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="22">
+      <NAME>marina1</NAME>
+      <IMAGE>pictures/marinaresidential.jpg</IMAGE>
+      <DESCRIPTION>Take a few minutes to deliver.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="23" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:marina-residential" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="23">
+      <NAME>marina2</NAME>
+      <IMAGE>pictures/marina.jpg</IMAGE>
+      <DESCRIPTION>Last parcel is expected by a boat owner at the Marina. Park along the pier.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="24" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:marina" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="24">
+      <NAME>marina3</NAME>
+      <IMAGE>pictures/marina.jpg</IMAGE>
+      <DESCRIPTION>Take a few minutes to deliver.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="25" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:marina" />
+            </CONDITION>
+            <CONDITION type="timer_sup">
+              <TIMER value="120" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+     <STATE id="25">
+      <NAME>bhvend</NAME>
+      <IMAGE>pictures/bhv_end.jpg</IMAGE>
+      <DESCRIPTION>This is the end of the delivery service. Drive back to BHV Stockholm.</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="26" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:bhv" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+    <STATE id="26">
+      <NAME>StartStockholmParcel</NAME>
+      <IMAGE>pictures/bhv_end.jpg</IMAGE>
+      <DESCRIPTION>Thank you for driving and see you next time!</DESCRIPTION>
+    </STATE>   
+  </STATES>
+ </STORY>
+</STORYMOD>

@@ -193,7 +193,7 @@ typedef struct _STORY_Telemetry {
 
 /* ----------------------------------------------------------------------------------- */
 
-#define _STORY_POSITION_BOXX_DEFAULT 10.0
+#define _STORY_POSITION_BOXX_DEFAULT 5.0
 #define _STORY_POSITION_BOXY_DEFAULT 1.0
 #define _STORY_POSITION_BOXZ_DEFAULT 100.0
 
