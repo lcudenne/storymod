@@ -269,6 +269,10 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_MIN_SUP);
   } else if (strcmp(typestr, _STORY_CONDITION_TYPE_VISITED_LIST_STR) == 0) {
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_VISITED_LIST);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_NOT_VISITED_LIST_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_NOT_VISITED_LIST);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST);
   } else {
     fprintf(stdout, "Unrecognized condition type (%s)\n", typestr);
   }
@@ -660,7 +664,9 @@ _STORY_resolveConditions(_STORY_Story_t * story) {
       }
       for (k = 0; k < transition->conditions->size; k++) {
         condition = transition->conditions->tab[k];
-        if (condition->type == _STORY_CONDITION_TYPE_VISITED_LIST) {
+        if ((condition->type == _STORY_CONDITION_TYPE_VISITED_LIST) ||
+            (condition->type == _STORY_CONDITION_TYPE_NOT_VISITED_LIST) ||
+            (condition->type == _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST)) {
           if (condition->statelistid != NULL) {
             condition->statelist = _STORY_newStateList(1);
             for (l = 0; l < condition->statelistid->size; l++) {

@@ -61,6 +61,7 @@ _STORY_checkCondition(_STORY_State_t * state,
 
   unsigned int res = 0;
   unsigned int i = 0;
+  unsigned int j = 0;
   
   assert(state);
   assert(condition);
@@ -209,11 +210,45 @@ _STORY_checkCondition(_STORY_State_t * state,
       }
     }
     break;
+  case _STORY_CONDITION_TYPE_NOT_VISITED_LIST:
+    i = 0;
+    if (condition->statelist != NULL) {
+      res = 0;
+      while ((res == 0) && (i < condition->statelist->size)) {
+        res += condition->statelist->tab[i]->visited;
+        i++;
+      }
+      if (res == 0) {
+        res = 1;
+      } else {
+        res = 0;
+      }
+    }
+    break;
+  case _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST:
+    i = 0;
+    if (condition->statelist != NULL) {
+      j = 0;
+      while ((j < condition->visited) && (i < condition->statelist->size)) {
+        if (condition->statelist->tab[i]->visited > 0) {
+          j++;
+        }
+        i++;
+      }
+      if (j >= condition->visited) {
+        res = 1;
+      }
+    }
+    break;
   default:
     fprintf(stdout, "[STORY] Condition type not known (%d)\n", condition->type);
     break;
   }
 
+  if (res > 0) {
+    res = 1;
+  }
+  
   return res;
 }
 

@@ -186,7 +186,7 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
 
     fprintf(html, "<html>\n<head>\n<title>ETS2/ATS Truck Simulator StoryMod Server v%d.%d</title>\n<meta http-equiv=\"refresh\" content=\"%d; URL=index.html\">\n<style media=\"screen\" type=\"text/css\">\n%s\n</style>\n</head>\n<body>\n", SERVER_VERSION_MAJ, SERVER_VERSION_MIN, parameters->html_refresh, css_file);
 
-    fprintf(html, "<div class=\"telemetry\">\n<h class=\"texttype\">Timer</h>: %d <h class=\"texttype\">Position</h>: <h class=\"texttype\">x</h> %f <h class=\"texttype\">y</h> %f <h class=\"texttype\">z</h> %f <h class=\"texttype\">speed</h> %f (%f %f)</br>",
+    fprintf(html, "<div class=\"telemetry\">\n<h class=\"texttype\">Timer</h>: %d <h class=\"texttype\">Position</h>: <h class=\"texttype\">x</h> %f <h class=\"texttype\">y</h> %f <h class=\"texttype\">z</h> %f <h class=\"texttype\">speed</h> %f (%f %f)<br/>",
             telemetry->stateruntime,
             telemetry->x, telemetry->y, telemetry->z,
             telemetry->speed, telemetry->speed_min, telemetry->speed_max);

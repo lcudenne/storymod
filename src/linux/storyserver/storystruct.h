@@ -303,6 +303,10 @@ typedef struct _STORY_ActionList {
 #define _STORY_CONDITION_TYPE_SPEED_MIN_SUP_STR "speed_min_sup"
 #define _STORY_CONDITION_TYPE_VISITED_LIST 18
 #define _STORY_CONDITION_TYPE_VISITED_LIST_STR "visited_list"
+#define _STORY_CONDITION_TYPE_NOT_VISITED_LIST 19
+#define _STORY_CONDITION_TYPE_NOT_VISITED_LIST_STR "not_visited_list"
+#define _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST 20
+#define _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST_STR "at_least_visited_list"
 
 
 
@@ -361,7 +365,8 @@ typedef struct _STORY_Condition {
   unsigned int visited;
 
   /* list of states that must be visited. used by:
-     _STORY_CONDITION_TYPE_VISITED_LIST */
+     _STORY_CONDITION_TYPE_VISITED_LIST
+     _STORY_CONDITION_TYPE_NOT_VISITED_LIST */
   struct _STORY_StateList * statelist;
   /* same list, only state id as given in the XML file. */
   _UT_UnsignedIntList_t * statelistid;
