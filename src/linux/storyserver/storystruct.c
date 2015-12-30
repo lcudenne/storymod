@@ -42,9 +42,12 @@
 
 
 #include "storystruct.h"
-#include "utils.h"
+
 
 /* ----------------------------------------------------------------------------------- */
+
+
+
 
 _STORY_Context_t *
 _STORY_newContext() {
@@ -554,7 +557,9 @@ _STORY_newCondition(unsigned int type) {
   condition->property_type = 0;
   condition->property_value = NULL;
   condition->visited = 0;
-
+  condition->statelist = NULL;
+  condition->statelistid = NULL;
+  
   return condition;
 
 }
@@ -570,6 +575,12 @@ _STORY_freeCondition(_STORY_Condition_t ** condition) {
   }
   if ((*condition)->property_value != NULL) {
     free((*condition)->property_value);
+  }
+  if ((*condition)->statelist != NULL) {
+    _STORY_freeStateStructList(&((*condition)->statelist));
+  }
+  if ((*condition)->statelistid != NULL) {
+    _UT_freeUnsignedIntList(&((*condition)->statelistid));
   }
 
   free(*condition);

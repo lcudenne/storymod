@@ -46,6 +46,9 @@
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="0" />
             </CONDITION>
+            <CONDITION type="visited_list">
+              <VISITED statelist="0 1" />
+            </CONDITION>
           </CONDITIONS>            
         </TRANSITION>
       </TRANSITIONS>
@@ -151,7 +154,7 @@
         <TRANSITION nextstate="9" type="and">
           <CONDITIONS>
             <CONDITION type="position_box_in">
-              <POSITION name="sweden:stockholm:redwarehouse" />
+              <POSITION name="sweden:stockholm:ika-parcel" />
             </CONDITION>
           </CONDITIONS>            
         </TRANSITION>
@@ -165,7 +168,7 @@
         <TRANSITION nextstate="10" type="and">
           <CONDITIONS>
             <CONDITION type="position_box_in">
-              <POSITION name="sweden:stockholm:redwarehouse" />
+              <POSITION name="sweden:stockholm:ika-parcel" />
             </CONDITION>
             <CONDITION type="timer_sup">
               <TIMER value="120" />

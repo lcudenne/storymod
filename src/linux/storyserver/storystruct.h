@@ -35,6 +35,10 @@
 
 /* ----------------------------------------------------------------------------------- */
 
+#include "utils.h"
+
+/* ----------------------------------------------------------------------------------- */
+
 #define SERVER_VERSION_MAJ 0
 #define SERVER_VERSION_MIN 1
 
@@ -56,6 +60,7 @@
 #define DATAGRAM_TYPE_CLIENT_VERSION 5
 #define DATAGRAM_TYPE_ENGINE_ENABLED 6
 #define DATAGRAM_TYPE_PARKING_BRAKE 7
+
 
 /* ----------------------------------------------------------------------------------- */
 
@@ -296,6 +301,8 @@ typedef struct _STORY_ActionList {
 #define _STORY_CONDITION_TYPE_SPEED_MIN_INF_STR "speed_min_inf"
 #define _STORY_CONDITION_TYPE_SPEED_MIN_SUP 17
 #define _STORY_CONDITION_TYPE_SPEED_MIN_SUP_STR "speed_min_sup"
+#define _STORY_CONDITION_TYPE_VISITED_LIST 18
+#define _STORY_CONDITION_TYPE_VISITED_LIST_STR "visited_list"
 
 
 
@@ -353,6 +360,13 @@ typedef struct _STORY_Condition {
      _STORY_CONDITION_TYPE_VISITED_DIFF */
   unsigned int visited;
 
+  /* list of states that must be visited. used by:
+     _STORY_CONDITION_TYPE_VISITED_LIST */
+  struct _STORY_StateList * statelist;
+  /* same list, only state id as given in the XML file. */
+  _UT_UnsignedIntList_t * statelistid;
+
+  
 } _STORY_Condition_t;
 
 
@@ -518,7 +532,7 @@ typedef struct _STORY_StoryList {
 } _STORY_StoryList_t;
 
 
-
+  
 /* ----------------------------------------------------------------------------------- */
 
 

@@ -60,7 +60,8 @@ _STORY_checkCondition(_STORY_State_t * state,
                       _STORY_Telemetry_t * telemetry) {
 
   unsigned int res = 0;
-
+  unsigned int i = 0;
+  
   assert(state);
   assert(condition);
   assert(telemetry);
@@ -196,6 +197,16 @@ _STORY_checkCondition(_STORY_State_t * state,
   case _STORY_CONDITION_TYPE_SPEED_MIN_SUP:
     if (telemetry->speed_min > condition->speed) {
       res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_VISITED_LIST:
+    i = 0;
+    if (condition->statelist != NULL) {
+      res = 1;
+      while (i < condition->statelist->size) {
+        res *= condition->statelist->tab[i]->visited;
+        i++;
+      }
     }
     break;
   default:
@@ -339,6 +350,10 @@ _STORY_getNextState(_STORY_State_t * currentstate,
     nsid = _UT_getTimeSecond() % transitionlist->size;
     _STORY_performActions(telemetry, transitionlist->tab[nsid]->actions);
     nextstate = transitionlist->tab[nsid]->nextstate;
+    if (nextstate == NULL) {
+      fprintf(stdout, "Error: next state is unreachable\n");
+      nextstate = currentstate;
+    }
     nextstate->visited++;
   }
 
@@ -503,6 +518,21 @@ _STORY_sortCloseStoryList(_STORY_Telemetry_t * telemetry,
 
 /* ----------------------------------------------------------------------------------- */
 
+static void
+_STORY_resetStoryAutomata(_STORY_Story_t * story) {
+
+  unsigned int i = 0;
+  
+  assert(story);
+  
+  for (i = 0; i < story->states->size; i++) {
+    story->states->tab[i]->visited = 0;
+  }
+  
+}
+
+/* ----------------------------------------------------------------------------------- */
+
 
 void
 _STORY_storyAutomata(_STORY_Context_t * context) {
@@ -530,7 +560,9 @@ _STORY_storyAutomata(_STORY_Context_t * context) {
     activestories = _STORY_getActiveStoryList(context->telemetry, context->stories);
     if (activestories->size > 0) {
       context->story = activestories->tab[0];
+      _STORY_resetStoryAutomata(context->story);
       context->state = context->story->startstate;
+      context->state->visited = 1;
     }
   }
   

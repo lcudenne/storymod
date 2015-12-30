@@ -29,6 +29,36 @@
  * 
  **************************************************************************************/
 
+#ifndef UTILS
+#define UTILS
+
+/* ----------------------------------------------------------------------------------- */
+
+
+typedef struct _UT_UnsignedIntList {
+
+  /* size, given as the number of unsigned int */
+  unsigned int size;
+
+  /* capacity, given as the number of unsigned int */
+  unsigned int capacity;
+
+  unsigned int * tab;
+
+} _UT_UnsignedIntList_t;
+
+/* ----------------------------------------------------------------------------------- */
+
+
+_UT_UnsignedIntList_t *
+_UT_newUnsignedIntList(unsigned int capacity);
+
+void
+_UT_freeUnsignedIntList(_UT_UnsignedIntList_t ** unsignedintlist);
+
+unsigned int
+_UT_addUnsignedIntToUnsignedIntList(unsigned int unsignedint,
+                                    _UT_UnsignedIntList_t * unsignedintlist);
 
 /* ----------------------------------------------------------------------------------- */
 
@@ -64,8 +94,13 @@ _UT_getTimeSecond();
 
 /* ----------------------------------------------------------------------------------- */
 
+
 char
 _UT_getNextToken(void * haystack, size_t haystacklen, char ** token);
+
+_UT_UnsignedIntList_t *
+_UT_stringToUnsignedIntList(char * pstr);
+
 
 /* ----------------------------------------------------------------------------------- */
 
@@ -74,3 +109,6 @@ char *
 _UT_getPathFromFilePath(char * filename);
 
 /* ----------------------------------------------------------------------------------- */
+
+
+#endif

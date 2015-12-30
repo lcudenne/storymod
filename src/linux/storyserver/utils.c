@@ -54,6 +54,68 @@
 #define _UT_INTEGER_MAX_LEN 10
 #define _UT_FLOAT1_MAX_LEN 12
 
+
+
+
+
+
+
+/* ----------------------------------------------------------------------------------- */
+
+_UT_UnsignedIntList_t *
+_UT_newUnsignedIntList(unsigned int capacity) {
+
+  _UT_UnsignedIntList_t * unsignedintlist = NULL;
+
+  assert(capacity > 0);
+
+  unsignedintlist = malloc(sizeof(_UT_UnsignedIntList_t));
+  assert(unsignedintlist);
+
+  unsignedintlist->size = 0;
+  unsignedintlist->capacity = capacity;
+
+  unsignedintlist->tab = NULL;
+  unsignedintlist->tab = malloc(sizeof(unsigned int) * capacity);
+  assert(unsignedintlist->tab);
+
+  return unsignedintlist;
+
+}
+
+
+void
+_UT_freeUnsignedIntList(_UT_UnsignedIntList_t ** unsignedintlist) {
+
+  assert(*unsignedintlist);
+
+  free((*unsignedintlist)->tab);
+  free(*unsignedintlist);
+
+  *unsignedintlist = NULL;
+
+}
+
+unsigned int
+_UT_addUnsignedIntToUnsignedIntList(unsigned int unsignedint,
+                                    _UT_UnsignedIntList_t * unsignedintlist) {
+
+  unsigned int slot = unsignedintlist->size;
+
+  assert(unsignedintlist);
+
+  if (unsignedintlist->size == unsignedintlist->capacity) {
+    unsignedintlist->capacity += unsignedintlist->capacity;
+    unsignedintlist->tab = realloc(unsignedintlist->tab, sizeof(unsigned int) * unsignedintlist->capacity);
+  }
+
+  unsignedintlist->tab[slot] = unsignedint;
+
+  unsignedintlist->size++;
+
+  return slot;
+}
+
 /* ----------------------------------------------------------------------------------- */
 
 char *
@@ -257,6 +319,35 @@ _UT_getNextToken(void * haystack, size_t haystacklen, char ** token) {
   return delimiter;
 
 }
+
+
+_UT_UnsignedIntList_t *
+_UT_stringToUnsignedIntList(char * pstr) {
+
+  _UT_UnsignedIntList_t * res;
+  char * str = NULL;
+  char * tok = NULL;
+
+  assert(pstr);
+
+  str = malloc(sizeof(char) * (strlen(pstr) + 1));
+  assert(str);
+  strcpy(str, pstr);
+
+  res = _UT_newUnsignedIntList(1);
+
+  tok = strtok(str, " .,;");
+  
+  while (tok) {
+    _UT_addUnsignedIntToUnsignedIntList(atoi(tok), res);
+    tok = strtok(NULL, " .,;");
+  }
+
+  free(str);
+
+  return res;
+}
+
 
 
 /* ----------------------------------------------------------------------------------- */

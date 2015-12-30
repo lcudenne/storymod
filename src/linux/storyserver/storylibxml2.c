@@ -220,6 +220,8 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
   xmlNodePtr speed = NULL;
 
   float value = 0.0;
+
+  char * stateliststr = NULL;
   
   assert(context);
   assert(doc);
@@ -265,6 +267,8 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_MIN_INF);
   } else if (strcmp(typestr, _STORY_CONDITION_TYPE_SPEED_MIN_SUP_STR) == 0) {
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_SPEED_MIN_SUP);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_VISITED_LIST_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_VISITED_LIST);
   } else {
     fprintf(stdout, "Unrecognized condition type (%s)\n", typestr);
   }
@@ -353,6 +357,12 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
     visited = _LIBXML2_getChild(conditionnode, "VISITED");
     if (visited != NULL) {
       condition->visited = _LIBXML2_getUnsignedIntProp(visited, "value");
+      stateliststr = (char *) xmlGetProp(visited, BAD_CAST "statelist");
+      if (stateliststr != NULL) {
+        condition->statelistid = _UT_stringToUnsignedIntList(stateliststr);
+        free(stateliststr);
+        stateliststr = NULL;
+      }
     }
     speed = _LIBXML2_getChild(conditionnode, "SPEED");
     if (speed != NULL) {
@@ -629,10 +639,14 @@ static void
 _STORY_resolveConditions(_STORY_Story_t * story) {
 
   _STORY_State_t * state = NULL;
+  _STORY_State_t * tempstate = NULL;
   _STORY_Transition_t * transition = NULL;
+  _STORY_Condition_t * condition = NULL;
   unsigned int i = 0;
   unsigned int j = 0;
-
+  unsigned int k = 0;
+  unsigned int l = 0;
+  
   assert(story);
 
   for (i = 0; i < story->states->size; i++) {
@@ -643,6 +657,22 @@ _STORY_resolveConditions(_STORY_Story_t * story) {
                                                     transition->nextstateid);
       if (transition->nextstate == NULL) {
         fprintf(stdout, "Couldn't find state (%d)\n", transition->nextstateid);
+      }
+      for (k = 0; k < transition->conditions->size; k++) {
+        condition = transition->conditions->tab[k];
+        if (condition->type == _STORY_CONDITION_TYPE_VISITED_LIST) {
+          if (condition->statelistid != NULL) {
+            condition->statelist = _STORY_newStateList(1);
+            for (l = 0; l < condition->statelistid->size; l++) {
+              tempstate = _STORY_getStateFromId(story->states, condition->statelistid->tab[l]);
+              if (tempstate != NULL) {
+                _STORY_addStateToStateList(tempstate, condition->statelist);
+              } else {
+                fprintf(stdout, "Couldn't find state (%d)\n", condition->statelistid->tab[l]);
+              }
+            }
+          }
+        }
       }
     }
   }
