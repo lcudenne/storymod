@@ -64,9 +64,12 @@ _STORY_newContext() {
   context->prevstate = NULL;
   context->story = NULL;
   context->positions = NULL;
-  context->lasthtmlupdate = 0;
-  context->laststatechange = 0;
-
+  context->time = 0;
+  context->htmlupdatetime = 0;
+  context->storystarttime = 0;
+  context->statestarttime = 0;
+  context->progstarttime = 0;
+  
   return context;
 
 }
@@ -167,8 +170,10 @@ _STORY_newTelemetry() {
 
   telemetry->parking_brake = 0;
 
-  telemetry->stateruntime = 0;
-
+  telemetry->storytimer = 0;
+  telemetry->statetimer = 0;
+  telemetry->progtimer = 0;
+  
   return telemetry;
 
 }
@@ -624,12 +629,31 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
     tostring = _UT_strFloat1Cat(tostring, condition->boxz);
     tostring = _UT_strCat(tostring, "})");
     break;
-  case _STORY_CONDITION_TYPE_TIMER_INF:
-  case _STORY_CONDITION_TYPE_TIMER_SUP:
-    if (condition->type == _STORY_CONDITION_TYPE_TIMER_INF) {
-      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_TIMER_INF_STR);
-    } else {
-      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_TIMER_SUP_STR);
+  case _STORY_CONDITION_TYPE_STORY_TIMER_INF:
+  case _STORY_CONDITION_TYPE_STORY_TIMER_SUP:
+  case _STORY_CONDITION_TYPE_STATE_TIMER_INF:
+  case _STORY_CONDITION_TYPE_STATE_TIMER_SUP:
+  case _STORY_CONDITION_TYPE_PROG_TIMER_INF:
+  case _STORY_CONDITION_TYPE_PROG_TIMER_SUP:
+    switch (condition->type) {
+    case _STORY_CONDITION_TYPE_STORY_TIMER_INF:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_STORY_TIMER_INF_STR);
+      break;
+    case _STORY_CONDITION_TYPE_STORY_TIMER_SUP:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_STORY_TIMER_SUP_STR);
+      break;
+    case _STORY_CONDITION_TYPE_STATE_TIMER_INF:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_STATE_TIMER_INF_STR);
+      break;
+    case _STORY_CONDITION_TYPE_STATE_TIMER_SUP:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_STATE_TIMER_SUP_STR);
+      break;
+    case _STORY_CONDITION_TYPE_PROG_TIMER_INF:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_PROG_TIMER_INF_STR);
+      break;
+    case _STORY_CONDITION_TYPE_PROG_TIMER_SUP:
+      tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_PROG_TIMER_SUP_STR);
+      break;
     }
     tostring = _UT_strCat(tostring, "(");
     tostring = _UT_strUnsignedIntCat(tostring, condition->timer);

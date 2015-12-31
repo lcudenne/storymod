@@ -44,8 +44,7 @@ _STORY_getAllNextTransitions(_STORY_State_t * currentstate,
                              _STORY_Telemetry_t * telemetry);
 
 _STORY_State_t *
-_STORY_getNextState(_STORY_State_t * currentstate,
-                    _STORY_Telemetry_t * telemetry);
+_STORY_getNextState(_STORY_Context_t * context);
 
 /* ----------------------------------------------------------------------------------- */
 

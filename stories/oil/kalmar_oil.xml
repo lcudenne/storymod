@@ -129,7 +129,7 @@
             <CONDITION type="property_equal">
               <PROPERTY type="engine_enabled" value="0" />
             </CONDITION>
-            <CONDITION type="timer_sup">
+            <CONDITION type="state_timer_sup">
               <TIMER value="120" />
             </CONDITION>
           </CONDITIONS>
@@ -186,7 +186,7 @@
             <CONDITION type="property_equal">
               <PROPERTY type="engine_enabled" value="0" />
             </CONDITION>
-            <CONDITION type="timer_sup">
+            <CONDITION type="state_timer_sup">
               <TIMER value="120" />
             </CONDITION>
           </CONDITIONS>
@@ -226,7 +226,7 @@
             <CONDITION type="property_equal">
               <PROPERTY type="engine_enabled" value="0" />
             </CONDITION>
-            <CONDITION type="timer_sup">
+            <CONDITION type="state_timer_sup">
               <TIMER value="120" />
             </CONDITION>
           </CONDITIONS>
@@ -243,7 +243,7 @@
             <CONDITION type="property_equal">
               <PROPERTY type="trailer_connected" value="1" />
             </CONDITION>
-            <CONDITION type="timer_sup">
+            <CONDITION type="state_timer_sup">
               <TIMER value="60" />
             </CONDITION>
           </CONDITIONS>
@@ -257,7 +257,7 @@
       <TRANSITIONS>
         <TRANSITION nextstate="12" type="and">
           <CONDITIONS>
-            <CONDITION type="timer_sup">
+            <CONDITION type="state_timer_sup">
               <TIMER value="60" />
             </CONDITION>
           </CONDITIONS>
@@ -294,7 +294,7 @@
             <CONDITION type="property_equal">
               <PROPERTY type="engine_enabled" value="0" />
             </CONDITION>
-            <CONDITION type="timer_sup">
+            <CONDITION type="state_timer_sup">
               <TIMER value="120" />
             </CONDITION>
           </CONDITIONS>
@@ -334,7 +334,7 @@
             <CONDITION type="property_equal">
               <PROPERTY type="engine_enabled" value="0" />
             </CONDITION>
-            <CONDITION type="timer_sup">
+            <CONDITION type="state_timer_sup">
               <TIMER value="120" />
             </CONDITION>
           </CONDITIONS>

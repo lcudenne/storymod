@@ -189,6 +189,8 @@ _STORY_addXmlAction(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr action
 
   if (strcmp(typestr, _STORY_ACTION_TYPE_SPEED_RESET_STR) == 0) {
     action = _STORY_newAction(_STORY_ACTION_TYPE_SPEED_RESET);
+  } else if (strcmp(typestr, _STORY_ACTION_TYPE_PROG_TIMER_RESET_STR) == 0) {
+    action = _STORY_newAction(_STORY_ACTION_TYPE_PROG_TIMER_RESET);
   } else {
     fprintf(stdout, "Unrecognized action type (%s)\n", typestr);
   }
@@ -235,10 +237,6 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_POSITION_BOX_IN);
   } else if (strcmp(typestr, _STORY_CONDITION_TYPE_POSITION_BOX_OUT_STR) == 0) {
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_POSITION_BOX_OUT);
-  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_TIMER_INF_STR) == 0) {
-    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_TIMER_INF);
-  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_TIMER_SUP_STR) == 0) {
-    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_TIMER_SUP);
   } else if (strcmp(typestr, _STORY_CONDITION_TYPE_DISTANCE_INF_STR) == 0) {
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_DISTANCE_INF);
   } else if (strcmp(typestr, _STORY_CONDITION_TYPE_DISTANCE_SUP_STR) == 0) {
@@ -273,6 +271,18 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_NOT_VISITED_LIST);
   } else if (strcmp(typestr, _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST_STR) == 0) {
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_STORY_TIMER_INF_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_STORY_TIMER_INF);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_STORY_TIMER_SUP_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_STORY_TIMER_SUP);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_STATE_TIMER_INF_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_STATE_TIMER_INF);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_STATE_TIMER_SUP_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_STATE_TIMER_SUP);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_PROG_TIMER_INF_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_PROG_TIMER_INF);
+  } else if (strcmp(typestr, _STORY_CONDITION_TYPE_PROG_TIMER_SUP_STR) == 0) {
+    condition = _STORY_newCondition(_STORY_CONDITION_TYPE_PROG_TIMER_SUP);
   } else {
     fprintf(stdout, "Unrecognized condition type (%s)\n", typestr);
   }

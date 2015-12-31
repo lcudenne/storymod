@@ -87,13 +87,23 @@ typedef struct _STORY_Context {
 
   /* general positions database */
   struct _STORY_PositionList * positions;
+
+  /* current time */
+  unsigned int time;
   
-  /* last html update time */
-  unsigned int lasthtmlupdate;
+  /* html update time */
+  unsigned int htmlupdatetime;
 
-  /* last state update time */
-  unsigned int laststatechange;
+  /* story start time */
+  unsigned int storystarttime;
 
+  /* state start time */
+  unsigned int statestarttime;
+
+  /* prog timer start time */
+  unsigned int progstarttime;
+
+  
 } _STORY_Context_t;
 
 
@@ -190,9 +200,16 @@ typedef struct _STORY_Telemetry {
   /* truck parking brake (0/1) */
   unsigned int parking_brake;
   
-  /* running time for current state (seconds) */
-  unsigned int stateruntime;
+  /* story timer: time since the beginning of the story (seconds) */
+  unsigned int storytimer;
 
+  /* state timer: time since the last state change (seconds) */
+  unsigned int statetimer;
+  
+  /* programmable timer (seconds) */
+  unsigned int progtimer;
+
+  
 } _STORY_Telemetry_t;
 
 
@@ -240,6 +257,8 @@ typedef struct _STORY_PositionList {
 
 #define _STORY_ACTION_TYPE_SPEED_RESET 0
 #define _STORY_ACTION_TYPE_SPEED_RESET_STR "speed_reset"
+#define _STORY_ACTION_TYPE_PROG_TIMER_RESET 1
+#define _STORY_ACTION_TYPE_PROG_TIMER_RESET_STR "prog_timer_reset"
 
 
 typedef struct _STORY_Action {
@@ -269,10 +288,6 @@ typedef struct _STORY_ActionList {
 #define _STORY_CONDITION_TYPE_POSITION_BOX_IN_STR "position_box_in"
 #define _STORY_CONDITION_TYPE_POSITION_BOX_OUT 1
 #define _STORY_CONDITION_TYPE_POSITION_BOX_OUT_STR "position_box_out"
-#define _STORY_CONDITION_TYPE_TIMER_INF 2
-#define _STORY_CONDITION_TYPE_TIMER_INF_STR "timer_inf"
-#define _STORY_CONDITION_TYPE_TIMER_SUP 3
-#define _STORY_CONDITION_TYPE_TIMER_SUP_STR "timer_sup"
 #define _STORY_CONDITION_TYPE_DISTANCE_INF 4
 #define _STORY_CONDITION_TYPE_DISTANCE_INF_STR "distance_inf"
 #define _STORY_CONDITION_TYPE_DISTANCE_SUP 5
@@ -307,6 +322,18 @@ typedef struct _STORY_ActionList {
 #define _STORY_CONDITION_TYPE_NOT_VISITED_LIST_STR "not_visited_list"
 #define _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST 20
 #define _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST_STR "at_least_visited_list"
+#define _STORY_CONDITION_TYPE_STORY_TIMER_INF 21
+#define _STORY_CONDITION_TYPE_STORY_TIMER_INF_STR "story_timer_inf"
+#define _STORY_CONDITION_TYPE_STORY_TIMER_SUP 22
+#define _STORY_CONDITION_TYPE_STORY_TIMER_SUP_STR "story_timer_sup"
+#define _STORY_CONDITION_TYPE_STATE_TIMER_INF 23
+#define _STORY_CONDITION_TYPE_STATE_TIMER_INF_STR "state_timer_inf"
+#define _STORY_CONDITION_TYPE_STATE_TIMER_SUP 24
+#define _STORY_CONDITION_TYPE_STATE_TIMER_SUP_STR "state_timer_sup"
+#define _STORY_CONDITION_TYPE_PROG_TIMER_INF 25
+#define _STORY_CONDITION_TYPE_PROG_TIMER_INF_STR "prog_timer_inf"
+#define _STORY_CONDITION_TYPE_PROG_TIMER_SUP 26
+#define _STORY_CONDITION_TYPE_PROG_TIMER_SUP_STR "prog_timer_sup"
 
 
 
@@ -342,8 +369,12 @@ typedef struct _STORY_Condition {
   float speed;
   
   /* timer (seconds). used by:
-     _STORY_CONDITION_TYPE_TIMER_INF
-     _STORY_CONDITION_TYPE_TIMER_SUP */
+     _STORY_CONDITION_TYPE_STORY_TIMER_INF
+     _STORY_CONDITION_TYPE_STORY_TIMER_SUP
+     _STORY_CONDITION_TYPE_STATE_TIMER_INF
+     _STORY_CONDITION_TYPE_STATE_TIMER_SUP
+     _STORY_CONDITION_TYPE_PROG_TIMER_INF
+     _STORY_CONDITION_TYPE_PROG_TIMER_SUP */
   unsigned int timer;
 
   /* distance. used by:
@@ -366,7 +397,8 @@ typedef struct _STORY_Condition {
 
   /* list of states that must be visited. used by:
      _STORY_CONDITION_TYPE_VISITED_LIST
-     _STORY_CONDITION_TYPE_NOT_VISITED_LIST */
+     _STORY_CONDITION_TYPE_NOT_VISITED_LIST
+     _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST */
   struct _STORY_StateList * statelist;
   /* same list, only state id as given in the XML file. */
   _UT_UnsignedIntList_t * statelistid;
@@ -491,7 +523,7 @@ typedef struct _STORY_Story {
 
   /* time to play the story */
   char * time;
-
+  
   /* difficulty of the story */
   char * difficulty;
 

@@ -82,16 +82,6 @@ _STORY_checkCondition(_STORY_State_t * state,
       res = 1;
     }
     break;
-  case _STORY_CONDITION_TYPE_TIMER_INF:
-    if (telemetry->stateruntime < condition->timer) {
-      res = 1;
-    }
-    break;
-  case _STORY_CONDITION_TYPE_TIMER_SUP:
-    if (telemetry->stateruntime > condition->timer) {
-      res = 1;
-    }
-    break;
   case _STORY_CONDITION_TYPE_DISTANCE_INF:
     if (_STORY_getDistance(telemetry, condition) < condition->distance) {
       res = 1;
@@ -240,6 +230,36 @@ _STORY_checkCondition(_STORY_State_t * state,
       }
     }
     break;
+  case _STORY_CONDITION_TYPE_STORY_TIMER_INF:
+    if (telemetry->storytimer < condition->timer) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_STORY_TIMER_SUP:
+    if (telemetry->storytimer > condition->timer) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_STATE_TIMER_INF:
+    if (telemetry->statetimer < condition->timer) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_STATE_TIMER_SUP:
+    if (telemetry->statetimer > condition->timer) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_PROG_TIMER_INF:
+    if (telemetry->progtimer < condition->timer) {
+      res = 1;
+    }
+    break;
+  case _STORY_CONDITION_TYPE_PROG_TIMER_SUP:
+    if (telemetry->progtimer > condition->timer) {
+      res = 1;
+    }
+    break;
   default:
     fprintf(stdout, "[STORY] Condition type not known (%d)\n", condition->type);
     break;
@@ -293,19 +313,23 @@ _STORY_checkConditionList(_STORY_State_t * state,
 
 /* ----------------------------------------------------------------------------------- */
 
-void
-_STORY_performActions(_STORY_Telemetry_t * telemetry, _STORY_ActionList_t * actions) {
+static void
+_STORY_performActions(_STORY_Context_t * context, _STORY_ActionList_t * actions) {
 
   unsigned int i = 0;
   
-  assert(telemetry);
+  assert(context);
+  assert(context->telemetry);
   assert(actions);
 
   for (i = 0; i < actions->size; i++) {
     switch (actions->tab[i]->type) {
     case _STORY_ACTION_TYPE_SPEED_RESET:
-      telemetry->speed_min = 0;
-      telemetry->speed_max = 0;
+      context->telemetry->speed_min = 0;
+      context->telemetry->speed_max = 0;
+      break;
+    case _STORY_ACTION_TYPE_PROG_TIMER_RESET:
+      context->progstarttime = context->time;
       break;
     default:
       fprintf(stdout, "[STORY] Action type not known (%d)\n", actions->tab[i]->type);
@@ -368,22 +392,28 @@ _STORY_getAllNextTransitions(_STORY_State_t * currentstate,
 
 
 _STORY_State_t *
-_STORY_getNextState(_STORY_State_t * currentstate,
-                    _STORY_Telemetry_t * telemetry) {
+_STORY_getNextState(_STORY_Context_t * context) {
 
-  _STORY_State_t * nextstate = currentstate;
+  _STORY_State_t * currentstate = NULL;  
+  _STORY_State_t * nextstate = NULL;
+  _STORY_Telemetry_t * telemetry = NULL;
   _STORY_TransitionList_t * transitionlist = NULL;
 
   unsigned int nsid = 0;
-  
-  assert(currentstate);
-  assert(telemetry);
 
+  assert(context);
+  assert(context->state);
+  assert(context->telemetry);
+
+  currentstate = context->state;
+  nextstate = context->state;
+  telemetry = context->telemetry;
+  
   transitionlist = _STORY_getAllNextTransitions(currentstate, telemetry);
 
   if (transitionlist->size > 0) {
     nsid = _UT_getTimeSecond() % transitionlist->size;
-    _STORY_performActions(telemetry, transitionlist->tab[nsid]->actions);
+    _STORY_performActions(context, transitionlist->tab[nsid]->actions);
     nextstate = transitionlist->tab[nsid]->nextstate;
     if (nextstate == NULL) {
       fprintf(stdout, "Error: next state is unreachable\n");
@@ -572,7 +602,6 @@ _STORY_resetStoryAutomata(_STORY_Story_t * story) {
 void
 _STORY_storyAutomata(_STORY_Context_t * context) {
 
-  unsigned int timesec = 0;
   _STORY_StoryList_t * activestories = NULL;
 
   assert(context);
@@ -580,15 +609,15 @@ _STORY_storyAutomata(_STORY_Context_t * context) {
   assert(context->telemetry);
   assert(context->stories);
 
-  timesec = _UT_getTimeSecond();
+  context->time = _UT_getTimeSecond();
   
   if (context->state != NULL) {
-    context->state = _STORY_getNextState(context->state, context->telemetry);
+    context->state = _STORY_getNextState(context);
     if (context->state != context->prevstate) {
       _STORY_writeHTMLToDisk(context, activestories);
       context->prevstate = context->state;
-      context->laststatechange = timesec;
-      fprintf(stdout, "%d %s [%d]%s\n", timesec,
+      context->statestarttime = context->time;
+      fprintf(stdout, "%d %s [%d]%s\n", context->time,
               context->story->name, context->state->id, context->state->name);
     }
   } else {
@@ -598,17 +627,22 @@ _STORY_storyAutomata(_STORY_Context_t * context) {
       _STORY_resetStoryAutomata(context->story);
       context->state = context->story->startstate;
       context->state->visited = 1;
+      context->storystarttime = context->time;
+      context->statestarttime = context->time;
+      context->progstarttime = context->time;
     }
   }
   
-  context->telemetry->stateruntime = (timesec - context->laststatechange);
+  context->telemetry->storytimer = (context->time - context->storystarttime);
+  context->telemetry->statetimer = (context->time - context->statestarttime);
+  context->telemetry->progtimer = (context->time - context->progstarttime);
   
-  if ((timesec - context->lasthtmlupdate) > context->parameters->html_refresh) {
+  if ((context->time - context->htmlupdatetime) > context->parameters->html_refresh) {
     _STORY_sortCloseStoryList(context->telemetry, context->stories);
     _STORY_writeHTMLToDisk(context, activestories);
-    context->lasthtmlupdate = timesec;
+    context->htmlupdatetime = context->time;
   }
-  if (context->telemetry->stateruntime > TIME_FINAL_STATE) {
+  if (context->telemetry->statetimer > TIME_FINAL_STATE) {
     if ((context->state != NULL) && (_STORY_isFinalState(context->state) == 1)) {
       context->story = NULL;
       context->state = NULL;
