@@ -418,6 +418,13 @@
       <IMAGE>pictures/bhv_end.jpg</IMAGE>
       <DESCRIPTION>This is the end of the delivery service. Drive back to BHV Stockholm.</DESCRIPTION>
       <TRANSITIONS>
+        <TRANSITION nextstate="28" type="and">
+          <CONDITIONS>
+            <CONDITION type="speed_sup">
+              <SPEED value="92" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
         <TRANSITION nextstate="26" type="and">
           <CONDITIONS>
             <CONDITION type="position_box_in">
@@ -453,7 +460,7 @@
     </STATE>   
     
     <STATE id="28">
-      <NAME>toofast</NAME>
+      <NAME>TooFast</NAME>
       <IMAGE>pictures/90kmhroadsign.jpg</IMAGE>
       <DESCRIPTION>You are driving too fast!</DESCRIPTION>
       <TRANSITIONS>
@@ -481,7 +488,7 @@
     </STATE>
 
     <STATE id="29">
-      <NAME>StartStockholmParcel</NAME>
+      <NAME>FiredStockholmParcel</NAME>
       <IMAGE>pictures/90kmhroadsign.jpg</IMAGE>
       <DESCRIPTION>You are fired!</DESCRIPTION>
     </STATE>   

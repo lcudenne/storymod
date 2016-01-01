@@ -141,22 +141,22 @@ _STORY_checkCondition(_STORY_State_t * state,
     }
     break;
   case _STORY_CONDITION_TYPE_VISITED_INF:
-    if (condition->visited < state->visited) {
+    if (state->visited < condition->visited) {
       res = 1;
     }
     break;
   case _STORY_CONDITION_TYPE_VISITED_SUP:
-    if (condition->visited >= state->visited) {
+    if (state->visited >= condition->visited) {
       res = 1;
     }
     break;
   case _STORY_CONDITION_TYPE_VISITED_EQUAL:
-    if (condition->visited == state->visited) {
+    if (state->visited == condition->visited) {
       res = 1;
     }
     break;
   case _STORY_CONDITION_TYPE_VISITED_DIFF:
-    if (condition->visited != state->visited) {
+    if (state->visited != condition->visited) {
       res = 1;
     }
     break;

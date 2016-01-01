@@ -61,7 +61,7 @@ _STORY_writeStateToDisk(_STORY_State_t * state, FILE * html) {
   }
   fprintf(html, "</div>");
   if (state->description != NULL) {
-    fprintf(html, "<div class=\"statedesc\"><h class=\"texttype\">Current task</h>: %s</div>", state->description);
+    fprintf(html, "<div class=\"statedesc\"><h class=\"texttype\">Current task (visited %d)</h>: %s</div>", state->visited, state->description);
   }
 
 
