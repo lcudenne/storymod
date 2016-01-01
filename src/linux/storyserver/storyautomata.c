@@ -146,7 +146,7 @@ _STORY_checkCondition(_STORY_State_t * state,
     }
     break;
   case _STORY_CONDITION_TYPE_VISITED_SUP:
-    if (condition->visited > state->visited) {
+    if (condition->visited >= state->visited) {
       res = 1;
     }
     break;
@@ -166,7 +166,7 @@ _STORY_checkCondition(_STORY_State_t * state,
     }
     break;
   case _STORY_CONDITION_TYPE_SPEED_SUP:
-    if (telemetry->speed > condition->speed) {
+    if (telemetry->speed >= condition->speed) {
       res = 1;
     }
     break;
@@ -176,7 +176,7 @@ _STORY_checkCondition(_STORY_State_t * state,
     }
     break;
   case _STORY_CONDITION_TYPE_SPEED_MAX_SUP:
-    if (telemetry->speed_max > condition->speed) {
+    if (telemetry->speed_max >= condition->speed) {
       res = 1;
     }
     break;
@@ -186,7 +186,7 @@ _STORY_checkCondition(_STORY_State_t * state,
     }
     break;
   case _STORY_CONDITION_TYPE_SPEED_MIN_SUP:
-    if (telemetry->speed_min > condition->speed) {
+    if (telemetry->speed_min >= condition->speed) {
       res = 1;
     }
     break;
@@ -236,7 +236,7 @@ _STORY_checkCondition(_STORY_State_t * state,
     }
     break;
   case _STORY_CONDITION_TYPE_STORY_TIMER_SUP:
-    if (telemetry->storytimer > condition->timer) {
+    if (telemetry->storytimer >= condition->timer) {
       res = 1;
     }
     break;
@@ -246,7 +246,7 @@ _STORY_checkCondition(_STORY_State_t * state,
     }
     break;
   case _STORY_CONDITION_TYPE_STATE_TIMER_SUP:
-    if (telemetry->statetimer > condition->timer) {
+    if (telemetry->statetimer >= condition->timer) {
       res = 1;
     }
     break;
@@ -256,7 +256,7 @@ _STORY_checkCondition(_STORY_State_t * state,
     }
     break;
   case _STORY_CONDITION_TYPE_PROG_TIMER_SUP:
-    if (telemetry->progtimer > condition->timer) {
+    if (telemetry->progtimer >= condition->timer) {
       res = 1;
     }
     break;

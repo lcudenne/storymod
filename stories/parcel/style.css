@@ -37,6 +37,21 @@ body {
     font-variant: small-caps;
 }
 
+.storymod {
+    margin-left: auto;
+    margin-right: auto;
+    width: 1200;
+}
+
+.telemetry {
+    text-align: center;
+    overflow: hidden;
+    width: 920px;
+    padding: 25px;
+    border: 25px solid #333301;
+    margin: 16px;
+}
+
 .currentstatus {
     text-align: center;
     overflow: hidden;

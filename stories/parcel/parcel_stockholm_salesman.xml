@@ -181,6 +181,13 @@
             </CONDITION>
           </CONDITIONS>            
         </TRANSITION>
+        <TRANSITION nextstate="28" type="and">
+          <CONDITIONS>
+            <CONDITION type="speed_sup">
+              <SPEED value="92" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
         <TRANSITION nextstate="25" type="and">
           <CONDITIONS>
             <CONDITION type="visited_list">
@@ -356,7 +363,7 @@
 
     <STATE id="21">
       <NAME>marina0</NAME>
-      <IMAGE>pictures/marinaresidential.jpg</IMAGE>
+      <IMAGE>pictures/bridge.jpg</IMAGE>
       <DESCRIPTION>Nice view!</DESCRIPTION>
       <TRANSITIONS>
         <TRANSITION nextstate="100" type="and">
@@ -416,15 +423,69 @@
             <CONDITION type="position_box_in">
               <POSITION name="sweden:stockholm:bhv" />
             </CONDITION>
+            <CONDITION type="prog_timer_inf">
+              <TIMER value="2200" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+        <TRANSITION nextstate="27" type="and">
+          <CONDITIONS>
+            <CONDITION type="position_box_in">
+              <POSITION name="sweden:stockholm:bhv" />
+            </CONDITION>
+            <CONDITION type="prog_timer_sup">
+              <TIMER value="2200" />
+            </CONDITION>
           </CONDITIONS>            
         </TRANSITION>
       </TRANSITIONS>
     </STATE>
+    
     <STATE id="26">
-      <NAME>StartStockholmParcel</NAME>
+      <NAME>EndStockholmParcelFast</NAME>
+      <IMAGE>pictures/bhv_end.jpg</IMAGE>
+      <DESCRIPTION>That was a pretty fast service! Thank you for driving and see you next time!</DESCRIPTION>
+    </STATE>   
+    <STATE id="27">
+      <NAME>EndStockholmParcel</NAME>
       <IMAGE>pictures/bhv_end.jpg</IMAGE>
       <DESCRIPTION>Thank you for driving and see you next time!</DESCRIPTION>
     </STATE>   
+    
+    <STATE id="28">
+      <NAME>toofast</NAME>
+      <IMAGE>pictures/90kmhroadsign.jpg</IMAGE>
+      <DESCRIPTION>You are driving too fast!</DESCRIPTION>
+      <TRANSITIONS>
+        <TRANSITION nextstate="100" type="and">
+          <CONDITIONS>
+            <CONDITION type="state_timer_sup">
+              <TIMER value="15" />
+            </CONDITION>
+            <CONDITION type="visited_inf">
+              <VISITED value="3" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+        <TRANSITION nextstate="29" type="and">
+          <CONDITIONS>
+            <CONDITION type="state_timer_sup">
+              <TIMER value="15" />
+            </CONDITION>
+            <CONDITION type="visited_sup">
+              <VISITED value="3" />
+            </CONDITION>
+          </CONDITIONS>            
+        </TRANSITION>
+      </TRANSITIONS>
+    </STATE>
+
+    <STATE id="29">
+      <NAME>StartStockholmParcel</NAME>
+      <IMAGE>pictures/90kmhroadsign.jpg</IMAGE>
+      <DESCRIPTION>You are fired!</DESCRIPTION>
+    </STATE>   
+
   </STATES>
  </STORY>
 </STORYMOD>

@@ -186,14 +186,24 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
 
     fprintf(html, "<html>\n<head>\n<title>ETS2/ATS Truck Simulator StoryMod Server v%d.%d</title>\n<meta http-equiv=\"refresh\" content=\"%d; URL=index.html\">\n<style media=\"screen\" type=\"text/css\">\n%s\n</style>\n</head>\n<body>\n", SERVER_VERSION_MAJ, SERVER_VERSION_MIN, parameters->html_refresh, css_file);
 
-    fprintf(html, "<div class=\"telemetry\">\n<h class=\"texttype\">StoryTimer</h>: %d <h class=\"texttype\">StateTimer</h>: %d <h class=\"texttype\">ProgTimer</h>: %d",
+    fprintf(html, "<div class=\"storymod\">\n");
+    
+    fprintf(html, "<div class=\"telemetry\">\n");
+    fprintf(html, "<h class=\"texttype\">Server</h>: StoryMod Server v%d.%d (%s:%d) ",
+            SERVER_VERSION_MAJ, SERVER_VERSION_MIN, parameters->server_ip, parameters->server_port);
+    if ((telemetry->client_version_maj != 0) || (telemetry->client_version_min != 0)) {
+      fprintf(html, "<h class=\"texttype\">Client</h>: StoryMod Client v%d.%d (%s:%d)",
+              telemetry->client_version_maj, telemetry->client_version_min,
+              parameters->client_ip, CLIENT_PORT);
+    }
+    fprintf(html, "<br/>\n<h class=\"texttype\">StoryTimer</h>: %d <h class=\"texttype\">StateTimer</h>: %d <h class=\"texttype\">ProgTimer</h>: %d",
             telemetry->storytimer, telemetry->statetimer, telemetry->progtimer);
 
     if (position != NULL) {
       fprintf(html, " <h class=\"texttype\">Position</h>: %s", position->name);
     }
 
-    fprintf(html, "<br/><h class=\"texttype\">Coordinates</h>: <h class=\"texttype\">x</h> %f <h class=\"texttype\">y</h> %f <h class=\"texttype\">z</h> %f <h class=\"texttype\">speed</h> %f <h class=\"texttype\">min</h> %f <h class=\"texttype\">max</h> %f<br/>",
+    fprintf(html, "<br/><h class=\"texttype\">Coordinates</h>: <h class=\"texttype\">x</h> %f <h class=\"texttype\">y</h> %f <h class=\"texttype\">z</h> %f <br /><h class=\"texttype\">speed</h> %f <h class=\"texttype\">min</h> %f <h class=\"texttype\">max</h> %f<br/>",
             telemetry->x, telemetry->y, telemetry->z,
             telemetry->speed, telemetry->speed_min, telemetry->speed_max);
 
@@ -228,6 +238,8 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
       }
       
     }
+
+    fprintf(html, "\n</div>\n");
     
     fprintf(html, "</body></html>\n");
     
