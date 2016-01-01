@@ -81,6 +81,9 @@ char *
 _UT_strUnsignedIntCat(char * dest, unsigned int u);
 
 char *
+_UT_strUnsignedIntListCat(char * dest, _UT_UnsignedIntList_t * list);
+
+char *
 _UT_strFloat1Cat(char * dest, float f);
 
 /* ----------------------------------------------------------------------------------- */

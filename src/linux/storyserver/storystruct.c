@@ -660,6 +660,7 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
     tostring = _UT_strCat(tostring, ")");
     break;
   case _STORY_CONDITION_TYPE_DISTANCE_INF:
+  case _STORY_CONDITION_TYPE_DISTANCE_SUP:
     if (condition->type == _STORY_CONDITION_TYPE_DISTANCE_INF) {
       tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_DISTANCE_INF_STR);
     } else {
@@ -736,6 +737,28 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
     tostring = _UT_strCat(tostring, "(");
     tostring = _UT_strUnsignedIntCat(tostring, condition->visited);
     tostring = _UT_strCat(tostring, ")");
+    break;
+  case _STORY_CONDITION_TYPE_VISITED_LIST:
+  case _STORY_CONDITION_TYPE_NOT_VISITED_LIST:
+    switch (condition->type) {
+    case _STORY_CONDITION_TYPE_VISITED_LIST:
+          tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_VISITED_LIST_STR);
+      break;
+    case _STORY_CONDITION_TYPE_NOT_VISITED_LIST:
+          tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_NOT_VISITED_LIST_STR);
+      break;
+    }
+    tostring = _UT_strCat(tostring, "(");
+    tostring = _UT_strUnsignedIntListCat(tostring, condition->statelistid);
+    tostring = _UT_strCat(tostring, ")");
+    break;
+  case _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST:
+    tostring = _UT_strCpy(tostring, _STORY_CONDITION_TYPE_AT_LEAST_VISITED_LIST_STR);
+    tostring = _UT_strCat(tostring, "(");
+    tostring = _UT_strUnsignedIntCat(tostring, condition->visited);
+    tostring = _UT_strCat(tostring, ", {");
+    tostring = _UT_strUnsignedIntListCat(tostring, condition->statelistid);
+    tostring = _UT_strCat(tostring, "})");
     break;
   case _STORY_CONDITION_TYPE_SPEED_INF:
   case _STORY_CONDITION_TYPE_SPEED_SUP:

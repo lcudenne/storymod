@@ -212,6 +212,35 @@ _UT_strUnsignedIntCat(char * dest, unsigned int u) {
 }
 
 char *
+_UT_strUnsignedIntListCat(char * dest, _UT_UnsignedIntList_t * list) {
+
+  char * uintstr = NULL;
+  unsigned int i = 0;
+
+  assert(list);
+
+  for (i = 0; i < list->size; i++) {
+  
+    uintstr = malloc((_UT_INTEGER_MAX_LEN + 1) * sizeof(char));
+    assert(uintstr);
+
+    sprintf(uintstr, "%d", list->tab[i]);
+
+    dest = _UT_strCat(dest, uintstr);
+    free(uintstr);
+    uintstr = NULL;
+
+    if (i < (list->size - 1)) {
+      dest = _UT_strCat(dest, " ");
+    }
+    
+  }
+
+  return dest;
+}
+
+
+char *
 _UT_strFloat1Cat(char * dest, float f) {
 
   char * fstr = NULL;
