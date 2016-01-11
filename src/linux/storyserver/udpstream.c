@@ -50,10 +50,6 @@
 #include "udpstream.h"
 #include "utils.h"
 
-/* ------------------------------------------------------------------------- */
-
-
-
 
 /* ------------------------------------------------------------------------- */
 
@@ -75,10 +71,10 @@ _UDP_registerClient(char * hostip, unsigned int hostport,
   regsi_other.sin_port = htons(remoteport);
   inet_aton(remoteip, &(regsi_other.sin_addr));
 
-  datagram = malloc(sizeof(char) * 512);
+  datagram = malloc(sizeof(char) * DATAGRAM_SIZE);
   _UT_ASSERT(datagram);
   
-  sprintf(datagram, "%s %d ", hostip, remoteport);
+  snprintf(datagram, sizeof(char) * DATAGRAM_SIZE, "%s %d ", hostip, remoteport);
   fprintf(stdout, "Contacting client %s:%d with host %s:%d\n",
           remoteip, remoteport, hostip, hostport);
   
