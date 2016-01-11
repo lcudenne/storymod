@@ -32,8 +32,6 @@
 
 /* fopen */
 #include <stdio.h>
-/* assert */
-#include <assert.h>
 /* strcmp */
 #include <string.h>
 /* free */
@@ -51,7 +49,7 @@
 static void
 _STORY_writeStateToDisk(_STORY_State_t * state, FILE * html) {
 
-  assert(state);
+  _UT_ASSERT(state);
 
   fprintf(html, "<div class=\"state\">");  
 
@@ -75,7 +73,7 @@ static void
 _STORY_writeStoryToDisk(_STORY_Story_t * story,
                         char * divclass, FILE * html) {
 
-  assert(divclass);
+  _UT_ASSERT(divclass);
 
   if (story != NULL) {
     fprintf(html, "<div class=\"%s\"><div class=\"imagestory\">", divclass);
@@ -126,7 +124,7 @@ _STORY_writeStoryListToDisk(_STORY_StoryList_t * stories,
 
   unsigned int i = 0;
 
-  assert(divclass);
+  _UT_ASSERT(divclass);
 
   if ((stories != NULL) && (stories->size > 0)) {
     fprintf(html, "<div class=\"%slist\">\n", divclass);
@@ -155,10 +153,10 @@ _STORY_writeHTMLToDisk(_STORY_Context_t * context,
   
   char * css_file = NULL;
   
-  assert(context);
-  assert(context->parameters);
-  assert(context->stories);
-  assert(context->telemetry);
+  _UT_ASSERT(context);
+  _UT_ASSERT(context->parameters);
+  _UT_ASSERT(context->stories);
+  _UT_ASSERT(context->telemetry);
 
   parameters = context->parameters;
   stories = context->stories;

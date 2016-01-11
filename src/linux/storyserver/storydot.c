@@ -30,8 +30,6 @@
  **************************************************************************************/
 
 
-/* assert */
-#include <assert.h>
 /* fprintf */
 #include <stdio.h>
 /* free */
@@ -40,8 +38,6 @@
 /* ------------------------------------------------------------------------- */
 
 #include "storydot.h"
-
-#include "utils.h"
 
 /* ------------------------------------------------------------------------- */
 
@@ -57,8 +53,8 @@ _STORY_storyToDot(_STORY_Parameters_t * parameters, _STORY_Story_t * story) {
   unsigned int i = 0;
   unsigned int j = 0;
 
-  assert(parameters);
-  assert(story);
+  _UT_ASSERT(parameters);
+  _UT_ASSERT(story);
 
   filename = _UT_strCpy(filename, parameters->story_dot);
   filename = _UT_strCat(filename, ".dot");

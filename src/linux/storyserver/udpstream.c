@@ -32,8 +32,6 @@
 
 /* ------------------------------------------------------------------------- */
 
-/* assert */
-#include <assert.h>
 /* malloc */
 #include <stdlib.h>
 /* sprintf */
@@ -68,8 +66,8 @@ _UDP_registerClient(char * hostip, unsigned int hostport,
 
   char * datagram = NULL;
   
-  assert(hostip);
-  assert(remoteip);
+  _UT_ASSERT(hostip);
+  _UT_ASSERT(remoteip);
 
   regudpsocket =  socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
   memset((char *) &(regsi_other), 0, sizeof((regsi_other)));
@@ -78,7 +76,7 @@ _UDP_registerClient(char * hostip, unsigned int hostport,
   inet_aton(remoteip, &(regsi_other.sin_addr));
 
   datagram = malloc(sizeof(char) * 512);
-  assert(datagram);
+  _UT_ASSERT(datagram);
   
   sprintf(datagram, "%s %d ", hostip, remoteport);
   fprintf(stdout, "Contacting client %s:%d with host %s:%d\n",
@@ -121,7 +119,7 @@ _UDP_bindSocket(unsigned int hostport) {
 void
 _UDP_getNextDatagram(char * datagram, unsigned int size) {
 
-  assert(datagram);
+  _UT_ASSERT(datagram);
 
   recvfrom(udpsocket, datagram, sizeof(char) * size,
            0, (struct sockaddr *) &si_other, (socklen_t *) &slen);

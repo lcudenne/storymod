@@ -30,8 +30,6 @@
  **************************************************************************************/
 
 
-/* assert */
-#include <assert.h>
 /* memcpy */
 #include <string.h>
 /* malloc */
@@ -67,17 +65,17 @@ _UT_newUnsignedIntList(unsigned int capacity) {
 
   _UT_UnsignedIntList_t * unsignedintlist = NULL;
 
-  assert(capacity > 0);
+  _UT_ASSERT(capacity > 0);
 
   unsignedintlist = malloc(sizeof(_UT_UnsignedIntList_t));
-  assert(unsignedintlist);
+  _UT_ASSERT(unsignedintlist);
 
   unsignedintlist->size = 0;
   unsignedintlist->capacity = capacity;
 
   unsignedintlist->tab = NULL;
   unsignedintlist->tab = malloc(sizeof(unsigned int) * capacity);
-  assert(unsignedintlist->tab);
+  _UT_ASSERT(unsignedintlist->tab);
 
   return unsignedintlist;
 
@@ -87,7 +85,7 @@ _UT_newUnsignedIntList(unsigned int capacity) {
 void
 _UT_freeUnsignedIntList(_UT_UnsignedIntList_t ** unsignedintlist) {
 
-  assert(*unsignedintlist);
+  _UT_ASSERT(*unsignedintlist);
 
   free((*unsignedintlist)->tab);
   free(*unsignedintlist);
@@ -102,7 +100,7 @@ _UT_addUnsignedIntToUnsignedIntList(unsigned int unsignedint,
 
   unsigned int slot = unsignedintlist->size;
 
-  assert(unsignedintlist);
+  _UT_ASSERT(unsignedintlist);
 
   if (unsignedintlist->size == unsignedintlist->capacity) {
     unsignedintlist->capacity += unsignedintlist->capacity;
@@ -129,7 +127,7 @@ _UT_strCpy(char* dest, const char* src) {
       dest = malloc((strlen(src)+1) * sizeof(char));
     }
 
-    assert(dest);
+    _UT_ASSERT(dest);
     strcpy(dest, src);
 
   }
@@ -144,7 +142,7 @@ _UT_strnCat(char * dest, const char * src, unsigned int n) {
 
   unsigned int srclen = n;
 
-  assert(src);
+  _UT_ASSERT(src);
 
   if (srclen == 0) {
     srclen = strlen(src);
@@ -153,12 +151,12 @@ _UT_strnCat(char * dest, const char * src, unsigned int n) {
   if (dest) {
     
     dest = realloc(dest, (strlen(dest) + srclen + 1) * sizeof(char));
-    assert(dest);
+    _UT_ASSERT(dest);
 
   } else {
 
     dest = malloc((srclen + 1) * sizeof(char));
-    assert(dest);
+    _UT_ASSERT(dest);
     dest[0] = '\0';
 
   }
@@ -183,9 +181,9 @@ _UT_strIntCat(char * dest, int i) {
   char * intstr = NULL;
 
   intstr = malloc((_UT_INTEGER_MAX_LEN + 1) * sizeof(char));
-  assert(intstr);
+  _UT_ASSERT(intstr);
 
-  sprintf(intstr, "%d", i);
+  snprintf(intstr, (_UT_INTEGER_MAX_LEN + 1) * sizeof(char), "%d", i);
 
   dest = _UT_strCat(dest, intstr);
 
@@ -200,9 +198,9 @@ _UT_strUnsignedIntCat(char * dest, unsigned int u) {
   char * uintstr = NULL;
 
   uintstr = malloc((_UT_INTEGER_MAX_LEN + 1) * sizeof(char));
-  assert(uintstr);
+  _UT_ASSERT(uintstr);
 
-  sprintf(uintstr, "%d", u);
+  snprintf(uintstr, (_UT_INTEGER_MAX_LEN + 1) * sizeof(char), "%d", u);
 
   dest = _UT_strCat(dest, uintstr);
 
@@ -217,14 +215,14 @@ _UT_strUnsignedIntListCat(char * dest, _UT_UnsignedIntList_t * list) {
   char * uintstr = NULL;
   unsigned int i = 0;
 
-  assert(list);
+  _UT_ASSERT(list);
 
   for (i = 0; i < list->size; i++) {
   
     uintstr = malloc((_UT_INTEGER_MAX_LEN + 1) * sizeof(char));
-    assert(uintstr);
+    _UT_ASSERT(uintstr);
 
-    sprintf(uintstr, "%d", list->tab[i]);
+    snprintf(uintstr, (_UT_INTEGER_MAX_LEN + 1) * sizeof(char), "%d", list->tab[i]);
 
     dest = _UT_strCat(dest, uintstr);
     free(uintstr);
@@ -246,9 +244,9 @@ _UT_strFloat1Cat(char * dest, float f) {
   char * fstr = NULL;
 
   fstr = malloc((_UT_FLOAT1_MAX_LEN + 1) * sizeof(char));
-  assert(fstr);
+  _UT_ASSERT(fstr);
 
-  sprintf(fstr, "%.1f", f);
+  snprintf(fstr, (_UT_FLOAT1_MAX_LEN + 1) * sizeof(char), "%.1f", f);
 
   dest = _UT_strCat(dest, fstr);
 
@@ -278,7 +276,7 @@ _UT_strftime() {
   myt = time(NULL);
 
   mytm = localtime(&myt);
-  assert(mytm);
+  _UT_ASSERT(mytm);
 
   strftime(date, max, "%Y-%m-%dT%H:%M:%S+%Z", mytm);
 
@@ -300,7 +298,7 @@ _UT_getTimeSecond() {
   myt = time(NULL);
 
   mytm = localtime(&myt);
-  assert(mytm);
+  _UT_ASSERT(mytm);
 
   res = (mytm->tm_mday * 24 * 60 * 60) + (mytm->tm_hour * 60 * 60) +
     (mytm->tm_min * 60) + mytm->tm_sec;
@@ -339,7 +337,7 @@ _UT_getNextToken(void * haystack, size_t haystacklen, char ** token) {
 
   if ((found == 1) && (i > 0)) {
     *token = malloc(i + sizeof(char));
-    assert(*token);
+    _UT_ASSERT(*token);
     /* /!\ hard copy of the token */
     memcpy(*token, (char *) haystack, i);
     (*token)[i] = '\0';
@@ -357,10 +355,10 @@ _UT_stringToUnsignedIntList(char * pstr) {
   char * str = NULL;
   char * tok = NULL;
 
-  assert(pstr);
+  _UT_ASSERT(pstr);
 
   str = malloc(sizeof(char) * (strlen(pstr) + 1));
-  assert(str);
+  _UT_ASSERT(str);
   strcpy(str, pstr);
 
   res = _UT_newUnsignedIntList(1);
@@ -393,7 +391,7 @@ _UT_getPathFromFilePath(char * filename) {
   if (rchr != NULL) {
     i = (rchr - filename);
     path = malloc(sizeof(char) * (i + 1));
-    assert(path);
+    _UT_ASSERT(path);
     memcpy(path, filename, i);
     path[i] = '\0';
   }

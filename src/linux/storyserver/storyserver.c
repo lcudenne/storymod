@@ -34,8 +34,6 @@
 
 /* malloc */
 #include <stdlib.h>
-/* assert */
-#include <assert.h>
 /* strlen */
 #include <string.h>
 /* fprintf */
@@ -51,7 +49,6 @@
 #include "storydot.h"
 
 #include "udpstream.h"
-#include "utils.h"
 
 
 /* ------------------------------------------------------------------------- */
@@ -64,8 +61,8 @@ _STORY_updateTelemetry(_STORY_Telemetry_t * telemetry,
   unsigned int index = 0;
   unsigned int rsize = size;
 
-  assert(telemetry);
-  assert(datagram);
+  _UT_ASSERT(telemetry);
+  _UT_ASSERT(datagram);
 
   _UT_getNextToken(datagram, rsize, &token);
 
@@ -213,7 +210,7 @@ storymod(_STORY_Context_t * context) {
   char * datagram = NULL;
   char * datagramptr = NULL;
 
-  assert(context);
+  _UT_ASSERT(context);
 
   if (context->parameters->story_dir != NULL) {
     _STORY_loadStoryListFromDir(context, context->parameters->story_dir);
@@ -222,7 +219,7 @@ storymod(_STORY_Context_t * context) {
   _STORY_writeHTMLToDisk(context, context->stories);
 
   datagram = malloc(sizeof(char) * DATAGRAM_SIZE);
-  assert(datagram);
+  _UT_ASSERT(datagram);
   datagramptr = datagram;
 
   if (context->parameters->local_trace == NULL) {

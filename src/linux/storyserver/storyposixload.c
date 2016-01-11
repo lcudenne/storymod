@@ -32,8 +32,6 @@
 
 /* NULL */
 #include <stdlib.h>
-/* assert */
-#include <assert.h>
 /* fprintf */
 #include <stdio.h>
 /* readdir */
@@ -45,7 +43,6 @@
 
 #include "storyposixload.h"
 #include "storylibxml2.h"
-#include "utils.h"
 
 
 /* ------------------------------------------------------------------------- */
@@ -66,10 +63,10 @@ _STORY_loadStoryListFromDir(_STORY_Context_t * context, char * dirname) {
 
   char * fullpath = NULL;
 
-  assert(context);
-  assert(context->stories);
-  assert(context->parameters);
-  assert(dirname);
+  _UT_ASSERT(context);
+  _UT_ASSERT(context->stories);
+  _UT_ASSERT(context->parameters);
+  _UT_ASSERT(dirname);
   
   stories = context->stories;
   
@@ -116,11 +113,11 @@ FILE * _STORY_trace = NULL;
 void
 _STORY_openDrivingTrace(char * filename) {
 
-  assert(filename);
+  _UT_ASSERT(filename);
 
   if (_STORY_trace == NULL) {
     _STORY_trace = fopen(filename, "r");
-    assert(_STORY_trace);
+    _UT_ASSERT(_STORY_trace);
   }
 
 }
@@ -138,7 +135,7 @@ _STORY_getNextDrivingTrace(char ** buffer, unsigned int size) {
 
   struct timespec ts;
 
-  assert(*buffer);
+  _UT_ASSERT(*buffer);
 
   ts.tv_sec = 0;
   ts.tv_nsec = 10000000;
@@ -161,11 +158,11 @@ FILE * _STORY_dump = NULL;
 void
 _STORY_openDumpDrivingTrace(char * filename) {
 
-  assert(filename);
+  _UT_ASSERT(filename);
 
   if (_STORY_dump == NULL) {
     _STORY_dump = fopen(filename, "w");
-    assert(_STORY_dump);
+    _UT_ASSERT(_STORY_dump);
   }
 
 }
@@ -205,7 +202,7 @@ _STORY_loadFileToChar(char * filename) {
   long lSize = 0;
   char * buffer = NULL;
 
-  assert(filename);
+  _UT_ASSERT(filename);
   
   fp = fopen (filename, "rb");
 
@@ -215,7 +212,7 @@ _STORY_loadFileToChar(char * filename) {
     rewind(fp);
 
     buffer = calloc(1, lSize+1);
-    assert(buffer);
+    _UT_ASSERT(buffer);
 
     fread(buffer ,lSize,1 ,fp);
     fclose(fp);

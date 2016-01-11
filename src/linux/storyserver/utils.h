@@ -32,6 +32,22 @@
 #ifndef UTILS
 #define UTILS
 
+
+/* ----------------------------------------------------------------------------------- */
+
+/*#define _UT_DEBUG 1*/
+
+#ifdef _UT_DEBUG
+
+#include <assert.h>
+#define _UT_ASSERT(a) assert(a)
+
+#else
+
+#define _UT_ASSERT(a)
+
+#endif
+
 /* ----------------------------------------------------------------------------------- */
 
 

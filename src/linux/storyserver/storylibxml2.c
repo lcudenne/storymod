@@ -30,8 +30,6 @@
  **************************************************************************************/
 
 
-/* assert */
-#include <assert.h>
 /* strcmp */
 #include <string.h>
 /* xmlDocPtr */
@@ -44,7 +42,6 @@
 
 #include "storylibxml2.h"
 #include "storyposixload.h"
-#include "utils.h"
 
 
 /* ----------------------------------------------------------------------------------- */
@@ -55,7 +52,7 @@ _LIBXML2_loadXmlDoc(const char * const filename) {
 
   xmlDocPtr doc = NULL;
 
-  assert(filename);
+  _UT_ASSERT(filename);
 
   doc = xmlReadFile(filename, NULL, XML_PARSE_NOBLANKS);
 
@@ -88,8 +85,8 @@ static xmlNodePtr
 _LIBXML2_getChild(xmlNodePtr node, const char * const name) {
   xmlNodePtr cur = NULL;
 
-  assert(node);
-  assert(name);
+  _UT_ASSERT(node);
+  _UT_ASSERT(name);
 
   cur = node->children;
   while (cur && strcmp((const char*) cur->name, name))
@@ -106,7 +103,7 @@ _LIBXML2_XPathQueryCtx(xmlDocPtr doc, xmlNodePtr ctxnode,
   xmlXPathObjectPtr xpathobj = NULL;
   xmlNodeSetPtr nodes = NULL;
 
-  assert(query);
+  _UT_ASSERT(query);
 
   xpathctx = xmlXPathNewContext(doc);
 
@@ -115,7 +112,7 @@ _LIBXML2_XPathQueryCtx(xmlDocPtr doc, xmlNodePtr ctxnode,
 
   xpathobj = xmlXPathEvalExpression(BAD_CAST query, xpathctx);
 
-  assert(xpathobj);
+  _UT_ASSERT(xpathobj);
 
   nodes = xpathobj->nodesetval;
 
@@ -136,8 +133,8 @@ _LIBXML2_getUnsignedIntProp(xmlNodePtr node, char * name) {
 
   xmlChar *agattr = NULL;
 
-  assert(node);
-  assert(name);
+  _UT_ASSERT(node);
+  _UT_ASSERT(name);
 
   agattr = xmlGetProp(node, BAD_CAST name);
 
@@ -156,8 +153,8 @@ _LIBXML2_getFloatProp(xmlNodePtr node, char * name) {
 
   xmlChar *agattr = NULL;
 
-  assert(node);
-  assert(name);
+  _UT_ASSERT(node);
+  _UT_ASSERT(name);
 
   agattr = xmlGetProp(node, BAD_CAST name);
 
@@ -179,13 +176,13 @@ _STORY_addXmlAction(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr action
   _STORY_Action_t * action = NULL;
   char * typestr = NULL;
   
-  assert(context);
-  assert(doc);
-  assert(actionnode);
-  assert(transition);
+  _UT_ASSERT(context);
+  _UT_ASSERT(doc);
+  _UT_ASSERT(actionnode);
+  _UT_ASSERT(transition);
 
   typestr = (char *) xmlGetProp(actionnode, BAD_CAST "type");
-  assert(typestr);
+  _UT_ASSERT(typestr);
 
   if (strcmp(typestr, _STORY_ACTION_TYPE_SPEED_RESET_STR) == 0) {
     action = _STORY_newAction(_STORY_ACTION_TYPE_SPEED_RESET);
@@ -225,13 +222,13 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
 
   char * stateliststr = NULL;
   
-  assert(context);
-  assert(doc);
-  assert(conditionnode);
-  assert(transition);
+  _UT_ASSERT(context);
+  _UT_ASSERT(doc);
+  _UT_ASSERT(conditionnode);
+  _UT_ASSERT(transition);
 
   typestr = (char *) xmlGetProp(conditionnode, BAD_CAST "type");
-  assert(typestr);
+  _UT_ASSERT(typestr);
 
   if (strcmp(typestr, _STORY_CONDITION_TYPE_POSITION_BOX_IN_STR) == 0) {
     condition = _STORY_newCondition(_STORY_CONDITION_TYPE_POSITION_BOX_IN);
@@ -350,7 +347,7 @@ _STORY_addXmlCondition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr con
     property = _LIBXML2_getChild(conditionnode, "PROPERTY");
     if (property != NULL) {
       typestr = (char *) xmlGetProp(property, BAD_CAST "type");
-      assert(typestr);
+      _UT_ASSERT(typestr);
       if (strcmp(typestr, _STORY_TELEMETRY_PROPERTY_CARGO_STR) == 0) {
         condition->property_type = _STORY_TELEMETRY_PROPERTY_CARGO;
       } else if (strcmp(typestr, _STORY_TELEMETRY_PROPERTY_LBLINKER_STR) == 0) {
@@ -403,18 +400,18 @@ _STORY_addXmlTransition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr tr
 
   unsigned int i = 0;
 
-  assert(context);
-  assert(doc);
-  assert(transitionnode);
-  assert(state);
+  _UT_ASSERT(context);
+  _UT_ASSERT(doc);
+  _UT_ASSERT(transitionnode);
+  _UT_ASSERT(state);
 
   nextstateid = _LIBXML2_getUnsignedIntProp(transitionnode, "nextstate");
   transition = _STORY_newTransition(nextstateid);
-  assert(transition);
+  _UT_ASSERT(transition);
   _STORY_addTransitionToTransitionList(transition, state->transitions);
 
   typestr = (char *) xmlGetProp(transitionnode, BAD_CAST "type");
-  assert(typestr);
+  _UT_ASSERT(typestr);
   if (strcmp(typestr, _STORY_TRANSITION_TYPE_AND_STR) == 0) {
     transition->type = _STORY_TRANSITION_TYPE_AND;
   } else if (strcmp(typestr, _STORY_TRANSITION_TYPE_OR_STR) == 0) {
@@ -424,7 +421,7 @@ _STORY_addXmlTransition(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr tr
 
   conditionsnode = _LIBXML2_XPathQueryCtx(doc, transitionnode,
                                           "CONDITIONS/CONDITION");
-  assert(conditionsnode);
+  _UT_ASSERT(conditionsnode);
 
   for (i = 0; i < conditionsnode->nodeNr; i++) {
     _STORY_addXmlCondition(context, doc, conditionsnode->nodeTab[i], transition, storypositions);
@@ -458,21 +455,21 @@ _STORY_addXmlState(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr stateno
 
   unsigned int i = 0;
 
-  assert(context);
-  assert(doc);
-  assert(statenode);
-  assert(story);
+  _UT_ASSERT(context);
+  _UT_ASSERT(doc);
+  _UT_ASSERT(statenode);
+  _UT_ASSERT(story);
 
   id = _LIBXML2_getUnsignedIntProp(statenode, "id");
   state = _STORY_newState(id);
-  assert(state);
+  _UT_ASSERT(state);
   _STORY_addStateToStateList(state, story->states);
   if (id == numstartstate) {
     story->startstate = state;
   }
 
   anode = _LIBXML2_getChild(statenode, "NAME");
-  assert(anode);
+  _UT_ASSERT(anode);
   state->name = (char *) xmlNodeGetContent(anode);
   anode = NULL;
   anode = _LIBXML2_getChild(statenode, "DESCRIPTION");
@@ -492,7 +489,7 @@ _STORY_addXmlState(_STORY_Context_t * context, xmlDocPtr doc, xmlNodePtr stateno
 
   transitionsnode = _LIBXML2_XPathQueryCtx(doc, statenode,
                                            "TRANSITIONS/TRANSITION");
-  assert(transitionsnode);
+  _UT_ASSERT(transitionsnode);
 
   for (i = 0; i < transitionsnode->nodeNr; i++) {
     _STORY_addXmlTransition(context, doc, transitionsnode->nodeTab[i], state, storypositions);
@@ -531,18 +528,18 @@ _STORY_xmlToStory(_STORY_Context_t * context, xmlDocPtr doc,
 
   unsigned int i = 0;
 
-  assert(context);
-  assert(doc);
+  _UT_ASSERT(context);
+  _UT_ASSERT(doc);
   
   storymod = xmlDocGetRootElement(doc);
-  assert(storymod);
+  _UT_ASSERT(storymod);
 
   if (strcmp((const char *) storymod->name, "STORYMOD") == 0) {
 
     storynode = _LIBXML2_getChild(storymod, "STORY");
-    assert(storynode);
+    _UT_ASSERT(storynode);
     anode = _LIBXML2_getChild(storynode, "NAME");
-    assert(anode);
+    _UT_ASSERT(anode);
     story->name = (char *) xmlNodeGetContent(anode);
     anode = NULL;
     anode = _LIBXML2_getChild(storynode, "AUTHOR");
@@ -617,15 +614,15 @@ _STORY_xmlToStory(_STORY_Context_t * context, xmlDocPtr doc,
       anode = NULL;
     }
     anode = _LIBXML2_getChild(storynode, "STARTSTATE");
-    assert(anode);
+    _UT_ASSERT(anode);
     strstartstate = (char *) xmlNodeGetContent(anode);
     anode = NULL;
     numstartstate = atoi(strstartstate);
-    assert(numstartstate >= 0);
+    _UT_ASSERT(numstartstate >= 0);
     free(strstartstate);
 
     statesnode = _LIBXML2_XPathQueryCtx(doc, storynode, "STATES/STATE");
-    assert(statesnode);
+    _UT_ASSERT(statesnode);
 
     for (i = 0; i < statesnode->nodeNr; i++) {
       _STORY_addXmlState(context, doc, statesnode->nodeTab[i],
@@ -661,7 +658,7 @@ _STORY_resolveConditions(_STORY_Story_t * story) {
   unsigned int k = 0;
   unsigned int l = 0;
   
-  assert(story);
+  _UT_ASSERT(story);
 
   for (i = 0; i < story->states->size; i++) {
     state = story->states->tab[i];
@@ -708,9 +705,9 @@ _STORY_loadStoryFromFile(_STORY_Context_t * context, char * filename,
 
   xmlDocPtr doc = NULL;
 
-  assert(context);
-  assert(filename);
-  assert(dirname);
+  _UT_ASSERT(context);
+  _UT_ASSERT(filename);
+  _UT_ASSERT(dirname);
 
   doc = _LIBXML2_loadXmlDoc(filename);
 
@@ -748,17 +745,17 @@ _STORY_xmlToPositionList(xmlDocPtr doc, _STORY_PositionList_t * positionlist) {
 
   unsigned int i = 0;
   
-  assert(doc);
-  assert(positionlist);
+  _UT_ASSERT(doc);
+  _UT_ASSERT(positionlist);
 
   storymod_positions = xmlDocGetRootElement(doc);
-  assert(storymod_positions);
+  _UT_ASSERT(storymod_positions);
 
   if (strcmp((const char *) storymod_positions->name, "STORYMOD_POSITIONS") == 0) {
   
     positionsnode = _LIBXML2_XPathQueryCtx(doc, storymod_positions,
                                            "POSITIONS/POSITION");
-    assert(positionsnode);
+    _UT_ASSERT(positionsnode);
     
     for (i = 0; i < positionsnode->nodeNr; i++) {
       positionnode = positionsnode->nodeTab[i];
@@ -795,7 +792,7 @@ _STORY_loadPositionListFromFile(char * filename) {
   _STORY_PositionList_t * positionlist = NULL;
   xmlDocPtr doc = NULL;
 
-  assert(filename);
+  _UT_ASSERT(filename);
 
   doc = _LIBXML2_loadXmlDoc(filename);
 

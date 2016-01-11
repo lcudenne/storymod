@@ -49,7 +49,7 @@ exitOnErr() {
 }
 
 
-cmd="${CC} -c utils.c ${CFLAGS} ${ANSI} -o utils.o"
+cmd="${CC} -c utils.c ${CFLAGS} -o utils.o"
 echo $cmd
 `$cmd`
 exitOnErr "Compilation of source files"

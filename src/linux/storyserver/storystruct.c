@@ -31,8 +31,6 @@
 
 /* NULL */
 #include <stdlib.h>
-/* assert */
-#include <assert.h>
 /* fprintf */
 #include <stdio.h>
 /* strcmp */
@@ -55,7 +53,7 @@ _STORY_newContext() {
   _STORY_Context_t * context = NULL;
 
   context = malloc(sizeof(_STORY_Context_t ));
-  assert(context);
+  _UT_ASSERT(context);
 
   context->parameters = _STORY_newParameters();
   context->telemetry = _STORY_newTelemetry();
@@ -77,7 +75,7 @@ _STORY_newContext() {
 void
 _STORY_freeContext(_STORY_Context_t ** context) {
 
-  assert(*context);
+  _UT_ASSERT(*context);
 
   if ((*context)->parameters) {
     _STORY_freeParameters(&((*context)->parameters));
@@ -105,10 +103,10 @@ _STORY_newParameters() {
   _STORY_Parameters_t * parameters = NULL;
 
   parameters = malloc(sizeof(_STORY_Parameters_t ));
-  assert(parameters);
+  _UT_ASSERT(parameters);
 
   parameters->server_ip = "localhost";
-  parameters->server_port = CLIENT_PORT;
+  parameters->server_port = SERVER_PORT;
   parameters->client_ip = "localhost";
   parameters->story_dir = NULL;
   parameters->positions_database = "positions_database.xml";
@@ -127,7 +125,7 @@ _STORY_newParameters() {
 void
 _STORY_freeParameters(_STORY_Parameters_t ** parameters) {
 
-  assert(*parameters);
+  _UT_ASSERT(*parameters);
 
   if ((*parameters)->css_file) {
     free((*parameters)->css_file);
@@ -148,8 +146,11 @@ _STORY_newTelemetry() {
   _STORY_Telemetry_t * telemetry = NULL;
 
   telemetry = malloc(sizeof(_STORY_Telemetry_t ));
-  assert(telemetry);
+  _UT_ASSERT(telemetry);
 
+  telemetry->client_version_maj = 0;
+  telemetry->client_version_min = 0;
+  
   telemetry->x = 0.0;
   telemetry->y = 0.0;
   telemetry->z = 0.0;
@@ -181,7 +182,7 @@ _STORY_newTelemetry() {
 void
 _STORY_freeTelemetry(_STORY_Telemetry_t ** telemetry) {
 
-  assert(*telemetry);
+  _UT_ASSERT(*telemetry);
 
   if ((*telemetry)->cargo_id) {
     free((*telemetry)->cargo_id);
@@ -200,7 +201,7 @@ _STORY_toStringTelemetry(_STORY_Telemetry_t * telemetry) {
 
   char * tostring = NULL;
 
-  assert(telemetry);
+  _UT_ASSERT(telemetry);
 
   tostring = _UT_strCpy(tostring, "{ \"telemetry\" : { \"position\" : { \"x\" : \"");
   tostring = _UT_strFloat1Cat(tostring, telemetry->x);
@@ -218,7 +219,7 @@ _STORY_displayTelemetry(_STORY_Telemetry_t * telemetry) {
 
   char * tostring = NULL;
 
-  assert(telemetry);
+  _UT_ASSERT(telemetry);
 
   tostring = _STORY_toStringTelemetry(telemetry);
 
@@ -236,7 +237,7 @@ _STORY_newPosition() {
   _STORY_Position_t * position = NULL;
 
   position = malloc(sizeof(_STORY_Position_t ));
-  assert(position);
+  _UT_ASSERT(position);
 
   position->name = NULL;
   position->x = 0.0;
@@ -255,7 +256,7 @@ _STORY_newPosition() {
 void
 _STORY_freePosition(_STORY_Position_t ** position) {
 
-  assert(*position);
+  _UT_ASSERT(*position);
 
   if ((*position)->name) {
     free((*position)->name);
@@ -274,17 +275,17 @@ _STORY_newPositionList(unsigned int capacity) {
 
   _STORY_PositionList_t * positionlist = NULL;
 
-  assert(capacity > 0);
+  _UT_ASSERT(capacity > 0);
 
   positionlist = malloc(sizeof(_STORY_PositionList_t));
-  assert(positionlist);
+  _UT_ASSERT(positionlist);
 
   positionlist->size = 0;
   positionlist->capacity = capacity;
 
   positionlist->tab = NULL;
   positionlist->tab = malloc(sizeof(_STORY_Position_t *) * capacity);
-  assert(positionlist->tab);
+  _UT_ASSERT(positionlist->tab);
 
   return positionlist;
 
@@ -296,7 +297,7 @@ _STORY_freePositionList(_STORY_PositionList_t ** positionlist) {
 
   unsigned int i = 0;
 
-  assert(*positionlist);
+  _UT_ASSERT(*positionlist);
 
   if (((*positionlist)->size > 0) && ((*positionlist)->tab != NULL)) {
     for (i = 0; i < (*positionlist)->size; i++) {
@@ -316,7 +317,7 @@ _STORY_freePositionList(_STORY_PositionList_t ** positionlist) {
 void
 _STORY_freePositionStructList(_STORY_PositionList_t ** positionlist) {
 
-  assert(*positionlist);
+  _UT_ASSERT(*positionlist);
 
   free((*positionlist)->tab);
   free(*positionlist);
@@ -332,8 +333,8 @@ _STORY_addPositionToPositionList(_STORY_Position_t * position,
 
   unsigned int slot = positionlist->size;
 
-  assert(position);
-  assert(positionlist);
+  _UT_ASSERT(position);
+  _UT_ASSERT(positionlist);
 
   if (positionlist->size == positionlist->capacity) {
     positionlist->capacity += positionlist->capacity;
@@ -356,9 +357,9 @@ _STORY_getPositionFromName(_STORY_PositionList_t * positionlist, char * name) {
   _STORY_Position_t * position = NULL;
   unsigned int i = 0;
 
-  assert(name);
+  _UT_ASSERT(name);
 
-  assert(positionlist);
+  _UT_ASSERT(positionlist);
 
   while ((i < positionlist->size) && (position == NULL)) {
     if ((positionlist->tab[i] != NULL) && (strcmp(positionlist->tab[i]->name, name) == 0)) {
@@ -378,7 +379,7 @@ _STORY_getPositionFromCoordinates(_STORY_PositionList_t * positionlist,
   _STORY_Position_t * position = NULL;
   unsigned int i = 0;
 
-  assert(positionlist);
+  _UT_ASSERT(positionlist);
 
   while ((i < positionlist->size) && (position == NULL)) {
     if ((positionlist->tab[i] != NULL) &&
@@ -403,7 +404,7 @@ _STORY_newAction(unsigned int type) {
   _STORY_Action_t * action = NULL;
 
   action = malloc(sizeof(_STORY_Action_t ));
-  assert(action);
+  _UT_ASSERT(action);
 
   action->type = type;
   
@@ -415,7 +416,7 @@ _STORY_newAction(unsigned int type) {
 void
 _STORY_freeAction(_STORY_Action_t ** action) {
 
-  assert(*action);
+  _UT_ASSERT(*action);
 
   free(*action);
   *action = NULL;
@@ -429,17 +430,17 @@ _STORY_newActionList(unsigned int capacity) {
 
   _STORY_ActionList_t * actionlist = NULL;
 
-  assert(capacity > 0);
+  _UT_ASSERT(capacity > 0);
 
   actionlist = malloc(sizeof(_STORY_ActionList_t));
-  assert(actionlist);
+  _UT_ASSERT(actionlist);
 
   actionlist->size = 0;
   actionlist->capacity = capacity;
 
   actionlist->tab = NULL;
   actionlist->tab = malloc(sizeof(_STORY_Action_t *) * capacity);
-  assert(actionlist->tab);
+  _UT_ASSERT(actionlist->tab);
 
   return actionlist;
 
@@ -451,7 +452,7 @@ _STORY_freeActionList(_STORY_ActionList_t ** actionlist) {
 
   unsigned int i = 0;
 
-  assert(*actionlist);
+  _UT_ASSERT(*actionlist);
 
   if (((*actionlist)->size > 0) && ((*actionlist)->tab != NULL)) {
     for (i = 0; i < (*actionlist)->size; i++) {
@@ -471,7 +472,7 @@ _STORY_freeActionList(_STORY_ActionList_t ** actionlist) {
 void
 _STORY_freeActionStructList(_STORY_ActionList_t ** actionlist) {
 
-  assert(*actionlist);
+  _UT_ASSERT(*actionlist);
 
   free((*actionlist)->tab);
   free(*actionlist);
@@ -487,8 +488,8 @@ _STORY_addActionToActionList(_STORY_Action_t * action,
 
   unsigned int slot = actionlist->size;
 
-  assert(action);
-  assert(actionlist);
+  _UT_ASSERT(action);
+  _UT_ASSERT(actionlist);
 
   if (actionlist->size == actionlist->capacity) {
     actionlist->capacity += actionlist->capacity;
@@ -510,8 +511,8 @@ _STORY_addActionToActionList(_STORY_Action_t * action,
 void
 _STORY_positionToCondition(_STORY_Position_t * position,
                            _STORY_Condition_t * condition) {
-  assert(position);
-  assert(condition);
+  _UT_ASSERT(position);
+  _UT_ASSERT(condition);
 
   if (position->x != 0) {
     condition->x = position->x;
@@ -546,7 +547,7 @@ _STORY_newCondition(unsigned int type) {
   _STORY_Condition_t * condition = NULL;
 
   condition = malloc(sizeof(_STORY_Condition_t ));
-  assert(condition);
+  _UT_ASSERT(condition);
 
   condition->type = type;
   condition->name = NULL;
@@ -573,7 +574,7 @@ _STORY_newCondition(unsigned int type) {
 void
 _STORY_freeCondition(_STORY_Condition_t ** condition) {
 
-  assert(*condition);
+  _UT_ASSERT(*condition);
 
   if ((*condition)->name != NULL) {
     free((*condition)->name);
@@ -599,7 +600,7 @@ _STORY_toStringCondition(_STORY_Condition_t * condition) {
 
   char * tostring = NULL;
 
-  assert(condition);
+  _UT_ASSERT(condition);
 
   switch(condition->type) {
   case _STORY_CONDITION_TYPE_POSITION_BOX_IN:
@@ -807,17 +808,17 @@ _STORY_newConditionList(unsigned int capacity) {
 
   _STORY_ConditionList_t * conditionlist = NULL;
 
-  assert(capacity > 0);
+  _UT_ASSERT(capacity > 0);
 
   conditionlist = malloc(sizeof(_STORY_ConditionList_t));
-  assert(conditionlist);
+  _UT_ASSERT(conditionlist);
 
   conditionlist->size = 0;
   conditionlist->capacity = capacity;
 
   conditionlist->tab = NULL;
   conditionlist->tab = malloc(sizeof(_STORY_Condition_t *) * capacity);
-  assert(conditionlist->tab);
+  _UT_ASSERT(conditionlist->tab);
 
   return conditionlist;
 
@@ -829,7 +830,7 @@ _STORY_freeConditionList(_STORY_ConditionList_t ** conditionlist) {
 
   unsigned int i = 0;
 
-  assert(*conditionlist);
+  _UT_ASSERT(*conditionlist);
 
   if (((*conditionlist)->size > 0) && ((*conditionlist)->tab != NULL)) {
     for (i = 0; i < (*conditionlist)->size; i++) {
@@ -852,8 +853,8 @@ _STORY_addConditionToConditionList(_STORY_Condition_t * condition,
 
   unsigned int slot = conditionlist->size;
 
-  assert(condition);
-  assert(conditionlist);
+  _UT_ASSERT(condition);
+  _UT_ASSERT(conditionlist);
 
   if (conditionlist->size == conditionlist->capacity) {
     conditionlist->capacity += conditionlist->capacity;
@@ -880,7 +881,7 @@ _STORY_newTransition(unsigned int nextstateid) {
   _STORY_Transition_t * transition = NULL;
 
   transition = malloc(sizeof(_STORY_Transition_t ));
-  assert(transition);
+  _UT_ASSERT(transition);
 
   transition->conditions = _STORY_newConditionList(1);
   transition->actions = _STORY_newActionList(1);
@@ -896,7 +897,7 @@ _STORY_newTransition(unsigned int nextstateid) {
 void
 _STORY_freeTransition(_STORY_Transition_t ** transition) {
 
-  assert(*transition);
+  _UT_ASSERT(*transition);
 
   _STORY_freeConditionList(&((*transition)->conditions));
   _STORY_freeActionList(&((*transition)->actions));
@@ -915,7 +916,7 @@ _STORY_toStringTransition(_STORY_Transition_t * transition) {
 
   unsigned int i = 0;
 
-  assert(transition);
+  _UT_ASSERT(transition);
 
   tostring = _UT_strCpy(tostring, " ");
 
@@ -942,17 +943,17 @@ _STORY_newTransitionList(unsigned int capacity) {
 
   _STORY_TransitionList_t * transitionlist = NULL;
 
-  assert(capacity > 0);
+  _UT_ASSERT(capacity > 0);
 
   transitionlist = malloc(sizeof(_STORY_TransitionList_t));
-  assert(transitionlist);
+  _UT_ASSERT(transitionlist);
 
   transitionlist->size = 0;
   transitionlist->capacity = capacity;
 
   transitionlist->tab = NULL;
   transitionlist->tab = malloc(sizeof(_STORY_Transition_t *) * capacity);
-  assert(transitionlist->tab);
+  _UT_ASSERT(transitionlist->tab);
 
   return transitionlist;
 
@@ -964,7 +965,7 @@ _STORY_freeTransitionList(_STORY_TransitionList_t ** transitionlist) {
 
   unsigned int i = 0;
 
-  assert(*transitionlist);
+  _UT_ASSERT(*transitionlist);
 
   if (((*transitionlist)->size > 0) && ((*transitionlist)->tab != NULL)) {
     for (i = 0; i < (*transitionlist)->size; i++) {
@@ -984,7 +985,7 @@ _STORY_freeTransitionList(_STORY_TransitionList_t ** transitionlist) {
 void
 _STORY_freeTransitionStructList(_STORY_TransitionList_t ** transitionlist) {
 
-  assert(*transitionlist);
+  _UT_ASSERT(*transitionlist);
 
   free((*transitionlist)->tab);
   free(*transitionlist);
@@ -999,8 +1000,8 @@ _STORY_addTransitionToTransitionList(_STORY_Transition_t * transition,
 
   unsigned int slot = transitionlist->size;
 
-  assert(transition);
-  assert(transitionlist);
+  _UT_ASSERT(transition);
+  _UT_ASSERT(transitionlist);
 
   if (transitionlist->size == transitionlist->capacity) {
     transitionlist->capacity += transitionlist->capacity;
@@ -1027,7 +1028,7 @@ _STORY_newState(unsigned int id) {
   _STORY_State_t * state = NULL;
 
   state = malloc(sizeof(_STORY_State_t ));
-  assert(state);
+  _UT_ASSERT(state);
 
   state->id = id;
   state->name = NULL;
@@ -1044,7 +1045,7 @@ _STORY_newState(unsigned int id) {
 void
 _STORY_freeState(_STORY_State_t ** state) {
 
-  assert(*state);
+  _UT_ASSERT(*state);
 
   if ((*state)->name) {
     free((*state)->name);
@@ -1073,17 +1074,17 @@ _STORY_newStateList(unsigned int capacity) {
 
   _STORY_StateList_t * statelist = NULL;
 
-  assert(capacity > 0);
+  _UT_ASSERT(capacity > 0);
 
   statelist = malloc(sizeof(_STORY_StateList_t));
-  assert(statelist);
+  _UT_ASSERT(statelist);
 
   statelist->size = 0;
   statelist->capacity = capacity;
 
   statelist->tab = NULL;
   statelist->tab = malloc(sizeof(_STORY_State_t *) * capacity);
-  assert(statelist->tab);
+  _UT_ASSERT(statelist->tab);
 
   return statelist;
 
@@ -1095,7 +1096,7 @@ _STORY_freeStateList(_STORY_StateList_t ** statelist) {
 
   unsigned int i = 0;
 
-  assert(*statelist);
+  _UT_ASSERT(*statelist);
 
   if (((*statelist)->size > 0) && ((*statelist)->tab != NULL)) {
     for (i = 0; i < (*statelist)->size; i++) {
@@ -1115,7 +1116,7 @@ _STORY_freeStateList(_STORY_StateList_t ** statelist) {
 void
 _STORY_freeStateStructList(_STORY_StateList_t ** statelist) {
 
-  assert(*statelist);
+  _UT_ASSERT(*statelist);
 
   free((*statelist)->tab);
   free(*statelist);
@@ -1131,8 +1132,8 @@ _STORY_addStateToStateList(_STORY_State_t * state,
 
   unsigned int slot = statelist->size;
 
-  assert(state);
-  assert(statelist);
+  _UT_ASSERT(state);
+  _UT_ASSERT(statelist);
 
   if (statelist->size == statelist->capacity) {
     statelist->capacity += statelist->capacity;
@@ -1154,7 +1155,7 @@ _STORY_getStateFromId(_STORY_StateList_t * statelist, unsigned int id) {
   _STORY_State_t * state = NULL;
   unsigned int i = 0;
 
-  assert(statelist);
+  _UT_ASSERT(statelist);
 
   while ((i < statelist->size) && (state == NULL)) {
     if ((statelist->tab[i] != NULL) && (statelist->tab[i]->id == id)) {
@@ -1180,7 +1181,7 @@ _STORY_newStory(unsigned int id) {
   _STORY_Story_t * story = NULL;
 
   story = malloc(sizeof(_STORY_Story_t ));
-  assert(story);
+  _UT_ASSERT(story);
 
   story->id = id;
   story->name = NULL;
@@ -1206,7 +1207,7 @@ _STORY_newStory(unsigned int id) {
 void
 _STORY_freeStory(_STORY_Story_t ** story) {
 
-  assert(*story);
+  _UT_ASSERT(*story);
 
   if ((*story)->name) {
     free((*story)->name);
@@ -1267,17 +1268,17 @@ _STORY_newStoryList(unsigned int capacity) {
 
   _STORY_StoryList_t * storylist = NULL;
 
-  assert(capacity > 0);
+  _UT_ASSERT(capacity > 0);
 
   storylist = malloc(sizeof(_STORY_StoryList_t));
-  assert(storylist);
+  _UT_ASSERT(storylist);
 
   storylist->size = 0;
   storylist->capacity = capacity;
 
   storylist->tab = NULL;
   storylist->tab = malloc(sizeof(_STORY_Story_t *) * capacity);
-  assert(storylist->tab);
+  _UT_ASSERT(storylist->tab);
 
   return storylist;
 
@@ -1289,7 +1290,7 @@ _STORY_freeStoryList(_STORY_StoryList_t ** storylist) {
 
   unsigned int i = 0;
 
-  assert(*storylist);
+  _UT_ASSERT(*storylist);
 
   if (((*storylist)->size > 0) && ((*storylist)->tab != NULL)) {
     for (i = 0; i < (*storylist)->size; i++) {
@@ -1309,7 +1310,7 @@ _STORY_freeStoryList(_STORY_StoryList_t ** storylist) {
 void
 _STORY_freeStoryStructList(_STORY_StoryList_t ** storylist) {
 
-  assert(*storylist);
+  _UT_ASSERT(*storylist);
 
   free((*storylist)->tab);
   free(*storylist);
@@ -1324,8 +1325,8 @@ _STORY_addStoryToStoryList(_STORY_Story_t * story,
 
   unsigned int slot = storylist->size;
 
-  assert(story);
-  assert(storylist);
+  _UT_ASSERT(story);
+  _UT_ASSERT(storylist);
 
   if (storylist->size == storylist->capacity) {
     storylist->capacity += storylist->capacity;

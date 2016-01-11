@@ -30,8 +30,6 @@
  **************************************************************************************/
 
 
-/* assert */
-#include <assert.h>
 /* fabs */
 #include <math.h>
 /* fprintf */
@@ -44,7 +42,6 @@
 
 #include "storyautomata.h"
 
-#include "utils.h"
 #include "storyhtml.h"
 
 /* ----------------------------------------------------------------------------------- */
@@ -63,9 +60,9 @@ _STORY_checkCondition(_STORY_State_t * state,
   unsigned int i = 0;
   unsigned int j = 0;
   
-  assert(state);
-  assert(condition);
-  assert(telemetry);
+  _UT_ASSERT(state);
+  _UT_ASSERT(condition);
+  _UT_ASSERT(telemetry);
 
   switch (condition->type) {
   case _STORY_CONDITION_TYPE_POSITION_BOX_IN:
@@ -282,9 +279,9 @@ _STORY_checkConditionList(_STORY_State_t * state,
   unsigned int res = 1;
   unsigned int i = 0;
 
-  assert(state);
-  assert(conditions);
-  assert(telemetry);
+  _UT_ASSERT(state);
+  _UT_ASSERT(conditions);
+  _UT_ASSERT(telemetry);
 
   switch (type) {
 
@@ -318,9 +315,9 @@ _STORY_performActions(_STORY_Context_t * context, _STORY_ActionList_t * actions)
 
   unsigned int i = 0;
   
-  assert(context);
-  assert(context->telemetry);
-  assert(actions);
+  _UT_ASSERT(context);
+  _UT_ASSERT(context->telemetry);
+  _UT_ASSERT(actions);
 
   for (i = 0; i < actions->size; i++) {
     switch (actions->tab[i]->type) {
@@ -350,8 +347,8 @@ _STORY_getAllNextState(_STORY_State_t * currentstate,
   _STORY_Transition_t * transition = NULL;
   unsigned int i = 0;
 
-  assert(currentstate);
-  assert(telemetry);
+  _UT_ASSERT(currentstate);
+  _UT_ASSERT(telemetry);
 
   nextstatelist = _STORY_newStateList(1);
 
@@ -374,8 +371,8 @@ _STORY_getAllNextTransitions(_STORY_State_t * currentstate,
   _STORY_Transition_t * transition = NULL;
   unsigned int i = 0;
 
-  assert(currentstate);
-  assert(telemetry);
+  _UT_ASSERT(currentstate);
+  _UT_ASSERT(telemetry);
 
   transitionlist = _STORY_newTransitionList(1);
 
@@ -401,9 +398,9 @@ _STORY_getNextState(_STORY_Context_t * context) {
 
   unsigned int nsid = 0;
 
-  assert(context);
-  assert(context->state);
-  assert(context->telemetry);
+  _UT_ASSERT(context);
+  _UT_ASSERT(context->state);
+  _UT_ASSERT(context->telemetry);
 
   currentstate = context->state;
   nextstate = context->state;
@@ -436,7 +433,7 @@ _STORY_isFinalState(_STORY_State_t * state) {
 
   unsigned int res = 0;
 
-  assert(state);
+  _UT_ASSERT(state);
 
   if (state->transitions->size == 0) {
     res = 1;
@@ -457,8 +454,8 @@ _STORY_getActiveStoryList(_STORY_Telemetry_t * telemetry,
 
   unsigned int i = 0;
 
-  assert(telemetry);
-  assert(stories);
+  _UT_ASSERT(telemetry);
+  _UT_ASSERT(stories);
 
   activestories = _STORY_newStoryList(1);
   for (i = 0; i < stories->size; i++) {
@@ -478,8 +475,8 @@ _STORY_getActiveStoryList(_STORY_Telemetry_t * telemetry,
 float
 _STORY_getDistance(_STORY_Telemetry_t * telemetry,
                    _STORY_Condition_t * condition) {
-  assert(telemetry);
-  assert(condition);
+  _UT_ASSERT(telemetry);
+  _UT_ASSERT(condition);
   return (fabs(telemetry->x - condition->x) + fabs(telemetry->y - condition->y));
 }
 
@@ -493,7 +490,7 @@ _STORY_getFirstConditionType(_STORY_ConditionList_t * conditions,
 
   unsigned int i = 0;
 
-  assert(conditions);
+  _UT_ASSERT(conditions);
 
   while ((i < conditions->size) && (condition == NULL)) {
     if (conditions->tab[i]->type == type) {
@@ -515,7 +512,7 @@ _STORY_getFirstConditionTypeTransition(_STORY_TransitionList_t * transitions,
 
   unsigned int i = 0;
 
-  assert(transitions);
+  _UT_ASSERT(transitions);
 
   while ((i < transitions->size) && (condition == NULL)) {
     condition = _STORY_getFirstConditionType(transitions->tab[i]->conditions, type);
@@ -541,8 +538,8 @@ _STORY_sortCloseStoryList(_STORY_Telemetry_t * telemetry,
   unsigned int j = 0;
   unsigned int invert = 1;
 
-  assert(telemetry);
-  assert(stories);
+  _UT_ASSERT(telemetry);
+  _UT_ASSERT(stories);
 
   for (i = 0; i < stories->size; i++) {
     story = stories->tab[i];
@@ -588,7 +585,7 @@ _STORY_resetStoryAutomata(_STORY_Story_t * story) {
 
   unsigned int i = 0;
   
-  assert(story);
+  _UT_ASSERT(story);
   
   for (i = 0; i < story->states->size; i++) {
     story->states->tab[i]->visited = 0;
@@ -604,10 +601,10 @@ _STORY_storyAutomata(_STORY_Context_t * context) {
 
   _STORY_StoryList_t * activestories = NULL;
 
-  assert(context);
-  assert(context->parameters);
-  assert(context->telemetry);
-  assert(context->stories);
+  _UT_ASSERT(context);
+  _UT_ASSERT(context->parameters);
+  _UT_ASSERT(context->telemetry);
+  _UT_ASSERT(context->stories);
 
   context->time = _UT_getTimeSecond();
   
