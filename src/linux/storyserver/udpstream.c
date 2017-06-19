@@ -74,7 +74,7 @@ _UDP_registerClient(char * hostip, unsigned int hostport,
   datagram = malloc(sizeof(char) * DATAGRAM_SIZE);
   _UT_ASSERT(datagram);
   
-  snprintf(datagram, sizeof(char) * DATAGRAM_SIZE, "%s %d ", hostip, remoteport);
+  snprintf(datagram, sizeof(char) * DATAGRAM_SIZE, "%s %d ", hostip, hostport);
   fprintf(stdout, "Contacting client %s:%d with host %s:%d\n",
           remoteip, remoteport, hostip, hostport);
   

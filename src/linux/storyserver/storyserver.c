@@ -223,9 +223,9 @@ storymod(_STORY_Context_t * context) {
   datagramptr = datagram;
 
   if (context->parameters->local_trace == NULL) {
+    _UDP_bindSocket(context->parameters->server_port);
     _UDP_registerClient(context->parameters->server_ip, context->parameters->server_port,
                         context->parameters->client_ip, CLIENT_PORT);
-    _UDP_bindSocket(context->parameters->server_port);
   } else {
     _STORY_openDrivingTrace(context->parameters->local_trace);
   }
