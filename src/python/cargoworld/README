@@ -1,0 +1,27 @@
+CargoWorld - Cargo Management for ETS2
+
+
+***********
+QUICK START
+***********
+
+1. Copy the cargoworld_telemetry_x64.dll into "EuroTruckSimulator2\bin\win_x64\plugins"
+2. Run Cargoworld.exe and ETS2 in any order
+
+
+*********
+UNINSTALL
+*********
+
+1. Remove cargoworld_telemetry_x64.dll from "EuroTruckSimulator2\bin\win_x64\plugins"
+2. Delete this folder
+
+
+
+
+******
+PYTHON
+******
+
+1. Check that Python3.5+ is installed along with PyQt5 (Graphviz is also needed to display cargo graphs)
+2. Run 'python cargoworld.py' in the cargoworld folder
