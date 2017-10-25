@@ -355,5 +355,5 @@ class WorldInterface:
         filename = "cargolist_" + player.name
         file = open(filename, "a+")
         for cargo in player.cargodelivered:
-            file.write(cargo.name + "\t" + cargo.type.type + "\t" + cargo.location.name + "\t" + cargo.destination.name)
+            file.write(cargo.name + "\t" + cargo.type.type + "\t" + cargo.location.name + "\t" + cargo.destination.name + "\n")
         file.close()
