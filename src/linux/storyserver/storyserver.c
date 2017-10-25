@@ -288,7 +288,7 @@ help(int argc, char ** argv)
   fprintf(stdout, "%s", "--html-refresh\t<DELAY>\t\tSet the delay in seconds to refresh the HTML file.\n");
   fprintf(stdout, "%s", "--css\t\t<FILE>\t\tPath to a CSS style file. Default is style.css.\n");
   fprintf(stdout, "%s", "--story-dot\t<FILE>\t\tPath to a story file. The server will write the corresponding DOT file.\n");
-  fprintf(stdout, "Examples:\n%s --ip 192.168.1.13 192.168.1.37 --port 8888 --story ../stories/ --positions positions_database.xml\n%s --story-dot ../stories/parking/parking.xml\n", argv[0], argv[0]);
+  fprintf(stdout, "Examples:\n%s --ip 192.168.1.13 192.168.1.37 --port 8888 --stories ../stories/ --positions positions_database.xml\n%s --story-dot ../stories/parking/parking.xml\n", argv[0], argv[0]);
   
 }
 

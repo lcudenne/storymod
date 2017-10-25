@@ -6,7 +6,7 @@ Quick Start:
 
 1. Copy the telemetry dll into "EuroTruckSimulator2\bin\win_x64\plugins"
 
-2. Run Cargoworld.exe and ETS2 in any order
+2. Run cargoworld.exe and ETS2 in any order
 
 
 # StoryMod
