@@ -43,6 +43,9 @@ SCSSDK_HEADER
  * 1.12 - added information about transmission (differential_ratio, forward_ratio, reverse_ratio),
  *        navigation channels (navigation_distance, navigation_time, navigation_speed_limit)
  *        and adblue related data are now provided.
+ * 1.13 - fixed values of id and cargo_accessory_id attributes in trailer config broken by
+ *        ETS2 1.25 update. Note that the new values will be different from the ones returned
+ *        by ETS2 1.24 and older.
  */
 //@{
 #define SCS_TELEMETRY_EUT2_GAME_VERSION_1_00            SCS_MAKE_VERSION(1, 0)
@@ -58,7 +61,8 @@ SCSSDK_HEADER
 #define SCS_TELEMETRY_EUT2_GAME_VERSION_1_10            SCS_MAKE_VERSION(1, 10) // Patch 1.14
 #define SCS_TELEMETRY_EUT2_GAME_VERSION_1_11            SCS_MAKE_VERSION(1, 11)
 #define SCS_TELEMETRY_EUT2_GAME_VERSION_1_12            SCS_MAKE_VERSION(1, 12) // Patch 1.17
-#define SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT         SCS_TELEMETRY_EUT2_GAME_VERSION_1_12
+#define SCS_TELEMETRY_EUT2_GAME_VERSION_1_13            SCS_MAKE_VERSION(1, 13) // Patch 1.27
+#define SCS_TELEMETRY_EUT2_GAME_VERSION_CURRENT         SCS_TELEMETRY_EUT2_GAME_VERSION_1_13
 //@}
 
 // Game specific units.

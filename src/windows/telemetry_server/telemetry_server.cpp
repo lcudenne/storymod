@@ -123,6 +123,11 @@ struct telemetry_state_t
 	scs_value_bool_t trailer_connected;
 
 	/**
+	* @brief Trailer config.
+	*/
+	char * trailer;
+
+	/**
 	* @brief Cargo id and value.
 	*/
 	char * cargo;
@@ -334,7 +339,19 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const e
 	if (head_position) {
 		telemetry.head_position = head_position->value.value_fvector;
 	}
-
+	
+	const scs_named_value_t *const trailer = find_attribute(*info, SCS_TELEMETRY_CONFIG_ATTRIBUTE_id, SCS_U32_NIL, SCS_VALUE_TYPE_string);
+	if (trailer) {
+		if (telemetry.trailer != NULL) {
+			free(telemetry.trailer);
+			telemetry.trailer = NULL;
+		}
+		telemetry.trailer = (char *)malloc(sizeof(char) * (strlen(trailer->value.value_string.value) + 1));
+		assert(telemetry.trailer);
+		sprintf(telemetry.trailer, "%s", trailer->value.value_string.value);
+		sendConfigToUDP(DATAGRAM_TYPE_TRAILER, telemetry.trailer);
+	}
+	
 	const scs_named_value_t *const cargo_id = find_attribute(*info, SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo_id, SCS_U32_NIL, SCS_VALUE_TYPE_string);
 	const scs_named_value_t *const cargo = find_attribute(*info, SCS_TELEMETRY_CONFIG_ATTRIBUTE_cargo, SCS_U32_NIL, SCS_VALUE_TYPE_string);
 	if (cargo_id && cargo) {
@@ -347,7 +364,69 @@ SCSAPI_VOID telemetry_configuration(const scs_event_t event, const void *const e
 		sprintf(telemetry.cargo, "%s %s", cargo_id->value.value_string.value, cargo->value.value_string.value);
 		sendConfigToUDP(DATAGRAM_TYPE_CARGO, telemetry.cargo);
 	}
+	
+#ifdef STORYDEBUG
+	for (const scs_named_value_t *current = info->attributes; current->name; ++current)
+	{
 
+		fprintf(log_file, "Name: %s / Val: ", current->name);
+		switch (current->value.type)
+		{
+		case SCS_VALUE_TYPE_bool:
+			fprintf(log_file, "%c (bool)", ((current->value.value_bool.value) ? '1' : '0'));
+			break;
+
+		case SCS_VALUE_TYPE_s32:
+			fprintf(log_file, "%l (s32)", current->value.value_s32.value);
+			break;
+
+		case SCS_VALUE_TYPE_u32:
+			fprintf(log_file, "%lu (u32)", current->value.value_u32.value);
+			break;
+
+		case SCS_VALUE_TYPE_u64:
+			fprintf(log_file, "%lu (u64)", current->value.value_u64.value);
+			break;
+
+		case SCS_VALUE_TYPE_float:
+			fprintf(log_file, "%f (float)", current->value.value_float.value);
+			break;
+
+		case SCS_VALUE_TYPE_double:
+			fprintf(log_file, "%f (double)", current->value.value_double.value);
+			break;
+
+			/*
+			case SCS_VALUE_TYPE_fvector:
+			fprintf(log_file, "%s (string)", current->value.value_string.value);
+			break;
+			case SCS_VALUE_TYPE_dvector:
+			fprintf(log_file, "%s (string)", current->value.value_string.value);
+			break;
+			case SCS_VALUE_TYPE_euler:
+			fprintf(log_file, "%s (string)", current->value.value_string.value);
+			break;
+			case SCS_VALUE_TYPE_fplacement:
+			fprintf(log_file, "%s (string)", current->value.value_string.value);
+			break;
+			case SCS_VALUE_TYPE_dplacement:
+			fprintf(log_file, "%s (string)", current->value.value_string.value);
+			break;*/
+
+		case SCS_VALUE_TYPE_string:
+			fprintf(log_file, "%s (string)", current->value.value_string.value);
+			break;
+
+		default:
+			fprintf(log_file, "???? (%d)", current->value.type);
+			break;
+		}
+
+		fprintf(log_file, "\r\n");
+
+		fflush(log_file);
+	}
+#endif
 
 }
 
@@ -410,6 +489,9 @@ SCSAPI_VOID telemetry_store_bool(const scs_string_t name, const scs_u32_t index,
 	}
 	else {
 		sendConfigToUDP(DATAGRAM_TYPE_PARKING_BRAKE, "0");
+	}
+	if (telemetry.trailer) {
+		sendConfigToUDP(DATAGRAM_TYPE_TRAILER, telemetry.trailer);
 	}
 
 }
@@ -514,6 +596,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	telemetry.engine_enabled.value = false;
 	telemetry.parking_brake.value = false;
 	telemetry.cargo = NULL;
+	telemetry.trailer = NULL;
 
 	memset(&telemetry, 0, sizeof(telemetry));
 

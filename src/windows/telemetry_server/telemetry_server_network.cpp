@@ -51,6 +51,30 @@ using namespace std;
 char * remote_server_ip = NULL;
 unsigned int remote_server_port = 0;
 
+/***********************************************************************************/
+
+#define DEBUG_MODE 1
+FILE *udp_log_file = NULL;
+
+
+void udp_log_line(const char *const text, ...)
+{
+
+#ifdef DEBUG_MODE
+
+	if (!udp_log_file) {
+		return;
+	}
+	va_list args;
+	va_start(args, text);
+	vfprintf(udp_log_file, text, args);
+	fprintf(udp_log_file, "\n");
+	va_end(args);
+
+#endif
+
+}
+
 
 
 /***********************************************************************************/
@@ -64,12 +88,12 @@ initSendUDP() {
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 	{
-		fprintf(stdout, "WSAStartup failed. Error Code : %d\n", WSAGetLastError());
+		udp_log_line("WSAStartup failed. Error Code : %d\n", WSAGetLastError());
 		exit(EXIT_FAILURE);
 	}
 	if ((udpsocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == SOCKET_ERROR)
 	{
-		fprintf(stdout, "Could not create socket : %d\n", WSAGetLastError());
+		udp_log_line("Could not create socket : %d\n", WSAGetLastError());
 		exit(EXIT_FAILURE);
 	}
 
@@ -103,14 +127,14 @@ initGetIP() {
 	WSADATA wsa;
 	u_long iMode = 1;
 
+	udp_log_line("initGetIP");
+
 	if (WSAStartup(MAKEWORD(2, 2), &wsa) != 0)
 	{
-		/*fprintf(logfile, "WSAStartup failed. Error Code : %d\n", WSAGetLastError());*/
 		exit(EXIT_FAILURE);
 	}
 	if ((getip_udpsocket = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP)) == SOCKET_ERROR)
 	{
-		/*fprintf(logfile, "Could not create socket : %d\n", WSAGetLastError());*/
 		exit(EXIT_FAILURE);
 	}
 
@@ -120,13 +144,7 @@ initGetIP() {
 	getip_si_other.sin_addr.S_un.S_addr = htonl(INADDR_ANY);
 
 	bind(getip_udpsocket, (struct sockaddr *)&getip_si_other, sizeof(getip_si_other));
-	/*
-	if (bind(getip_udpsocket, (struct sockaddr *)&client, sizeof(client)) == SOCKET_ERROR)
-	{
-		fprintf(logfile, "Bind failed with error code : %d", WSAGetLastError());
-		exit(EXIT_FAILURE);
-	}
-	*/
+
 	ioctlsocket(getip_udpsocket, FIONBIO, &iMode);
 
 }
@@ -166,6 +184,9 @@ getIP() {
 		iss >> subip >> subport;
 		remote_server_ip = (char *) subip.c_str();
 		remote_server_port = atoi(subport.c_str());
+	
+		udp_log_line("received connection from %s contacting port %d", remote_server_ip, remote_server_port);
+
 		closeGetIP();
 		initSendUDP();
 		sendClientVersionToUDP();
@@ -199,6 +220,8 @@ sendClientVersionToUDP() {
 		assert(datagram);
 
 		sprintf(datagram, "%d %d %d ", DATAGRAM_TYPE_CLIENT_VERSION, CLIENT_VERSION_MAJ, CLIENT_VERSION_MIN);
+
+		udp_log_line("sending client version %s to %s:%d", datagram, remote_server_ip, remote_server_port);
 
 		sendto(udpsocket, datagram, strlen(datagram), 0, (struct sockaddr *) &si_other, sizeof(si_other));
 
@@ -263,6 +286,10 @@ sendConfigToUDP(unsigned int type, char * value) {
 void
 initNetwork() {
 
+	udp_log_file = fopen("telemetry_position_udp.log", "wt");
+
+	udp_log_line("initNetwork");
+
 	initGetIP();
 
 }
@@ -276,6 +303,10 @@ closeNetwork() {
 	else {
 		closeSendUDP();
 	}
+
+	udp_log_line("closeNetwork");
+
+	fclose(udp_log_file);
 
 }
 

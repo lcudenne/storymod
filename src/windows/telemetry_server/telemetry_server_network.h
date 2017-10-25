@@ -28,7 +28,7 @@
  **************************************************************************************/
 
 #define CLIENT_VERSION_MAJ 0
-#define CLIENT_VERSION_MIN 1
+#define CLIENT_VERSION_MIN 2
 
 #define CLIENT_PORT 35057
 
@@ -40,7 +40,7 @@
 #define DATAGRAM_TYPE_CLIENT_VERSION 5
 #define DATAGRAM_TYPE_ENGINE_ENABLED 6
 #define DATAGRAM_TYPE_PARKING_BRAKE 7
-
+#define DATAGRAM_TYPE_TRAILER 8
 
 void
 initNetwork();
@@ -56,3 +56,4 @@ sendPositionToUDP(float x, float y, float z, float speed);
 
 void
 sendConfigToUDP(unsigned int type, char * value);
+

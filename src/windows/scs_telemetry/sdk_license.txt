@@ -1,5 +1,5 @@
 SCS SDK
-Copyright (C) 2013 SCS Software
+Copyright (C) 2016 SCS Software
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

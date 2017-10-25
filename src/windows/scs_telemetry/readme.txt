@@ -1,17 +1,17 @@
 ﻿========== Introduction ==========
 
-This SDK provides information and APIs necessary for interaction between a third party software and the Euro Truck Simulator 2 (ETS2) and possible other future games from SCS Software. At this time the only supported API is telemetry output. In the future additional APIs might be implemented.
+This SDK provides information and APIs necessary for interaction between a third party software and the Euro Truck Simulator 2 (ETS2),  American Truck Simulator (ATS) and possible other future games from SCS Software. At this time the only supported API is telemetry output. In the future additional APIs might be implemented.
 
 ========== Plugin modules ==========
 
-The plugins are implemented as a dynamically loaded libraries (DLL) which MUST export set of functions required by the APIs they want to use. The game loads all plugins found by combination of following methods:
+The plugins are implemented as a dynamically loaded libraries (DLL on Windows, SO on Linux) which MUST export set of functions required by the APIs they want to use. The game loads all plugins found by combination of following methods:
 
 1) By gathering all libraries from "plugins" subdirectory of the directory containing the game binary (e.g. /bin/win_x86/plugins).
-2) (Windows only) By processing all string values stored in registry key "HKEY_LOCAL_MACHINE\SOFTWARE\SCS Software\<GAME_NAME>\Plugins" (GAME_NAME is "Euro Truck Simulator 2" for ETS2). When targeting 32bit version of the game on 64bit OS, the registry key is stored in "HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\SCS Software\<GAME_NAME>\Plugins". The data of those values are interpreted as paths to the libraries, one path per value. The names of the values are not relevant however it is recommended to use something identifying your product to avoid possible conflicts. When installing your product you can create this value including all the keys in the path if they do not exist yet to allow the game to find the plugin even if the user installs the game latter. When uninstalling your product you should remove the value. The keys can be removed if and only if they are empty.
+2) (Windows only) By processing all string values stored in registry key "HKEY_LOCAL_MACHINE\SOFTWARE\SCS Software\<GAME_NAME>\Plugins" (GAME_NAME is "Euro Truck Simulator 2" for ETS2 and "American Truck Simulator" for ATS). When targeting 32bit version of the game on 64bit OS, the registry key is stored in "HKEY_LOCAL_MACHINE\SOFTWARE\Wow6432Node\SCS Software\<GAME_NAME>\Plugins". The data of those values are interpreted as paths to the libraries, one path per value. The names of the values are not relevant however it is recommended to use something identifying your product to avoid possible conflicts. When installing your product you can create this value including all the keys in the path if they do not exist yet to allow the game to find the plugin even if the user installs the game latter. When uninstalling your product you should remove the value. The keys can be removed if and only if they are empty.
 
 If one plugin is specified more than once, the behavior is undefined. When the game wants to activate specific API, it will call the initialization function for that API in all plugins which export the required set of functions for that API. When the game wants to deactivate specific API, it will call the de-initialization function in all plugins which indicated success during the initialization and which export that function. Once all APIs are de-initialized, the game might unload the plugins. The plugins MUST be written with assumption that the initialization/de-initialization cycle might happen several times for single load/unload cycle and that there might be several load/unload cycles per lifetime of the game process.
 
-The ETS2 provides several console commands to manipulate the APIs to simplify development. Note that those commands work only if there was at least one telemetry plugin during the startup as otherwise the game might skip initializations which are only necessary when the API is active. The commands are:
+The ETS2/ATS provides several console commands to manipulate the APIs to simplify development. Note that those commands work only if there was at least one telemetry plugin during the startup as otherwise the game might skip initializations which are only necessary when the API is active. The commands are:
 
 sdk reinit
 Does de-initialize/initialize cycle for all APIs on all plugins. Useful if the plugin is loading some configuration from file during initialization.
@@ -47,10 +47,10 @@ Associated with individual sources of telemetry information (e.g. position, spee
 
 Note that the game might contain additional channels and configurations with "dev." prefix which are not documented. They are used for development purposes or contain unrealistic values and might be changed or removed at any time so the plugins should ignore them. If you would need information provided by those objects, please let us know.
 
-===== Scale ETS2
+===== Scale ETS2/ATS
 
 The map scale varies depending on situation (e.g. it is different in cities than in other parts of the map and different in UK than in the continental Europe). To maintain the apparent distances, the game scales delta applied to the time-of-day and to the distance driven (e.g. odometer) by factor derived from the current situation. The current value of the scale is provided trough the SCS_TELEMETRY_CHANNEL_local_scale channel.
 
-===== Timing ETS2
+===== Timing ETS2/ATS
 
 The rendering time advances by variable steps depending on effective FPS. This time controls the animations and processing of inputs happens at start of each rendering frame. The physics tries to run with a fixed step staying at most one step ahead of the current rendering time. Each physics step is considered a frame for telemetry purposes. For rendering purposes the physically simulated position and orientation is interpolated from two surrounding physics steps.
