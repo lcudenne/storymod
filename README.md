@@ -1,4 +1,15 @@
-# storymod
+# CargoWorld
+Cargo Management for ETS2 and ATS Truck Simulators
+https://sites.google.com/site/storymodsite/
+
+Quick Start:
+
+1. Copy the telemetry dll into "EuroTruckSimulator2\bin\win_x64\plugins"
+
+2. Run Cargoworld.exe and ETS2 in any order
+
+
+# StoryMod
 StoryMod for ETS2 and ATS Truck Simulators
 https://sites.google.com/site/storymodsite/
 
