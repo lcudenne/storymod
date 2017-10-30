@@ -147,7 +147,7 @@ class SCS:
             self.x = float(datagramlist[1])
             self.y = float(datagramlist[2])
             self.z = float(datagramlist[3])
-            self.speed = float(datagramlist[4]) * 3.6
+            self.speed = float(datagramlist[4])
         if type == DATAGRAM_TYPE_CARGO:
             self.cargoid = datagramlist[1]
             self.cargoname = datagramlist[2]

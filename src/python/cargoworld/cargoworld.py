@@ -62,6 +62,9 @@ class Simulator(QObject):
         self.telemetry = None
         self.telemetrythread = None
         self.button = None
+        self.speedmultiplier = 1
+        self.speedwarning = 0
+        self.speedover = 0
 
     def setParameters(self, world, window):
         if window is not None:

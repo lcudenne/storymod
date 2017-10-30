@@ -103,11 +103,16 @@ class WorldInterface:
                                     "SCS Software Euro Truck Simulator 2",
                                     "img/sim_ets2_logo.png",
                                     world)
+        sim.speedmultiplier = 3.6
+        sim.speedwarning = 80
+        sim.speedover = 90
         world.simulators.add(sim)
         sim = cargoworld.Simulator("ATS",
                                     "SCS Software American Truck Simulator",
                                     "img/sim_ats_logo.png",
                                     world)
+        sim.speedwarning = 55
+        sim.speedover = 65
         world.simulators.add(sim)
         
 
@@ -328,7 +333,7 @@ class WorldInterface:
 
     def dumpPlayerTrailer(self, world, type, cargoarea):
         print("adding", type, "cargoarea", cargoarea)
-        filename = CARGOWORLD_DATABASE_BASENAME + "trailers_" + world.player.name + ".xml"
+        filename = CARGOWORLD_DATABASE_BASENAME + "_trailers_" + world.player.name + ".xml"
         files = glob.glob(filename)
         if not files:
             file = open(filename, "w")

@@ -40,9 +40,6 @@ import cargoworld
 
 # DEFINITIONS ----------------------------------------------------------------------
 
-CARGOWORLD_MAX_SPEED_THRESHOLD = 90
-CARGOWORLD_MAX_SPEED_THRESHOLD_TRAILER = 80
-
 TELEMETRY_TIMEOUT = 120
 
 TELEMETRY_STYLE_RED = "background-color:rgb(255,200,200); color:rgb(100, 100, 100)"
@@ -363,7 +360,7 @@ class TelemetryWidget(QWidget):
         x = self.simulator.telemetry.x
         y = self.simulator.telemetry.y
         z = self.simulator.telemetry.z
-        speed = self.simulator.telemetry.speed
+        speed = self.simulator.telemetry.speed * self.simulator.speedmultiplier
         engine = self.simulator.telemetry.engineenabled == 1
         pbrake = self.simulator.telemetry.parkingbrake == 1
         lblink = self.simulator.telemetry.lblinker == 1
@@ -386,9 +383,9 @@ class TelemetryWidget(QWidget):
 
         self.speedButton.setStyleSheet(TELEMETRY_STYLE_GREEN)
         if trailerconnected:
-            if speed > CARGOWORLD_MAX_SPEED_THRESHOLD_TRAILER:
+            if speed > self.simulator.speedwarning:
                 self.speedButton.setStyleSheet(TELEMETRY_STYLE_ORANGE)
-        if speed > CARGOWORLD_MAX_SPEED_THRESHOLD:
+        if speed > self.simulator.speedover:
             self.speedButton.setStyleSheet(TELEMETRY_STYLE_RED)
 
         if engine:
@@ -448,14 +445,16 @@ class CargoEntryWidget(QWidget):
         self.cargo = cargo
 
         self.layout = QGridLayout()
-        self.layout.setSpacing(2)
         self.setLayout(self.layout)
 
-        rect = QRect(0, 200, 300, 48)
+        self.setContentsMargins(0, 0, 0, 0)
+        self.layout.setContentsMargins(0, 0, 0, 0)
+        
+        rect = QRect(0, 120, 200, 48)
         self.iconWidget = QLabel()
         px = QPixmap(cargo.type.picture)
-        pxcrop = px.copy(rect)
-#        pxscale = px.scaled(48, 48, Qt.KeepAspectRatio)
+        pxscale = px.scaled(200, 200, Qt.KeepAspectRatio)
+        pxcrop = pxscale.copy(rect)
         self.iconWidget.setPixmap(pxcrop)
 
         self.nameWidget = QLabel()
@@ -506,8 +505,9 @@ class CargoEntryWidget(QWidget):
         self.layout.addWidget(self.nbSlotsWidget, 2, 3)
         self.layout.addWidget(self.fromLocationWidget, 1, 4)
         self.layout.addWidget(self.toLocationWidget, 2, 4)
-        self.layout.addWidget(self.fromTypeWidget, 1, 5)        
-        self.layout.addWidget(self.toTypeWidget, 2, 5)        
+
+#        self.layout.addWidget(self.fromTypeWidget, 1, 5)        
+#        self.layout.addWidget(self.toTypeWidget, 2, 5)        
 
 
 
@@ -708,7 +708,7 @@ class MainWindow(QWidget):
         scrollWidgetCargo.setWidgetResizable(True)
 
         scrolllayoutcargo = QGridLayout()
-        scrolllayoutcargo.setSpacing(10)
+        scrolllayoutcargo.setSpacing(4)
         scrollWidgetCargo.setLayout(scrolllayoutcargo)
 
         self.cargoEntryListWidget = QListWidget()
@@ -722,7 +722,7 @@ class MainWindow(QWidget):
         scrollWidgetCargoarea.setWidgetResizable(True)
 
         scrolllayoutcargoarea = QGridLayout()
-        scrolllayoutcargoarea.setSpacing(10)
+        scrolllayoutcargoarea.setSpacing(4)
         scrollWidgetCargoarea.setLayout(scrolllayoutcargoarea)
 
         self.cargoareaEntryListWidget = QListWidget()
