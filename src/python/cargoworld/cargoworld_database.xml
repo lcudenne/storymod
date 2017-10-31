@@ -7,7 +7,8 @@
     <LOCATION_TYPE type="parking" />    
     <LOCATION_TYPE type="car_dealer" inputcargo="car_parts,car" outputcargo="transport_pallets" />
     <LOCATION_TYPE type="car_manufacturer" inputcargo="car_parts,transport_pallets" outputcargo="car_parts,car" />
-    <LOCATION_TYPE type="construction_site" inputcargo="building_blocks" outputcargo="transport_pallets" />
+    <LOCATION_TYPE type="quarry" outputcargo="gravel" />  
+    <LOCATION_TYPE type="construction_site" inputcargo="building_blocks,gravel" outputcargo="transport_pallets" />
     <LOCATION_TYPE type="farm" outputcargo="fresh_food,cool_food,milk" />
     <LOCATION_TYPE type="furniture_store" outputcargo="furnitures" />
     <LOCATION_TYPE type="refinery" outputcargo="fuel,aviationfuel" />
@@ -25,20 +26,21 @@
     <LOCATION_TYPE type="construction_wharehouse" inputcargo="transport_pallets" outputcargo="building_blocks" />
     <LOCATION_TYPE type="food_wharehouse" inputcargo="fresh_food,food,transport_pallets" outputcargo="fresh_food,food" />    
     <LOCATION_TYPE type="cool_wharehouse" inputcargo="milk,cool_seafood,cool_food,fresh_food,transport_pallets" outputcargo="milk,cool_seafood,cool_food,fresh_food" />
-    <LOCATION_TYPE type="supermarket" inputcargo="milk,cool_seafood,fresh_food,cool_food,food,furnitures" outputcargo="transport_pallets" />    
+    <LOCATION_TYPE type="supermarket" inputcargo="milk,cool_seafood,fresh_food,cool_food,food,furnitures" outputcargo="transport_pallets" />
   </LOCATION_TYPES>
   <CARGO_TYPES>
     <CARGO_TYPE type="car" picture="img/cargo_car.png" cargoarea="cartransporter" nbslots="1" names="Cars" range="world" />    
-    <CARGO_TYPE type="car_parts" picture="img/cargo_default.png" cargoarea="curtain,container" nbslots="1" names="Engine parts,Interior parts,Suspension parts,Tires,Steering parts,Exhaust systems" range="world" />
-    <CARGO_TYPE type="truck_parts" picture="img/cargo_default.png" cargoarea="curtain,container" nbslots="1" names="Engine parts,Cabin parts,Suspension parts,Tires,Steering parts,Exhaust systems" range="world" />
-    <CARGO_TYPE type="parcels" picture="img/cargo_default.png" cargoarea="curtain,container" nbslots="1" names="Parcels" range="world" />
-    <CARGO_TYPE type="furnitures" picture="img/cargo_default.png" cargoarea="curtain,container" nbslots="1" names="Furnitures" range="world" />
+    <CARGO_TYPE type="car_parts" picture="img/cargo_default.png" cargoarea="curtain,container,rigidbox,tandembox" nbslots="1" names="Engine parts,Interior parts,Suspension parts,Tires,Steering parts,Exhaust systems" range="world" />
+    <CARGO_TYPE type="truck_parts" picture="img/cargo_default.png" cargoarea="curtain,container,rigidbox,tandembox" nbslots="1" names="Engine parts,Cabin parts,Suspension parts,Tires,Steering parts,Exhaust systems" range="world" />
+    <CARGO_TYPE type="parcels" picture="img/cargo_parcels.png" cargoarea="curtain,container,rigidbox,tandembox" nbslots="1" names="Parcels" range="world" />
+    <CARGO_TYPE type="furnitures" picture="img/cargo_default.png" cargoarea="curtain,container,rigidbox,tandembox" nbslots="1" names="Furnitures" range="world" />
+    <CARGO_TYPE type="gravel" picture="img/cargo_sand.png" cargoarea="dump" nbslots="1" names="Gravel,Sand" range="country" />    
     <CARGO_TYPE type="building_blocks" picture="img/cargo_default.png" cargoarea="curtain" nbslots="1" names="Concrete Blocks,Cinder Blocks" range="city" />
-    <CARGO_TYPE type="transport_pallets" picture="img/cargo_default.png" cargoarea="curtain" nbslots="1" names="Transport Pallets" range="city" />
-    <CARGO_TYPE type="cool_seafood" picture="img/cargo_default.png" cargoarea="fridge,cool" nbslots="1" names="Fish,Seafood" range="country" />
-    <CARGO_TYPE type="food" picture="img/cargo_default.png" cargoarea="curtain,container" nbslots="1" names="Canned Food,Bottled Water,Rice,Pasta" range="world" />    
-    <CARGO_TYPE type="fresh_food" picture="img/cargo_default.png" cargoarea="curtain,container,fridge" nbslots="1" names="Potatoes" range="country" />
-    <CARGO_TYPE type="cool_food" picture="img/cargo_default.png" cargoarea="fridge,cool" nbslots="1" names="Meat,Beef,Poultry,Vegetables,Salads" range="country" />
+    <CARGO_TYPE type="transport_pallets" picture="img/cargo_pallets.png" cargoarea="curtain,fridge,rigidbox,tandembox" nbslots="1" names="Transport Pallets" range="city" />
+    <CARGO_TYPE type="cool_seafood" picture="img/cargo_default.png" cargoarea="fridge,cool,rigidcool,tandemcool" nbslots="1" names="Fish,Seafood" range="country" />
+    <CARGO_TYPE type="food" picture="img/cargo_default.png" cargoarea="curtain,container,rigidbox,tandembox" nbslots="1" names="Canned Food,Bottled Water,Rice,Pasta" range="world" />    
+    <CARGO_TYPE type="fresh_food" picture="img/cargo_default.png" cargoarea="curtain,container,fridge,rigidbox,tandembox" nbslots="1" names="Potatoes" range="country" />
+    <CARGO_TYPE type="cool_food" picture="img/cargo_default.png" cargoarea="fridge,cool,rigidcool,tandemcool" nbslots="1" names="Meat,Beef,Poultry,Vegetables,Salads" range="country" />
     <CARGO_TYPE type="milk" picture="img/cargo_milk.png" cargoarea="foodcistern" nbslots="1" names="Milk" range="country" />
     <CARGO_TYPE type="fuel" picture="img/cargo_fuel.png" cargoarea="fuelcistern" nbslots="1" names="Fuel,Gasoline,Diesel" range="country" />
     <CARGO_TYPE type="aviationfuel" picture="img/cargo_fuel.png" cargoarea="fuelcistern" nbslots="1" names="Jet A,Jet A-1,Jet B,Avgas,Biofuel" range="country" />
@@ -52,6 +54,11 @@
     <CARGOAREA_TYPE type="foodcistern" nbslots="4" picture="img/trailer_cistern.png" />
     <CARGOAREA_TYPE type="container" nbslots="4" picture="img/trailer_container.png" />
     <CARGOAREA_TYPE type="cartransporter" nbslots="4" picture="img/trailer_cartransporter.png" />
+    <CARGOAREA_TYPE type="dump" nbslots="3" picture="img/trailer_dump.png" />
+    <CARGOAREA_TYPE type="rigidbox" nbslots="2" picture="img/trailer_rigid_box.png" />
+    <CARGOAREA_TYPE type="tandembox" nbslots="4" picture="img/trailer_tandem_box.png" />
+    <CARGOAREA_TYPE type="rigidcool" nbslots="2" picture="img/trailer_rigid_cool.png" />
+    <CARGOAREA_TYPE type="tandemcool" nbslots="4" picture="img/trailer_tandem_cool.png" />
   </CARGOAREA_TYPES>
   <TRAILER_TYPES>
     <TRAILER_TYPE type="krone.fridge" cargoarea="fridge" />

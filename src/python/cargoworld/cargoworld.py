@@ -38,7 +38,7 @@ import cargoworld_telemetry
 
 # DEFINITIONS ----------------------------------------------------------------------
 
-CARGOWORLD_VERSION = '0.1'
+CARGOWORLD_VERSION = '0.2'
 
 CARGOWORLD_LOCATION_DISTANCE_DETECTION = 100
 CARGOWORLD_AUTOMATA_LOOP_DELAY = 2

@@ -40,12 +40,14 @@ import cargoworld
 
 # DEFINITIONS ----------------------------------------------------------------------
 
-TELEMETRY_TIMEOUT = 120
+TELEMETRY_TIMEOUT = 60
 
 TELEMETRY_STYLE_RED = "background-color:rgb(255,200,200); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_GREEN = "background-color:rgb(200,255,200); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_GREY = "background-color:rgb(220,220,220); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_ORANGE = "background-color:rgb(255,200,100); color:rgb(100, 100, 100)"
+
+CARGOAREA_MAX_SLOTS = 4
 
 # ----------------------------------------------------------------------------------
 
@@ -530,14 +532,20 @@ class AboutWindow(QWidget):
         px = QPixmap("img/cargoworld_logo.png")
         self.logoWidget.setPixmap(px)
 
+        self.aboutText = QLabel()
+        self.aboutText.setText('CargoWorld' + cargoworld.CARGOWORLD_VERSION + ' - <https://sites.google.com/site/storymodsite>. This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.')
+        self.aboutText.setFixedWidth(512)
+        self.aboutText.setWordWrap(True)
+        
         self.layout.addWidget(self.logoWidget, 1, 1, 1, 1)
+        self.layout.addWidget(self.aboutText, 2, 1, 1, 1)
         
 
  
         
     def initUI(self):
-        self.setGeometry(100, 100, 640, 256)
-        self.setMaximumSize(640, 256)
+        self.setGeometry(100, 100, 640, 512)
+        self.setMaximumSize(640, 512)
         windowname = 'CargoWorld ' + cargoworld.CARGOWORLD_VERSION
         self.setWindowTitle(windowname)
         self.show()
@@ -768,24 +776,24 @@ class MainWindow(QWidget):
         self.layout.setColumnMinimumWidth(9, 64)
         
         self.layout.addWidget(simlogoWidget, 1, 1, 2, 1)
-        self.layout.addWidget(self.trailerWidget, 1, 2, 2, 4)
-        self.layout.addWidget(self.aboutbtn, 1, 6, 2, 4)
+        self.layout.addWidget(self.trailerWidget, 1, 2, 2, CARGOAREA_MAX_SLOTS)
+        self.layout.addWidget(self.aboutbtn, 1, 2 + CARGOAREA_MAX_SLOTS, 2, 4)
 
         self.layout.addWidget(nickWidget, 3, 1)
         self.layout.addWidget(self.telemetryWidget, 4, 1)
         self.layout.addWidget(self.positionWidget, 5, 1, 3, 1)
-        self.layout.addWidget(self.trailertypeWidget, 4, 6, 1, 4)
+        self.layout.addWidget(self.trailertypeWidget, 4, 2 + CARGOAREA_MAX_SLOTS, 1, 4)
         
-        self.layout.addWidget(scrollWidgetCargo, 3, 2, 2, 4)
-        self.layout.addWidget(scrollWidgetCargoarea, 5, 2, 3, 4)        
+        self.layout.addWidget(scrollWidgetCargo, 3, 2, 2, CARGOAREA_MAX_SLOTS)
+        self.layout.addWidget(scrollWidgetCargoarea, 5, 2, 3, CARGOAREA_MAX_SLOTS)        
 
-        self.layout.addWidget(self.graphbtn, 6, 7)
-        self.layout.addWidget(self.playbtn, 6, 8)
-        self.layout.addWidget(self.pausebtn, 6, 9)
+        self.layout.addWidget(self.graphbtn, 6, 3 + CARGOAREA_MAX_SLOTS)
+        self.layout.addWidget(self.playbtn, 6, 4 + CARGOAREA_MAX_SLOTS)
+        self.layout.addWidget(self.pausebtn, 6, 5 + CARGOAREA_MAX_SLOTS)
         
-        self.layout.addWidget(self.quitbtn, 7, 7, 1, 3)
+        self.layout.addWidget(self.quitbtn, 7, 3 + CARGOAREA_MAX_SLOTS, 1, 3)
 
-        self.layout.addWidget(self.msgWidget, 8, 1, 1, 9)
+        self.layout.addWidget(self.msgWidget, 8, 1, 1, 5 + CARGOAREA_MAX_SLOTS)
 
         self.worldthread = threading.Thread(target = self.world.start)
         self.world.newcargosignal.connect(self.refreshCargoList)
