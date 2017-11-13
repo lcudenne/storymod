@@ -66,13 +66,6 @@ class Simulator(QObject):
         self.speedwarning = 0
         self.speedover = 0
 
-    def setParameters(self, world, window):
-        if window is not None:
-            if self.id == 'ETS2':
-                window.getParametersETS2()
-            if self.id == 'ATS':
-                window.getParametersATS()
-
     def startTelemetry(self):
         if self.id == 'ETS2':
             self.telemetry = cargoworld_telemetry.SCS(self.world, self.host)
@@ -346,16 +339,13 @@ class World(QObject):
         self.window = window
         if self.window is not None:
             i = 0
-            for sim in world.simulators:
+            for sim in self.simulators:
                 self.window.addSimulator(sim, 10 + i)
                 i += 310
 
     def setSimulator(self, simulator):
         self.simulator = simulator
                 
-    def setSimulatorParameters(self):
-        if self.simulator is not None:
-            self.simulator.setParameters(world, self.window)
 
     def addPlayer(self, name, simulator):
         player = Player(0, name)

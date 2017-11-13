@@ -602,7 +602,7 @@ class MainWindow(QWidget):
         simbtn.show()
 
     def chooseSimulator(self, simulator):
-        self.world.simulator = simulator
+        self.world.setSimulator(simulator)
         for sim in self.world.simulators:
             sim.button.setParent(None)
             
@@ -615,12 +615,12 @@ class MainWindow(QWidget):
         self.setLayout(self.layout)
         simlogo.move(10,10)
         simlogo.show()
-        self.world.setSimulatorParameters()
+        self.getSimulatorParameters()
 
-    def getParametersETS2(self):
+    def getSimulatorParameters(self):
         if self.world.interface.config is not None:
-            nickvalue = self.world.interface.config.get("ETS2", "nick")
-            hostvalue = self.world.interface.config.get("ETS2", "host")
+            nickvalue = self.world.interface.config.get(self.world.simulator.id, "nick")
+            hostvalue = self.world.interface.config.get(self.world.simulator.id, "host")
         else:
             nickvalue = "Nickname"
             hostvalue = "localhost"
@@ -634,7 +634,7 @@ class MainWindow(QWidget):
         nick.show()
         hostlabel = QLabel(self)
         hostlabel.move(310,40)
-        hostlabel.setText("ETS2 Host IP")
+        hostlabel.setText("Host IP")
         hostlabel.show()
         host = QLineEdit(self)
         host.move(410,40)
@@ -642,11 +642,11 @@ class MainWindow(QWidget):
         host.show()
         btn = QPushButton('Validate', self)
         btn.move(410,70)
-        btn.clicked.connect(partial(self.validateParametersETS2,
+        btn.clicked.connect(partial(self.setSimulatorParameters,
                                     nicklabel, nick, hostlabel, host, btn))
         btn.show()
 
-    def validateParametersETS2(self, nicklabel, nick, hostlabel, host, btn):
+    def setSimulatorParameters(self, nicklabel, nick, hostlabel, host, btn):
         self.world.simulator.host = host.text()
         self.world.addPlayer(nick.text(), self.world.simulator)
         nicklabel.setParent(None)
@@ -656,22 +656,6 @@ class MainWindow(QWidget):
         btn.setParent(None)
         self.prepareMainWindow()
 
-    def getParametersATS(self):
-        nick = QLineEdit(self)
-        nick.move(310,10)
-        nick.setText('Nickname')
-        nick.show()
-        btn = QPushButton('Validate', self)
-        btn.move(310,40)
-        btn.clicked.connect(partial(self.validateParametersATS, nick, btn))
-        btn.show()
-
-    def validateParametersATS(self, nick, btn):
-        self.world.addPlayer(nick.text(), self.world.simulator)
-        nick.setParent(None)
-        btn.setParent(None)
-        self.prepareMainWindow()
-        
 
     def prepareMainWindow(self):
         QWidget().setLayout(self.layout)
