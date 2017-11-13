@@ -56,8 +56,24 @@
 // SDK
 
 #include "scssdk_telemetry.h"
+
+
+//#define SIM_TARGET_ETS2
+
+#ifdef SIM_TARGET_ETS2
+
 #include "eurotrucks2/scssdk_eut2.h"
 #include "eurotrucks2/scssdk_telemetry_eut2.h"
+#define SIMULATOR_ID "ETS2"
+
+#else
+
+#include "amtrucks/scssdk_ats.h"
+#include "amtrucks/scssdk_telemetry_ats.h"
+#define SIMULATOR_ID "ATS"
+
+#endif
+
 
 #include "telemetry_server_network.h"
 
@@ -531,7 +547,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 	// is game or version they do not support.
 
 	log_line("Game '%s' %u.%u", version_params->common.game_id, SCS_GET_MAJOR_VERSION(version_params->common.game_version), SCS_GET_MINOR_VERSION(version_params->common.game_version));
-
+	/*
 	if (strcmp(version_params->common.game_id, SCS_GAME_ID_EUT2) != 0) {
 		log_line("WARNING: Unsupported game, some features or values might behave incorrectly");
 	}
@@ -552,7 +568,7 @@ SCSAPI_RESULT scs_telemetry_init(const scs_u32_t version, const scs_telemetry_in
 			log_line("WARNING: Too new major version of the game, some features might behave incorrectly");
 		}
 	}
-
+	*/
 	// Register for events. Note that failure to register those basic events
 	// likely indicates invalid usage of the api or some critical problem. As the
 	// example requires all of them, we can not continue if the registration fails.
