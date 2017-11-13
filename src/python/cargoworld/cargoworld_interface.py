@@ -91,9 +91,11 @@ class WorldInterface:
             cfgfile = open(CARGOWORLD_CONFIGURATION_FILE, "w")
             if self.config is None:
                 self.config = configparser.ConfigParser()
-                self.config.add_section('ETS2')
-            self.config.set('ETS2', 'nick', world.player.name)
-            self.config.set('ETS2', 'host', world.simulator.telemetry.clienturl)
+            if not self.config.has_section(world.simulator.id):
+                self.config.add_section(world.simulator.id)
+            self.config.set(world.simulator.id, 'nick', world.player.name)
+            self.config.set(world.simulator.id, 'host', world.simulator.telemetry.clienturl)
+            self.config.set(world.simulator.id, 'companylogo', world.player.companylogo)
             self.config.write(cfgfile)
             cfgfile.close()
         

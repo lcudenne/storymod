@@ -597,8 +597,6 @@ class MainWindow(QWidget):
         simbtn.setIconSize(QSize(280,280))
         simbtn.move(xmove, 10)
         simbtn.clicked.connect(partial(self.chooseSimulator, simulator))
-        if simulator.id == 'ATS':
-            simbtn.setEnabled(False)
         simbtn.show()
 
     def chooseSimulator(self, simulator):
@@ -618,12 +616,19 @@ class MainWindow(QWidget):
         self.getSimulatorParameters()
 
     def getSimulatorParameters(self):
+        nickvalue = "Nickname"
+        hostvalue = "localhost"
+        companylogo = self.world.simulator.logo
+
         if self.world.interface.config is not None:
-            nickvalue = self.world.interface.config.get(self.world.simulator.id, "nick")
-            hostvalue = self.world.interface.config.get(self.world.simulator.id, "host")
-        else:
-            nickvalue = "Nickname"
-            hostvalue = "localhost"
+            config = self.world.interface.config
+            if config.has_option(self.world.simulator.id, "nick"):
+                nickvalue = config.get(self.world.simulator.id, "nick")
+            if config.has_option(self.world.simulator.id, "host"):
+                hostvalue = self.world.interface.config.get(self.world.simulator.id, "host")
+            if config.has_option(self.world.simulator.id, "companylogo"):
+                companylogo = self.world.interface.config.get(self.world.simulator.id, "companylogo")
+
         nicklabel = QLabel(self)
         nicklabel.move(310,10)
         nicklabel.setText("Nickname")
@@ -640,19 +645,43 @@ class MainWindow(QWidget):
         host.move(410,40)
         host.setText(hostvalue)
         host.show()
+        companylabel = QLabel(self)
+        companylabel.move(310,70)
+        companylabel.setText("Company logo")
+        companylabel.show()
+        company = QLineEdit(self)
+        company.move(410,70)
+        company.setText(companylogo)
+        company.show()
+        companybtn = QPushButton('Browse', self)
+        companybtn.move(510,70)
+        companybtn.clicked.connect(partial(self.getSimulatorParameterFile, company))
+        companybtn.show()
         btn = QPushButton('Validate', self)
-        btn.move(410,70)
+        btn.move(410,100)
         btn.clicked.connect(partial(self.setSimulatorParameters,
-                                    nicklabel, nick, hostlabel, host, btn))
+                                    nicklabel, nick, hostlabel, host,
+                                    companylabel, company, companybtn, btn))
         btn.show()
 
-    def setSimulatorParameters(self, nicklabel, nick, hostlabel, host, btn):
+    def getSimulatorParameterFile(self, company):
+        filename, _ = QFileDialog.getOpenFileName(self, 'Open file')
+        if filename != "":
+            company.setText(filename)
+
+        
+    def setSimulatorParameters(self, nicklabel, nick, hostlabel, host,
+                                    companylabel, company, companybtn, btn):
         self.world.simulator.host = host.text()
         self.world.addPlayer(nick.text(), self.world.simulator)
+        self.world.player.companylogo = company.text()
         nicklabel.setParent(None)
         nick.setParent(None)
         hostlabel.setParent(None)
         host.setParent(None)
+        companylabel.setParent(None)
+        company.setParent(None)
+        companybtn.setParent(None)
         btn.setParent(None)
         self.prepareMainWindow()
 
@@ -666,11 +695,11 @@ class MainWindow(QWidget):
         self.layout.setSpacing(10)
         self.setLayout(self.layout)
 
-        simlogoWidget = QLabel()
-        px = QPixmap(self.world.simulator.logo)
+        companylogoWidget = QLabel()
+        px = QPixmap(self.world.player.companylogo)
         pxscale = px.scaled(280,280, Qt.KeepAspectRatio)
-        simlogoWidget.setPixmap(pxscale)      
-        simlogoWidget.setAlignment(Qt.AlignTop)
+        companylogoWidget.setPixmap(pxscale)      
+        companylogoWidget.setAlignment(Qt.AlignTop)
         
         self.aboutbtn = QPushButton('', self)
         self.aboutbtn.setIcon(QIcon("img/cargoworld_icon.png"))
@@ -759,7 +788,7 @@ class MainWindow(QWidget):
         self.layout.setColumnMinimumWidth(8, 64)
         self.layout.setColumnMinimumWidth(9, 64)
         
-        self.layout.addWidget(simlogoWidget, 1, 1, 2, 1)
+        self.layout.addWidget(companylogoWidget, 1, 1, 2, 1)
         self.layout.addWidget(self.trailerWidget, 1, 2, 2, CARGOAREA_MAX_SLOTS)
         self.layout.addWidget(self.aboutbtn, 1, 2 + CARGOAREA_MAX_SLOTS, 2, 4)
 

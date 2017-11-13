@@ -98,6 +98,7 @@ class Player:
     def __init__(self, id, name):
         self.id = id
         self.name = name
+        self.companylogo = None
         self.simulator = None
         self.location = Location(name)
         self.closelocation = None
