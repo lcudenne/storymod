@@ -597,7 +597,7 @@ class MainWindow(QWidget):
         simbtn.setIconSize(QSize(280,280))
         simbtn.move(xmove, 10)
         simbtn.clicked.connect(partial(self.chooseSimulator, simulator))
-        if simulator.id is 'ATS':
+        if simulator.id == 'ATS':
             simbtn.setEnabled(False)
         simbtn.show()
 

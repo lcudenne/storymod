@@ -68,13 +68,13 @@ class Simulator(QObject):
 
     def setParameters(self, world, window):
         if window is not None:
-            if self.id is 'ETS2':
+            if self.id == 'ETS2':
                 window.getParametersETS2()
-            if self.id is 'ATS':
+            if self.id == 'ATS':
                 window.getParametersATS()
 
     def startTelemetry(self):
-        if self.id is 'ETS2':
+        if self.id == 'ETS2':
             self.telemetry = cargoworld_telemetry.SCS(self.world, self.host)
             self.telemetry.handler = self.telemetryHandler
             self.telemetry.connectToSimulator()
@@ -82,12 +82,12 @@ class Simulator(QObject):
             self.telemetrythread.start()
 
     def telemetryHandler(self):
-        if self.id is 'ETS2':
+        if self.id == 'ETS2':
             self.telemetrysignal.emit()
 
             
     def terminateTelemetry(self):
-         if self.id is 'ETS2':
+         if self.id == 'ETS2':
              if self.telemetry is not None:
                  self.telemetry.terminateTelemetry()
                  self.telemetry.closeSockets()
@@ -171,7 +171,6 @@ class Cargoarea:
             if self.area[i] is not None and self.area[i].id == cargo.id:
                 self.area[i] = None
 
-                
             
 
 # LOCATION ------------------------------------------------------------------------
@@ -401,7 +400,6 @@ class World(QObject):
                     self.player.cargoarea = None
                 self.lock.release()
                 self.cargoareasignal.emit()
-
             
     
     def updateClosestLocation(self):

@@ -99,21 +99,22 @@ class WorldInterface:
         
     
     def loadSimulators(self, world):
-        sim = cargoworld.Simulator("ETS2",
-                                    "SCS Software Euro Truck Simulator 2",
-                                    "img/sim_ets2_logo.png",
-                                    world)
-        sim.speedmultiplier = 3.6
-        sim.speedwarning = 80
-        sim.speedover = 90
-        world.simulators.add(sim)
-        sim = cargoworld.Simulator("ATS",
-                                    "SCS Software American Truck Simulator",
-                                    "img/sim_ats_logo.png",
-                                    world)
-        sim.speedwarning = 55
-        sim.speedover = 65
-        world.simulators.add(sim)
+
+        for file in glob.glob('.' + '/**/' + CARGOWORLD_DATABASE_BASENAME + '*.xml', recursive=True):
+            tree = etree.parse(file)
+            root = tree.getroot()        
+            for simnode in tree.findall('.//SIMULATOR'):
+                id = simnode.get('id')
+                name = simnode.get('name')
+                picture = simnode.get('picture')
+                speedmultiplier = float(simnode.get('speedmultiplier'))
+                speedwarning = int(simnode.get('speedwarning'))
+                speedover = int(simnode.get('speedover'))
+                sim = cargoworld.Simulator(id, name, picture, world)
+                sim.speedmultiplier = speedmultiplier
+                sim.speedwarning = speedwarning
+                sim.speedover = speedover
+                world.simulators.add(sim)
         
 
     def loadTypes(self, world):

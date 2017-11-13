@@ -1,6 +1,10 @@
 <?xml version="1.0"?>
 <!DOCTYPE CARGOWORLD_DATABASE>
 <CARGOWORLD_DATABASE version="0.1">
+  <SIMULATORS>
+    <SIMULATOR id="ETS2" name="SCS Software Euro Truck Simulator 2" picture="img/sim_ets2_logo.png" speedmultiplier="3.6" speedwarning="80" speedover="90" />
+    <SIMULATOR id="ATS" name="SCS Software American Truck Simulator" picture="img/sim_ats_logo.png" speedmultiplier="1" speedwarning="55" speedover="65" />
+  </SIMULATORS>
   <LOCATION_TYPES>
     <LOCATION_TYPE type="airport" inputcargo="parcels,aviationfuel" outputcargo="parcels" />
     <LOCATION_TYPE type="bus_station" />
