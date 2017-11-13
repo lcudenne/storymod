@@ -3,7 +3,7 @@
 <CARGOWORLD_DATABASE version="0.1">
   <SIMULATORS>
     <SIMULATOR id="ETS2" name="SCS Software Euro Truck Simulator 2" picture="img/sim_ets2_logo.png" speedmultiplier="3.6" speedwarning="80" speedover="90" />
-    <SIMULATOR id="ATS" name="SCS Software American Truck Simulator" picture="img/sim_ats_logo.png" speedmultiplier="1" speedwarning="55" speedover="65" />
+    <SIMULATOR id="ATS" name="SCS Software American Truck Simulator" picture="img/sim_ats_logo.png" speedmultiplier="2.2" speedwarning="55" speedover="65" />
   </SIMULATORS>
   <LOCATION_TYPES>
     <LOCATION_TYPE type="airport" inputcargo="parcels,aviationfuel" outputcargo="parcels" />
@@ -21,29 +21,31 @@
     <LOCATION_TYPE type="hotel" inputcargo="furnitures" />
     <LOCATION_TYPE type="offices" inputcargo="furnitures,parcels" />
     <LOCATION_TYPE type="fishing_port" inputcargo="transport_pallets" outputcargo="cool_seafood" />
-    <LOCATION_TYPE type="container_port" inputcargo="car_parts,truck_parts,parcels,food" outputcargo="car_parts,truck_parts,parcels,food" />
+    <LOCATION_TYPE type="container_port" inputcargo="electronics,car_parts,truck_parts,parcels,food" outputcargo="electronics,car_parts,truck_parts,parcels,food" />
     <LOCATION_TYPE type="tollgate" />
     <LOCATION_TYPE type="truck_dealer" inputcargo="truck_parts" outputcargo="transport_pallets" />
     <LOCATION_TYPE type="truck_repair" inputcargo="truck_parts" outputcargo="truck_parts,transport_pallets" />
     <LOCATION_TYPE type="truck_manufacturer" inputcargo="truck_parts,transport_pallets" outputcargo="truck_parts" />
+    <LOCATION_TYPE type="electronics_wharehouse" inputcargo="electronics,transport_pallets" outputcargo="electronics" />
     <LOCATION_TYPE type="parcels_wharehouse" inputcargo="parcels,transport_pallets" outputcargo="parcels" />
     <LOCATION_TYPE type="construction_wharehouse" inputcargo="transport_pallets" outputcargo="building_blocks" />
     <LOCATION_TYPE type="food_wharehouse" inputcargo="fresh_food,food,transport_pallets" outputcargo="fresh_food,food" />    
     <LOCATION_TYPE type="cool_wharehouse" inputcargo="milk,cool_seafood,cool_food,fresh_food,transport_pallets" outputcargo="milk,cool_seafood,cool_food,fresh_food" />
-    <LOCATION_TYPE type="supermarket" inputcargo="milk,cool_seafood,fresh_food,cool_food,food,furnitures" outputcargo="transport_pallets" />
+    <LOCATION_TYPE type="supermarket" inputcargo="electronics,milk,cool_seafood,fresh_food,cool_food,food,furnitures" outputcargo="transport_pallets" />
   </LOCATION_TYPES>
   <CARGO_TYPES>
     <CARGO_TYPE type="car" picture="img/cargo_car.png" cargoarea="cartransporter" nbslots="1" names="Cars" range="world" />    
-    <CARGO_TYPE type="car_parts" picture="img/cargo_default.png" cargoarea="curtain,container,rigidbox,tandembox" nbslots="1" names="Engine parts,Interior parts,Suspension parts,Tires,Steering parts,Exhaust systems" range="world" />
-    <CARGO_TYPE type="truck_parts" picture="img/cargo_default.png" cargoarea="curtain,container,rigidbox,tandembox" nbslots="1" names="Engine parts,Cabin parts,Suspension parts,Tires,Steering parts,Exhaust systems" range="world" />
-    <CARGO_TYPE type="parcels" picture="img/cargo_parcels.png" cargoarea="curtain,container,rigidbox,tandembox" nbslots="1" names="Parcels" range="world" />
-    <CARGO_TYPE type="furnitures" picture="img/cargo_default.png" cargoarea="curtain,container,rigidbox,tandembox" nbslots="1" names="Furnitures" range="world" />
+    <CARGO_TYPE type="car_parts" picture="img/cargo_default.png" cargoarea="ats_box_trailer,curtain,container,rigidbox,tandembox" nbslots="1" names="Engine parts,Interior parts,Suspension parts,Tires,Steering parts,Exhaust systems" range="world" />
+    <CARGO_TYPE type="truck_parts" picture="img/cargo_default.png" cargoarea="ats_box_trailer,curtain,container,rigidbox,tandembox" nbslots="1" names="Engine parts,Cabin parts,Suspension parts,Tires,Steering parts,Exhaust systems" range="world" />
+    <CARGO_TYPE type="electronics" picture="img/cargo_default.png" cargoarea="ats_box_trailer,curtain,container,rigidbox,tandembox" nbslots="1" names="Computers,Laptops,Smartphones,Tablets,Monitors,Televisions" range="world" />
+    <CARGO_TYPE type="parcels" picture="img/cargo_parcels.png" cargoarea="ats_box_trailer,curtain,container,rigidbox,tandembox" nbslots="1" names="Parcels" range="world" />
+    <CARGO_TYPE type="furnitures" picture="img/cargo_default.png" cargoarea="ats_box_trailer,curtain,container,rigidbox,tandembox" nbslots="1" names="Furnitures" range="world" />
     <CARGO_TYPE type="gravel" picture="img/cargo_sand.png" cargoarea="dump" nbslots="1" names="Gravel,Sand" range="country" />    
     <CARGO_TYPE type="building_blocks" picture="img/cargo_default.png" cargoarea="curtain" nbslots="1" names="Concrete Blocks,Cinder Blocks" range="city" />
-    <CARGO_TYPE type="transport_pallets" picture="img/cargo_pallets.png" cargoarea="curtain,fridge,rigidbox,tandembox" nbslots="1" names="Transport Pallets" range="city" />
+    <CARGO_TYPE type="transport_pallets" picture="img/cargo_pallets.png" cargoarea="ats_box_trailer,curtain,fridge,rigidbox,tandembox" nbslots="1" names="Transport Pallets" range="city" />
     <CARGO_TYPE type="cool_seafood" picture="img/cargo_default.png" cargoarea="fridge,cool,rigidcool,tandemcool" nbslots="1" names="Fish,Seafood" range="country" />
-    <CARGO_TYPE type="food" picture="img/cargo_default.png" cargoarea="curtain,container,rigidbox,tandembox" nbslots="1" names="Canned Food,Bottled Water,Rice,Pasta" range="world" />    
-    <CARGO_TYPE type="fresh_food" picture="img/cargo_default.png" cargoarea="curtain,container,fridge,rigidbox,tandembox" nbslots="1" names="Potatoes" range="country" />
+    <CARGO_TYPE type="food" picture="img/cargo_default.png" cargoarea="ats_box_trailer,curtain,container,rigidbox,tandembox" nbslots="1" names="Canned Food,Bottled Water,Rice,Pasta" range="world" />    
+    <CARGO_TYPE type="fresh_food" picture="img/cargo_default.png" cargoarea="ats_box_trailer,curtain,container,fridge,rigidbox,tandembox" nbslots="1" names="Potatoes" range="country" />
     <CARGO_TYPE type="cool_food" picture="img/cargo_default.png" cargoarea="fridge,cool,rigidcool,tandemcool" nbslots="1" names="Meat,Beef,Poultry,Vegetables,Salads" range="country" />
     <CARGO_TYPE type="milk" picture="img/cargo_milk.png" cargoarea="foodcistern" nbslots="1" names="Milk" range="country" />
     <CARGO_TYPE type="fuel" picture="img/cargo_fuel.png" cargoarea="fuelcistern" nbslots="1" names="Fuel,Gasoline,Diesel" range="country" />
@@ -63,6 +65,7 @@
     <CARGOAREA_TYPE type="tandembox" nbslots="4" picture="img/trailer_tandem_box.png" />
     <CARGOAREA_TYPE type="rigidcool" nbslots="2" picture="img/trailer_rigid_cool.png" />
     <CARGOAREA_TYPE type="tandemcool" nbslots="4" picture="img/trailer_tandem_cool.png" />
+    <CARGOAREA_TYPE type="ats_box_trailer" nbslots="2" picture="img/trailer_ats_box_trailer.png" />
   </CARGOAREA_TYPES>
   <TRAILER_TYPES>
     <TRAILER_TYPE type="krone.fridge" cargoarea="fridge" />

@@ -39,6 +39,7 @@ import cargoworld_telemetry
 # DEFINITIONS ----------------------------------------------------------------------
 
 CARGOWORLD_VERSION = '0.2'
+CARGOWORLD_VERSION_NAME = 'Los Pollos Hermanos'
 
 CARGOWORLD_LOCATION_DISTANCE_DETECTION = 100
 CARGOWORLD_AUTOMATA_LOOP_DELAY = 2
