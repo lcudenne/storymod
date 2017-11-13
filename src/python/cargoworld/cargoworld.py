@@ -67,23 +67,20 @@ class Simulator(QObject):
         self.speedover = 0
 
     def startTelemetry(self):
-        if self.id == 'ETS2':
-            self.telemetry = cargoworld_telemetry.SCS(self.world, self.host)
-            self.telemetry.handler = self.telemetryHandler
-            self.telemetry.connectToSimulator()
-            self.telemetrythread = threading.Thread(target = self.telemetry.processTelemetry)
-            self.telemetrythread.start()
+        self.telemetry = cargoworld_telemetry.SCS(self.world, self.host)
+        self.telemetry.handler = self.telemetryHandler
+        self.telemetry.connectToSimulator()
+        self.telemetrythread = threading.Thread(target = self.telemetry.processTelemetry)
+        self.telemetrythread.start()
 
     def telemetryHandler(self):
-        if self.id == 'ETS2':
-            self.telemetrysignal.emit()
+        self.telemetrysignal.emit()
 
             
     def terminateTelemetry(self):
-         if self.id == 'ETS2':
-             if self.telemetry is not None:
-                 self.telemetry.terminateTelemetry()
-                 self.telemetry.closeSockets()
+        if self.telemetry is not None:
+            self.telemetry.terminateTelemetry()
+            self.telemetry.closeSockets()
              
                 
     def display(self):
