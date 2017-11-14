@@ -452,7 +452,9 @@ class World(QObject):
                                 if locfrom.isInRange(location, cargotype.cargorange):
                                     if location.type is not None:
                                         if location.type.isCargoInput(cargotype.type):
-                                            locto = location
+                                            # disables inter-simulator cargos
+                                            if location.getPosition(self.simulator) is not None:
+                                                locto = location
                                 i += 1
                             if locto is not None and locto is not locfrom:
                                 name = cargotype.names[random.randint(0,
