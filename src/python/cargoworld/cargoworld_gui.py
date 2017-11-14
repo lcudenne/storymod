@@ -42,10 +42,11 @@ import cargoworld
 
 TELEMETRY_TIMEOUT = 60
 
-TELEMETRY_STYLE_RED = "background-color:rgb(255,200,200); color:rgb(100, 100, 100)"
+TELEMETRY_STYLE_RED = "background-color:rgb(255,180,180); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_GREEN = "background-color:rgb(200,255,200); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_GREY = "background-color:rgb(220,220,220); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_ORANGE = "background-color:rgb(255,200,100); color:rgb(100, 100, 100)"
+TELEMETRY_STYLE_BLUE = "background-color:rgb(100,200,255); color:rgb(100, 100, 100)"
 
 CARGOAREA_MAX_SLOTS = 4
 
@@ -781,6 +782,12 @@ class MainWindow(QWidget):
         p.setColor(self.msgWidget.backgroundRole(), self.bgcolor)
         self.msgWidget.setPalette(p)
 
+        self.slotindicators = [None]*CARGOAREA_MAX_SLOTS
+        for i in range(0,CARGOAREA_MAX_SLOTS):
+            indbtn = QPushButton('')
+            indbtn.setEnabled(False)
+            indbtn.setStyleSheet(TELEMETRY_STYLE_GREY)
+            self.slotindicators[i] = indbtn
         
         self.layout.setRowMinimumHeight(1, 20)
         self.layout.setColumnMinimumWidth(6, 88)
@@ -792,6 +799,9 @@ class MainWindow(QWidget):
         self.layout.addWidget(self.trailerWidget, 1, 2, 2, CARGOAREA_MAX_SLOTS)
         self.layout.addWidget(self.aboutbtn, 1, 2 + CARGOAREA_MAX_SLOTS, 2, 4)
 
+        for i in range(0,CARGOAREA_MAX_SLOTS):
+            self.layout.addWidget(self.slotindicators[i], 1, 2 + i)
+        
         self.layout.addWidget(nickWidget, 3, 1)
         self.layout.addWidget(self.telemetryWidget, 4, 1)
         self.layout.addWidget(self.positionWidget, 5, 1, 3, 1)
@@ -804,7 +814,7 @@ class MainWindow(QWidget):
         self.layout.addWidget(self.playbtn, 6, 4 + CARGOAREA_MAX_SLOTS)
         self.layout.addWidget(self.pausebtn, 6, 5 + CARGOAREA_MAX_SLOTS)
         
-        self.layout.addWidget(self.quitbtn, 7, 3 + CARGOAREA_MAX_SLOTS, 1, 3)
+        self.layout.addWidget(self.quitbtn, 7, 4 + CARGOAREA_MAX_SLOTS, 1, 2)
 
         self.layout.addWidget(self.msgWidget, 8, 1, 1, 5 + CARGOAREA_MAX_SLOTS)
 
@@ -842,6 +852,13 @@ class MainWindow(QWidget):
         self.trailerWidget.setPixmap(px)
         self.trailerWidget.setAlignment(Qt.AlignBottom)
         self.telemetryWidget.trailerConnectedButton.setStyleSheet(TELEMETRY_STYLE_RED)
+
+        for i in range(0,CARGOAREA_MAX_SLOTS):
+            if self.world.player.cargoarea is not None and i < self.world.player.cargoarea.type.nbslots:
+                self.slotindicators[i].setStyleSheet(TELEMETRY_STYLE_GREEN)
+            else:
+                self.slotindicators[i].setStyleSheet(TELEMETRY_STYLE_GREY)
+
         
 
     def updateMessage(self):
@@ -971,10 +988,15 @@ class MainWindow(QWidget):
                 self.refreshCargoList()
                 self.message = "cargo "+ cargo.name + " (" + cargo.type.type + ") loaded"
                 self.updateMessage()
+                for i in range(slot,slot + cargo.type.nbslots):
+                    self.slotindicators[i].setStyleSheet(TELEMETRY_STYLE_RED)
 
             
                 
     def removeCargoFromArea(self, cargo):
+        for i in range(cargo.areaslot,cargo.areaslot + cargo.type.nbslots):
+            self.slotindicators[i].setStyleSheet(TELEMETRY_STYLE_GREEN)
+        
         self.world.player.cargoarea.removeCargoFromArea(cargo, self.world.player)
         cargo.areaslot = -1
         cargo.cargowidget.setParent(None)
