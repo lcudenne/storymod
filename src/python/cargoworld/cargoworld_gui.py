@@ -48,7 +48,9 @@ TELEMETRY_STYLE_GREY = "background-color:rgb(220,220,220); color:rgb(100, 100, 1
 TELEMETRY_STYLE_ORANGE = "background-color:rgb(255,200,100); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_BLUE = "background-color:rgb(100,200,255); color:rgb(100, 100, 100)"
 
-CARGOAREA_MAX_SLOTS = 4
+CARGOAREA_MAX_SLOTS = 8
+CARGOAREA_AREA_WIDTH = 750
+CARGOAREA_CARGO_HEIGHT = 200
 
 # ----------------------------------------------------------------------------------
 
@@ -387,7 +389,7 @@ class TelemetryWidget(QWidget):
         self.speedButton.setStyleSheet(TELEMETRY_STYLE_GREEN)
         if trailerconnected:
             if speed > self.simulator.speedwarning:
-                self.speedButton.setStyleSheet(TELEMETRY_STYLE_ORANGE)
+                self.speedButton.setStyleSheet(TELEMETRY_STYLE_BLUE)
         if speed > self.simulator.speedover:
             self.speedButton.setStyleSheet(TELEMETRY_STYLE_RED)
 
@@ -450,6 +452,7 @@ class CargoEntryWidget(QWidget):
         self.layout = QGridLayout()
         self.setLayout(self.layout)
 
+        self.layout.setSpacing(0)
         self.setContentsMargins(0, 0, 0, 0)
         self.layout.setContentsMargins(0, 0, 0, 0)
         
@@ -534,7 +537,7 @@ class AboutWindow(QWidget):
         self.logoWidget.setPixmap(px)
 
         self.aboutText = QLabel()
-        self.aboutText.setText('CargoWorld' + cargoworld.CARGOWORLD_VERSION + ' - <https://sites.google.com/site/storymodsite>. This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.')
+        self.aboutText.setText('CargoWorld ' + cargoworld.CARGOWORLD_VERSION + ' (' + cargoworld.CARGOWORLD_VERSION_NAME + ') - <https://sites.google.com/site/storymodsite>. This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.')
         self.aboutText.setFixedWidth(512)
         self.aboutText.setWordWrap(True)
         
@@ -547,7 +550,7 @@ class AboutWindow(QWidget):
     def initUI(self):
         self.setGeometry(100, 100, 640, 512)
         self.setMaximumSize(640, 512)
-        windowname = 'CargoWorld ' + cargoworld.CARGOWORLD_VERSION
+        windowname = 'CargoWorld ' + cargoworld.CARGOWORLD_VERSION + ' (' + cargoworld.CARGOWORLD_VERSION_NAME + ')'
         self.setWindowTitle(windowname)
         self.show()
 
@@ -578,8 +581,8 @@ class MainWindow(QWidget):
         
     def initUI(self):      
         self.setGeometry(100, 100, 630, 320)
-        self.setMaximumSize(950, 900)
-        windowname = 'CargoWorld ' + cargoworld.CARGOWORLD_VERSION
+        self.setMaximumWidth(950)
+        windowname = 'CargoWorld ' + cargoworld.CARGOWORLD_VERSION + ' (' + cargoworld.CARGOWORLD_VERSION_NAME + ')'
         self.setWindowTitle(windowname)
         self.show()
 
@@ -711,9 +714,10 @@ class MainWindow(QWidget):
             self.setGeometry(self.frameGeometry().x(), self.frameGeometry().x(), 950, 900)
 
         self.layout = QGridLayout()
-        self.layout.setSpacing(10)
         self.setLayout(self.layout)
 
+        self.layout.setSpacing(0)
+ 
         companylogoWidget = QLabel()
         px = QPixmap(self.world.player.companylogo)
         pxscale = px.scaled(280,280, Qt.KeepAspectRatio)
@@ -805,12 +809,13 @@ class MainWindow(QWidget):
             indbtn = QPushButton('')
             indbtn.setEnabled(False)
             indbtn.setStyleSheet(TELEMETRY_STYLE_GREY)
+            indbtn.setFixedWidth(int(CARGOAREA_AREA_WIDTH / CARGOAREA_MAX_SLOTS))
             self.slotindicators[i] = indbtn
         
         self.layout.setRowMinimumHeight(1, 20)
 
         for i in range(0,CARGOAREA_MAX_SLOTS):
-            self.layout.setColumnMinimumWidth(2 + i, int(750 / CARGOAREA_MAX_SLOTS))
+            self.layout.setColumnMinimumWidth(2 + i, int(CARGOAREA_AREA_WIDTH / CARGOAREA_MAX_SLOTS))
         
         self.layout.setColumnMinimumWidth(6, 64)
         self.layout.setColumnMinimumWidth(7, 64)
@@ -1002,9 +1007,12 @@ class MainWindow(QWidget):
                 self.world.player.cargoarea.addCargoToArea(cargo, slot)
                 self.addCargoareaList(cargo)
                 cargoWidget = QLabel()
+
+                rect = QRect(0, 0, int(CARGOAREA_AREA_WIDTH / CARGOAREA_MAX_SLOTS)*cargo.type.nbslots, CARGOAREA_CARGO_HEIGHT)
                 px = QPixmap(cargo.type.picture)
-                pxscale = px.scaledToWidth(180*cargo.type.nbslots)
-                cargoWidget.setPixmap(pxscale)
+                pxscale = px.scaledToHeight(CARGOAREA_CARGO_HEIGHT)
+                pxcrop = pxscale.copy(rect)
+                cargoWidget.setPixmap(pxcrop)
                 cargoWidget.setAlignment(Qt.AlignTop)
                 cargo.cargowidget = cargoWidget
                 if self.world.player.showtrailer:
