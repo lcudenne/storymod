@@ -97,6 +97,7 @@ class Player:
         self.id = id
         self.name = name
         self.companylogo = None
+        self.showtrailer = True
         self.simulator = None
         self.location = Location(name)
         self.closelocation = None

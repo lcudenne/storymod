@@ -620,7 +620,8 @@ class MainWindow(QWidget):
         nickvalue = "Nickname"
         hostvalue = "localhost"
         companylogo = self.world.simulator.logo
-
+        showtrailer = True
+        
         if self.world.interface.config is not None:
             config = self.world.interface.config
             if config.has_option(self.world.simulator.id, "nick"):
@@ -628,10 +629,12 @@ class MainWindow(QWidget):
             if config.has_option(self.world.simulator.id, "host"):
                 hostvalue = self.world.interface.config.get(self.world.simulator.id, "host")
             if config.has_option(self.world.simulator.id, "companylogo"):
-                companylogo = self.world.interface.config.get(self.world.simulator.id, "companylogo")
+                companylogo = self.world.interface.config.get(self.world.simulator.id, "companylogo")           
+            if config.has_option(self.world.simulator.id, "showtrailer"):
+                showtrailer = self.world.interface.config.get(self.world.simulator.id, "showtrailer") == "True"
 
         nicklabel = QLabel(self)
-        nicklabel.move(310,10)
+        nicklabel.move(280,10)
         nicklabel.setText("Nickname")
         nicklabel.show()
         nick = QLineEdit(self)
@@ -639,30 +642,40 @@ class MainWindow(QWidget):
         nick.setText(nickvalue)
         nick.show()
         hostlabel = QLabel(self)
-        hostlabel.move(310,40)
+        hostlabel.move(280,40)
         hostlabel.setText("Host IP")
         hostlabel.show()
         host = QLineEdit(self)
         host.move(410,40)
         host.setText(hostvalue)
         host.show()
+        headerlabel = QLabel(self)
+        headerlabel.move(280,70)
+        headerlabel.setText("Show trailer")
+        headerlabel.show()
+        headercheck = QCheckBox('', self)
+        headercheck.setChecked(showtrailer)
+        headercheck.move(410, 70)
+        headercheck.show()
         companylabel = QLabel(self)
-        companylabel.move(310,70)
+        companylabel.move(280,100)
         companylabel.setText("Company logo")
         companylabel.show()
         company = QLineEdit(self)
-        company.move(410,70)
+        company.move(410,100)
         company.setText(companylogo)
         company.show()
         companybtn = QPushButton('Browse', self)
-        companybtn.move(510,70)
+        companybtn.move(510,100)
         companybtn.clicked.connect(partial(self.getSimulatorParameterFile, company))
         companybtn.show()
         btn = QPushButton('Validate', self)
-        btn.move(410,100)
+        btn.move(510,130)
         btn.clicked.connect(partial(self.setSimulatorParameters,
                                     nicklabel, nick, hostlabel, host,
-                                    companylabel, company, companybtn, btn))
+                                    companylabel, company, companybtn,
+                                    headerlabel, headercheck,
+                                    btn))
         btn.show()
 
     def getSimulatorParameterFile(self, company):
@@ -672,10 +685,12 @@ class MainWindow(QWidget):
 
         
     def setSimulatorParameters(self, nicklabel, nick, hostlabel, host,
-                                    companylabel, company, companybtn, btn):
+                                    companylabel, company, companybtn,
+                                    headerlabel, headercheck, btn):
         self.world.simulator.host = host.text()
         self.world.addPlayer(nick.text(), self.world.simulator)
         self.world.player.companylogo = company.text()
+        self.world.player.showtrailer = headercheck.isChecked()
         nicklabel.setParent(None)
         nick.setParent(None)
         hostlabel.setParent(None)
@@ -683,14 +698,17 @@ class MainWindow(QWidget):
         companylabel.setParent(None)
         company.setParent(None)
         companybtn.setParent(None)
+        headerlabel.setParent(None)
+        headercheck.setParent(None)
         btn.setParent(None)
         self.prepareMainWindow()
 
 
     def prepareMainWindow(self):
         QWidget().setLayout(self.layout)
-       
-        self.setGeometry(self.frameGeometry().x(), self.frameGeometry().x(), 950, 900)
+
+        if self.world.player.showtrailer:
+            self.setGeometry(self.frameGeometry().x(), self.frameGeometry().x(), 950, 900)
 
         self.layout = QGridLayout()
         self.layout.setSpacing(10)
@@ -790,14 +808,19 @@ class MainWindow(QWidget):
             self.slotindicators[i] = indbtn
         
         self.layout.setRowMinimumHeight(1, 20)
-        self.layout.setColumnMinimumWidth(6, 88)
+
+        for i in range(0,CARGOAREA_MAX_SLOTS):
+            self.layout.setColumnMinimumWidth(2 + i, int(750 / CARGOAREA_MAX_SLOTS))
+        
+        self.layout.setColumnMinimumWidth(6, 64)
         self.layout.setColumnMinimumWidth(7, 64)
         self.layout.setColumnMinimumWidth(8, 64)
         self.layout.setColumnMinimumWidth(9, 64)
         
-        self.layout.addWidget(companylogoWidget, 1, 1, 2, 1)
-        self.layout.addWidget(self.trailerWidget, 1, 2, 2, CARGOAREA_MAX_SLOTS)
-        self.layout.addWidget(self.aboutbtn, 1, 2 + CARGOAREA_MAX_SLOTS, 2, 4)
+        if self.world.player.showtrailer:
+            self.layout.addWidget(companylogoWidget, 1, 1, 2, 1)
+            self.layout.addWidget(self.trailerWidget, 1, 2, 2, CARGOAREA_MAX_SLOTS)
+            self.layout.addWidget(self.aboutbtn, 1, 2 + CARGOAREA_MAX_SLOTS, 2, 4)
 
         for i in range(0,CARGOAREA_MAX_SLOTS):
             self.layout.addWidget(self.slotindicators[i], 1, 2 + i)
@@ -984,7 +1007,8 @@ class MainWindow(QWidget):
                 cargoWidget.setPixmap(pxscale)
                 cargoWidget.setAlignment(Qt.AlignTop)
                 cargo.cargowidget = cargoWidget
-                self.layout.addWidget(cargoWidget, 2, 2 + slot, 1, cargo.type.nbslots)
+                if self.world.player.showtrailer:
+                    self.layout.addWidget(cargoWidget, 2, 2 + slot, 1, cargo.type.nbslots)
                 self.refreshCargoList()
                 self.message = "cargo "+ cargo.name + " (" + cargo.type.type + ") loaded"
                 self.updateMessage()

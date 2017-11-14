@@ -96,6 +96,7 @@ class WorldInterface:
             self.config.set(world.simulator.id, 'nick', world.player.name)
             self.config.set(world.simulator.id, 'host', world.simulator.telemetry.clienturl)
             self.config.set(world.simulator.id, 'companylogo', world.player.companylogo)
+            self.config.set(world.simulator.id, 'showtrailer', str(world.player.showtrailer))
             self.config.write(cfgfile)
             cfgfile.close()
         
@@ -224,15 +225,14 @@ class WorldInterface:
         for file in glob.glob('.' + '/**/' + CARGOWORLD_DATABASE_BASENAME + '*.xml', recursive=True):
             tree = etree.parse(file)
             root = tree.getroot()
-            positions = tree.find('.//POSITIONS')
-            if positions is not None:
+            for positions in tree.findall('.//POSITIONS'):
                 simid = positions.get('simulator')
                 simulator = None
                 for simcandidate in world.simulators:
                     if simcandidate.id == simid:
                         simulator = simcandidate
                 if simulator is not None:
-                    for positionnode in tree.findall('.//POSITION'):
+                    for positionnode in positions.findall('.//POSITION'):
                         name = positionnode.get('name')
                         type = positionnode.get('type')
 

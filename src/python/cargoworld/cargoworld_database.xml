@@ -68,6 +68,7 @@
     <CARGOAREA_TYPE type="ats_box_trailer" nbslots="2" picture="img/trailer_ats_box_trailer.png" />
   </CARGOAREA_TYPES>
   <TRAILER_TYPES>
+    <TRAILER_TYPE type="box.trailer.chassis" cargoarea="ats_box_trailer"/>    
     <TRAILER_TYPE type="krone.fridge" cargoarea="fridge" />
     <TRAILER_TYPE type="krone.cooliner" cargoarea="cool" />
     <TRAILER_TYPE type="krone.profiliner" cargoarea="curtain" />
