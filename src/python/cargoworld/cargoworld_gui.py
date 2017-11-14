@@ -474,6 +474,8 @@ class CargoEntryWidget(QWidget):
             self.loadButton.setEnabled(False)
             self.loadButton.clicked.connect(partial(self.mainwindow.removeCargoFromArea, cargo))
 
+        self.loadButton.setFixedWidth(128)
+
         self.typeWidget = QLabel()
         self.typeWidget.setText(str(cargo.type.type))
 
