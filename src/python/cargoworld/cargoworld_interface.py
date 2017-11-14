@@ -155,6 +155,8 @@ class WorldInterface:
             for cargoareanode in tree.findall('.//CARGOAREA_TYPE'):
                 type = cargoareanode.get('type')
                 nbslots = int(cargoareanode.get('nbslots'))
+                if nbslots > world.cargoareamaxslots:
+                    world.cargoareamaxslots = nbslots
                 picture = cargoareanode.get('picture')
                 cargoareatype = cargoworld.CargoareaType(type, nbslots, picture)
                 world.cargoareatypes[type] = cargoareatype

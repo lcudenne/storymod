@@ -322,6 +322,7 @@ class World(QObject):
         self.locationstree = None
         self.cargotypes = {}
         self.cargostree = None
+        self.cargoareamaxslots = 4
         self.cargoareatypes = {}
         self.trailertypes = {}
         self.players = set()

@@ -48,7 +48,6 @@ TELEMETRY_STYLE_GREY = "background-color:rgb(220,220,220); color:rgb(100, 100, 1
 TELEMETRY_STYLE_ORANGE = "background-color:rgb(255,200,100); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_BLUE = "background-color:rgb(100,200,255); color:rgb(100, 100, 100)"
 
-CARGOAREA_MAX_SLOTS = 8
 CARGOAREA_AREA_WIDTH = 750
 CARGOAREA_CARGO_HEIGHT = 200
 
@@ -804,18 +803,18 @@ class MainWindow(QWidget):
         p.setColor(self.msgWidget.backgroundRole(), self.bgcolor)
         self.msgWidget.setPalette(p)
 
-        self.slotindicators = [None]*CARGOAREA_MAX_SLOTS
-        for i in range(0,CARGOAREA_MAX_SLOTS):
+        self.slotindicators = [None]*self.world.cargoareamaxslots
+        for i in range(0,self.world.cargoareamaxslots):
             indbtn = QPushButton('')
             indbtn.setEnabled(False)
             indbtn.setStyleSheet(TELEMETRY_STYLE_GREY)
-            indbtn.setFixedWidth(int(CARGOAREA_AREA_WIDTH / CARGOAREA_MAX_SLOTS))
+            indbtn.setFixedWidth(int(CARGOAREA_AREA_WIDTH / self.world.cargoareamaxslots))
             self.slotindicators[i] = indbtn
         
         self.layout.setRowMinimumHeight(1, 20)
 
-        for i in range(0,CARGOAREA_MAX_SLOTS):
-            self.layout.setColumnMinimumWidth(2 + i, int(CARGOAREA_AREA_WIDTH / CARGOAREA_MAX_SLOTS))
+        for i in range(0,self.world.cargoareamaxslots):
+            self.layout.setColumnMinimumWidth(2 + i, int(CARGOAREA_AREA_WIDTH / self.world.cargoareamaxslots))
         
         self.layout.setColumnMinimumWidth(6, 64)
         self.layout.setColumnMinimumWidth(7, 64)
@@ -824,27 +823,27 @@ class MainWindow(QWidget):
         
         if self.world.player.showtrailer:
             self.layout.addWidget(companylogoWidget, 1, 1, 2, 1)
-            self.layout.addWidget(self.trailerWidget, 1, 2, 2, CARGOAREA_MAX_SLOTS)
-            self.layout.addWidget(self.aboutbtn, 1, 2 + CARGOAREA_MAX_SLOTS, 2, 4)
+            self.layout.addWidget(self.trailerWidget, 1, 2, 2, self.world.cargoareamaxslots)
+            self.layout.addWidget(self.aboutbtn, 1, 2 + self.world.cargoareamaxslots, 2, 4)
 
-        for i in range(0,CARGOAREA_MAX_SLOTS):
+        for i in range(0,self.world.cargoareamaxslots):
             self.layout.addWidget(self.slotindicators[i], 1, 2 + i)
         
         self.layout.addWidget(nickWidget, 3, 1)
         self.layout.addWidget(self.telemetryWidget, 4, 1)
         self.layout.addWidget(self.positionWidget, 5, 1, 3, 1)
-        self.layout.addWidget(self.trailertypeWidget, 4, 2 + CARGOAREA_MAX_SLOTS, 1, 4)
+        self.layout.addWidget(self.trailertypeWidget, 4, 2 + self.world.cargoareamaxslots, 1, 4)
         
-        self.layout.addWidget(scrollWidgetCargo, 3, 2, 2, CARGOAREA_MAX_SLOTS)
-        self.layout.addWidget(scrollWidgetCargoarea, 5, 2, 3, CARGOAREA_MAX_SLOTS)        
+        self.layout.addWidget(scrollWidgetCargo, 3, 2, 2, self.world.cargoareamaxslots)
+        self.layout.addWidget(scrollWidgetCargoarea, 5, 2, 3, self.world.cargoareamaxslots)        
 
-        self.layout.addWidget(self.graphbtn, 6, 3 + CARGOAREA_MAX_SLOTS)
-        self.layout.addWidget(self.playbtn, 6, 4 + CARGOAREA_MAX_SLOTS)
-        self.layout.addWidget(self.pausebtn, 6, 5 + CARGOAREA_MAX_SLOTS)
+        self.layout.addWidget(self.graphbtn, 6, 3 + self.world.cargoareamaxslots)
+        self.layout.addWidget(self.playbtn, 6, 4 + self.world.cargoareamaxslots)
+        self.layout.addWidget(self.pausebtn, 6, 5 + self.world.cargoareamaxslots)
         
-        self.layout.addWidget(self.quitbtn, 7, 4 + CARGOAREA_MAX_SLOTS, 1, 2)
+        self.layout.addWidget(self.quitbtn, 7, 4 + self.world.cargoareamaxslots, 1, 2)
 
-        self.layout.addWidget(self.msgWidget, 8, 1, 1, 5 + CARGOAREA_MAX_SLOTS)
+        self.layout.addWidget(self.msgWidget, 8, 1, 1, 5 + self.world.cargoareamaxslots)
 
         self.worldthread = threading.Thread(target = self.world.start)
         self.world.newcargosignal.connect(self.refreshCargoList)
@@ -881,7 +880,7 @@ class MainWindow(QWidget):
         self.trailerWidget.setAlignment(Qt.AlignBottom)
         self.telemetryWidget.trailerConnectedButton.setStyleSheet(TELEMETRY_STYLE_RED)
 
-        for i in range(0,CARGOAREA_MAX_SLOTS):
+        for i in range(0,self.world.cargoareamaxslots):
             if self.world.player.cargoarea is not None and i < self.world.player.cargoarea.type.nbslots:
                 self.slotindicators[i].setStyleSheet(TELEMETRY_STYLE_GREEN)
             else:
@@ -1008,7 +1007,7 @@ class MainWindow(QWidget):
                 self.addCargoareaList(cargo)
                 cargoWidget = QLabel()
 
-                rect = QRect(0, 0, int(CARGOAREA_AREA_WIDTH / CARGOAREA_MAX_SLOTS)*cargo.type.nbslots, CARGOAREA_CARGO_HEIGHT)
+                rect = QRect(0, 0, int(CARGOAREA_AREA_WIDTH / self.world.cargoareamaxslots)*cargo.type.nbslots, CARGOAREA_CARGO_HEIGHT)
                 px = QPixmap(cargo.type.picture)
                 pxscale = px.scaledToHeight(CARGOAREA_CARGO_HEIGHT)
                 pxcrop = pxscale.copy(rect)
