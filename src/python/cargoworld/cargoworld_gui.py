@@ -105,7 +105,8 @@ class TrailerTypeWidget(QWidget):
         self.typeCombo = QComboBox()
         self.typeCombo.setInsertPolicy(QComboBox.InsertAlphabetically)
         for areatype in self.world.cargoareatypes:
-            self.typeCombo.addItem(areatype)
+            if areatype.lower().startswith(self.world.simulator.id.lower()):
+                self.typeCombo.addItem(areatype)
         self.typeCombo.model().sort(0)
         
         self.dumpButton = QPushButton('Add trailer')
