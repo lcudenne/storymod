@@ -66,7 +66,7 @@
     <CARGOAREA_TYPE type="foodcistern" nbslots="6" picture="img/trailer_cistern.png" />
     <CARGOAREA_TYPE type="container" nbslots="4" picture="img/trailer_container.png" />
     <CARGOAREA_TYPE type="cartransporter" nbslots="6" picture="img/trailer_cartransporter.png" />
-    <CARGOAREA_TYPE type="dump" nbslots="4" picture="img/trailer_dump.png" />
+    <CARGOAREA_TYPE type="dump" nbslots="3" picture="img/trailer_dump.png" />
     <CARGOAREA_TYPE type="rigidbox" nbslots="3" picture="img/trailer_rigid_box.png" />
     <CARGOAREA_TYPE type="tandembox" nbslots="6" picture="img/trailer_tandem_box.png" />
     <CARGOAREA_TYPE type="rigidcool" nbslots="3" picture="img/trailer_rigid_cool.png" />
@@ -104,6 +104,7 @@
     <TRAILER_TYPE type="schw_curtain.chassisx2edlc_schwarzmullerx2esii" cargoarea="curtain" />
     <TRAILER_TYPE type="schw_reefer.chassisx2edlc_schwarzmullerx2esii" cargoarea="cool" />
     <TRAILER_TYPE type="fuel_cistern" cargoarea="fuelcistern"/>
+    <TRAILER_TYPE type="s_ki_solid" cargoarea="dump"/>    
     <TRAILER_TYPE type="car_transporter" cargoarea="cartransporter"/>
     <TRAILER_TYPE type="schw_cistern_food.chassisx2edlc_schwarzmullerx2esii" cargoarea="foodcistern"/>
     <TRAILER_TYPE type="food_cistern" cargoarea="foodcistern"/>
