@@ -726,7 +726,10 @@ class MainWindow(QWidget):
         btn.show()
 
     def getSimulatorParameterFile(self, company):
-        filename, _ = QFileDialog.getOpenFileName(self, 'Open file')
+        filename, _ = QFileDialog.getOpenFileName(self,
+                                                  'Select company logo image file',
+                                                  '.',
+                                                  'Images (*.png *.jpg *.jpeg)')
         if filename != "":
             company.setText(filename)
 
