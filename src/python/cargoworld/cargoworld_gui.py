@@ -924,7 +924,6 @@ class MainWindow(QWidget):
 
         self.trailerWidget.setPixmap(px)
         self.trailerWidget.setAlignment(Qt.AlignBottom)
-        self.telemetryWidget.trailerConnectedButton.setStyleSheet(TELEMETRY_STYLE_RED)
 
         for i in range(0,self.world.cargoareamaxslots):
             if self.world.player.cargoarea is not None and i < self.world.player.cargoarea.type.nbslots:

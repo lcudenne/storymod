@@ -28,14 +28,15 @@
     <LOCATION_TYPE type="truck_manufacturer" inputcargo="truck_parts,transport_pallets" outputcargo="truck_parts" />
     <LOCATION_TYPE type="electronics_wharehouse" inputcargo="electronics,transport_pallets" outputcargo="electronics" />
     <LOCATION_TYPE type="parcels_wharehouse" inputcargo="parcels,transport_pallets" outputcargo="parcels" />
-    <LOCATION_TYPE type="quarry" outputcargo="gravel" />  
+    <LOCATION_TYPE type="quarry" outputcargo="gravel" />
+    <LOCATION_TYPE type="quarry_wharehouse" inputcargo="fuel,gravel" outputcargo="gravel" />  
     <LOCATION_TYPE type="construction_roadwork" inputcargo="gravel" />
     <LOCATION_TYPE type="construction_site" inputcargo="building_blocks,gravel" outputcargo="transport_pallets" />
     <LOCATION_TYPE type="construction_wharehouse" inputcargo="fuel,gravel,building_blocks,transport_pallets" outputcargo="gravel,building_blocks" />
     <LOCATION_TYPE type="construction_company" inputcargo="building_blocks,transport_pallets" outputcargo="building_blocks" />
     <LOCATION_TYPE type="food_wharehouse" inputcargo="fresh_food,food,transport_pallets" outputcargo="fresh_food,food" />    
     <LOCATION_TYPE type="cool_wharehouse" inputcargo="milk,cool_seafood,cool_food,fresh_food,transport_pallets" outputcargo="milk,cool_seafood,cool_food,fresh_food" />
-    <LOCATION_TYPE type="supermarket" inputcargo="electronics,milk,cool_seafood,fresh_food,cool_food,food,furnitures" outputcargo="transport_pallets" />
+    <LOCATION_TYPE type="supermarket" inputcargo="electronics,milk,cool_seafood,fresh_food,cool_food,food,furnitures" outputcargo="transport_pallets,furnitures" />
   </LOCATION_TYPES>
   <CARGO_TYPES>
     <CARGO_TYPE type="farm_equipment" picture="img/cargo_default.png" cargoarea="ats_box_long_trailer,ats_box_trailer,ats_curtain_trailer,ats_curtain_long_trailer,ats_gooseneck_trailer,curtain,container,rigidbox,tandembox" nbslots="1" names="Farm equipment,Agricultural equipment,Agricultural supplies" range="country" />        
@@ -90,6 +91,7 @@
     <TRAILER_TYPE type="box.trailer.chassis" cargoarea="ats_box_trailer"/>    
     <TRAILER_TYPE type="box_l.trailer.chassis" cargoarea="ats_box_long_trailer"/>
     <TRAILER_TYPE type="dump_b.trailer.chassis" cargoarea="ats_dumper_trailer"/>    
+    <TRAILER_TYPE type="food_tank.trailer.chassis" cargoarea="ats_food_tank_trailer"/>
     <TRAILER_TYPE type="fuel.trailer.chassis" cargoarea="ats_fuel_tank_trailer"/>
     <TRAILER_TYPE type="fuel_l.trailer.chassis" cargoarea="ats_fuel_tank_long_trailer"/>
     <TRAILER_TYPE type="gooseneck_b.trailer.chassis" cargoarea="ats_gooseneck_trailer"/>
