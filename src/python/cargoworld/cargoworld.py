@@ -481,8 +481,8 @@ class World(QObject):
     def terminate(self):
         self.state = 'TERMINATE'
         if self.interface is not None:
-            if self.interface.which("dot") is not None:
-                self.interface.cargograph.world(self)
+            # if self.interface.which("dot") is not None:
+            #     self.interface.cargograph.world(self)
             if self.player is not None:
                 self.interface.dumpDeliveredCargo(self.player)
         if self.simulator is not None:

@@ -558,6 +558,49 @@ class AboutWindow(QWidget):
     def closeEvent(self, event):
         event.accept()
 
+# ----------------------------------------------------------------------------------
+
+class CargoGraphWindow(QWidget):
+    
+    def __init__(self, world):
+        super().__init__()
+        self.initUI()
+        self.world = world
+        self.layout = None
+        self.bgcolor = self.palette().color(QPalette.Background)
+        self.setWindowIcon(QIcon('img/cargoworld_icon.png'))
+        self.layout = QGridLayout()
+        self.layout.setSpacing(10)
+        self.setLayout(self.layout)
+
+        self.instrText = QLabel()
+        self.instrText.setText('Copy the code below into one of the following online Graphviz website to generate the CargoGraph:<br/><a href="https://dreampuf.github.io/GraphvizOnline/">https://dreampuf.github.io/GraphvizOnline/</a><br/><a href="http://www.webgraphviz.com/">http://www.webgraphviz.com/</a>')
+        self.instrText.setFixedWidth(512)
+        self.instrText.setWordWrap(True)
+        self.instrText.setOpenExternalLinks(True)
+        
+        self.graphText = QLineEdit()
+        self.graphText.setText(world.interface.cargograph.source())
+        self.graphText.setFixedWidth(512)
+        self.graphText.setReadOnly(True)
+        
+        self.layout.addWidget(self.instrText, 1, 1, 1, 1)
+        self.layout.addWidget(self.graphText, 2, 1, 1, 1)
+        
+
+ 
+        
+    def initUI(self):
+        self.setGeometry(100, 100, 600, 128)
+        self.setMaximumSize(600, 128)
+        windowname = 'CargoWorld ' + cargoworld.CARGOWORLD_VERSION + ' (' + cargoworld.CARGOWORLD_VERSION_NAME + ')'
+        self.setWindowTitle(windowname)
+        self.show()
+        
+    def closeEvent(self, event):
+        event.accept()
+
+
         
 # ----------------------------------------------------------------------------------
 
@@ -895,10 +938,12 @@ class MainWindow(QWidget):
             self.msgWidget.setText(self.message)
 
     def graph(self):
-        if self.world.interface.which("dot") is not None:
-            if self.world.interface.cargograph.graph is not None:
+        if self.world.interface.cargograph.graph is not None:
+            if self.world.interface.which("dot") is not None:
                 self.world.interface.cargograph.render()
                 webbrowser.open(r'cargograph.pdf')
+            else:                
+                self.graphW = CargoGraphWindow(self.world)
 
 
     def play(self):

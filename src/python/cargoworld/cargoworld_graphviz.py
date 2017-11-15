@@ -72,6 +72,10 @@ class CargoGraph():
         for cargo in cargolist:
             self.addCargo(cargo)        
 
+    def source(self):
+        self.create()
+        return self.graph.source
+            
     def render(self):
         self.create()
         self.graph.format = 'pdf'
