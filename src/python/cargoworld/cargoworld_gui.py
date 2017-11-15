@@ -288,27 +288,27 @@ class TelemetryWidget(QWidget):
 
         self.speedButton = QPushButton('0')
         self.speedButton.setEnabled(False)
-        self.speedButton.setStyleSheet(TELEMETRY_STYLE_GREEN)
+        self.speedButton.setStyleSheet(TELEMETRY_STYLE_GREY)
         
         self.engineButton = QPushButton('Engine')
         self.engineButton.setEnabled(False)
-        self.engineButton.setStyleSheet(TELEMETRY_STYLE_RED)
+        self.engineButton.setStyleSheet(TELEMETRY_STYLE_GREY)
 
         self.pbrakeButton = QPushButton('P.Brake')
         self.pbrakeButton.setEnabled(False)
-        self.pbrakeButton.setStyleSheet(TELEMETRY_STYLE_RED)
+        self.pbrakeButton.setStyleSheet(TELEMETRY_STYLE_GREY)
 
         self.lblinkButton = QPushButton('<')
         self.lblinkButton.setEnabled(False)
-        self.lblinkButton.setStyleSheet(TELEMETRY_STYLE_GREEN)
+        self.lblinkButton.setStyleSheet(TELEMETRY_STYLE_GREY)
 
         self.trailerConnectedButton = QPushButton('trailer')
         self.trailerConnectedButton.setEnabled(False)
-        self.trailerConnectedButton.setStyleSheet(TELEMETRY_STYLE_RED)
+        self.trailerConnectedButton.setStyleSheet(TELEMETRY_STYLE_GREY)
 
         self.rblinkButton = QPushButton('>')
         self.rblinkButton.setEnabled(False)
-        self.rblinkButton.setStyleSheet(TELEMETRY_STYLE_GREEN)
+        self.rblinkButton.setStyleSheet(TELEMETRY_STYLE_GREY)
 
         
 
@@ -1123,6 +1123,12 @@ class MainWindow(QWidget):
             self.telemetryWidget.coordyWidget.setText('0')
             self.telemetryWidget.coordzWidget.setText('0')
             self.telemetryWidget.speedButton.setText('0')
+            self.telemetryWidget.speedButton.setStyleSheet(TELEMETRY_STYLE_GREY)
+            self.telemetryWidget.engineButton.setStyleSheet(TELEMETRY_STYLE_GREY)
+            self.telemetryWidget.pbrakeButton.setStyleSheet(TELEMETRY_STYLE_GREY)
+            self.telemetryWidget.lblinkButton.setStyleSheet(TELEMETRY_STYLE_GREY)
+            self.telemetryWidget.trailerConnectedButton.setStyleSheet(TELEMETRY_STYLE_GREY)
+            self.telemetryWidget.rblinkButton.setStyleSheet(TELEMETRY_STYLE_GREY)            
             self.trailertypeWidget.trailerWidget.setText('')
             self.trailertypeWidget.trailerareaWidget.setText('')            
             self.trailertypeWidget.dumpButton.setEnabled(False)

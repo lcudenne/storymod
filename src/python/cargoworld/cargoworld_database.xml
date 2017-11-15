@@ -89,6 +89,7 @@
     <TRAILER_TYPE type="curtain_l.trailer.chassis" cargoarea="ats_curtain_long_trailer"/>    
     <TRAILER_TYPE type="box.trailer.chassis" cargoarea="ats_box_trailer"/>    
     <TRAILER_TYPE type="box_l.trailer.chassis" cargoarea="ats_box_long_trailer"/>
+    <TRAILER_TYPE type="dump_b.trailer.chassis" cargoarea="ats_dumper_trailer"/>    
     <TRAILER_TYPE type="fuel.trailer.chassis" cargoarea="ats_fuel_tank_trailer"/>
     <TRAILER_TYPE type="fuel_l.trailer.chassis" cargoarea="ats_fuel_tank_long_trailer"/>
     <TRAILER_TYPE type="gooseneck_b.trailer.chassis" cargoarea="ats_gooseneck_trailer"/>
@@ -107,5 +108,8 @@
     <TRAILER_TYPE type="schw_cistern_food.chassisx2edlc_schwarzmullerx2esii" cargoarea="foodcistern"/>
     <TRAILER_TYPE type="food_cistern" cargoarea="foodcistern"/>
     <TRAILER_TYPE type="gooseneck" cargoarea="container"/>
+
+    <TRAILER_TYPE type="chassis.trailer.tandem.coolliner" cargoarea="tandemcool"/>
+    
   </TRAILER_TYPES>
 </CARGOWORLD_DATABASE>
