@@ -49,39 +49,39 @@
     <CARGO_TYPE type="building_blocks" picture="img/cargo_default.png" cargoarea="ats_curtain_trailer,ats_curtain_long_trailer,curtain" nbslots="1" names="Concrete Blocks,Cinder Blocks" range="city" />
     <CARGO_TYPE type="transport_pallets" picture="img/cargo_pallets.png" cargoarea="ats_box_long_trailer,ats_box_trailer,ats_curtain_trailer,ats_curtain_long_trailer,curtain,fridge,rigidbox,tandembox" nbslots="1" names="Transport Pallets" range="city" />
      <CARGO_TYPE type="crops" picture="img/cargo_default.png" cargoarea="ats_box_long_trailer,ats_box_trailer,ats_curtain_trailer,ats_curtain_long_trailer,ats_gooseneck_trailer,curtain,container,fridge,rigidbox,tandembox" nbslots="1" names="Crops" range="country" />   
-    <CARGO_TYPE type="cool_seafood" picture="img/cargo_default.png" cargoarea="ats_reefer_trailer,ats_reefer_long_trailer,fridge,cool,rigidcool,tandemcool" nbslots="1" names="Fish,Seafood" range="country" />
+    <CARGO_TYPE type="cool_seafood" picture="img/cargo_fish.png" cargoarea="ats_reefer_trailer,ats_reefer_long_trailer,fridge,cool,rigidcool,tandemcool" nbslots="1" names="Fish,Seafood" range="country" />
     <CARGO_TYPE type="food" picture="img/cargo_default.png" cargoarea="ats_box_long_trailer,ats_box_trailer,ats_curtain_trailer,ats_curtain_long_trailer,ats_gooseneck_trailer,curtain,container,rigidbox,tandembox" nbslots="1" names="Canned Food,Bottled Water,Rice,Pasta" range="world" />    
-    <CARGO_TYPE type="fresh_food" picture="img/cargo_default.png" cargoarea="ats_box_long_trailer,ats_box_trailer,ats_curtain_trailer,ats_curtain_long_trailer,ats_gooseneck_trailer,curtain,container,fridge,rigidbox,tandembox" nbslots="1" names="Potatoes" range="country" />
-    <CARGO_TYPE type="cool_food" picture="img/cargo_default.png" cargoarea="ats_reefer_trailer,ats_reefer_long_trailer,fridge,cool,rigidcool,tandemcool" nbslots="1" names="Meat,Beef,Poultry,Vegetables,Salads" range="country" />
+    <CARGO_TYPE type="fresh_food" picture="img/cargo_vegetables.png" cargoarea="ats_box_long_trailer,ats_box_trailer,ats_gooseneck_trailer,container,fridge,rigidbox,tandembox" nbslots="1" names="Potatoes,Tomatoes,Vegetables,Salads" range="country" />
+    <CARGO_TYPE type="cool_food" picture="img/cargo_default.png" cargoarea="ats_reefer_trailer,ats_reefer_long_trailer,fridge,cool,rigidcool,tandemcool" nbslots="1" names="Meat,Beef,Poultry" range="country" />
     <CARGO_TYPE type="milk" picture="img/cargo_milk.png" cargoarea="foodcistern,ats_food_tank_trailer" nbslots="1" names="Milk" range="country" />
     <CARGO_TYPE type="fuel" picture="img/cargo_fuel.png" cargoarea="fuelcistern,ats_fuel_tank_trailer,ats_fuel_tank_long_trailer" nbslots="1" names="Fuel,Gasoline,Diesel" range="country" />
     <CARGO_TYPE type="aviationfuel" picture="img/cargo_fuel.png" cargoarea="fuelcistern,ats_fuel_tank_trailer,ats_fuel_tank_long_trailer" nbslots="1" names="Jet A,Jet A-1,Jet B,Avgas,Biofuel" range="country" />
   </CARGO_TYPES>
   <CARGOAREA_TYPES>
-    <CARGOAREA_TYPE type="curtain" nbslots="4" picture="img/trailer_curtain.png" />
-    <CARGOAREA_TYPE type="fridge" nbslots="4" picture="img/trailer_fridge.png" />
-    <CARGOAREA_TYPE type="cool" nbslots="4" picture="img/trailer_cool.png" />
-    <CARGOAREA_TYPE type="flatbed" nbslots="4" picture="img/trailer_flatbed.png" />
-    <CARGOAREA_TYPE type="fuelcistern" nbslots="4" picture="img/trailer_cistern.png" />
-    <CARGOAREA_TYPE type="foodcistern" nbslots="4" picture="img/trailer_cistern.png" />
+    <CARGOAREA_TYPE type="curtain" nbslots="6" picture="img/trailer_curtain.png" />
+    <CARGOAREA_TYPE type="fridge" nbslots="6" picture="img/trailer_fridge.png" />
+    <CARGOAREA_TYPE type="cool" nbslots="6" picture="img/trailer_cool.png" />
+    <CARGOAREA_TYPE type="flatbed" nbslots="6" picture="img/trailer_flatbed.png" />
+    <CARGOAREA_TYPE type="fuelcistern" nbslots="6" picture="img/trailer_cistern.png" />
+    <CARGOAREA_TYPE type="foodcistern" nbslots="6" picture="img/trailer_cistern.png" />
     <CARGOAREA_TYPE type="container" nbslots="4" picture="img/trailer_container.png" />
-    <CARGOAREA_TYPE type="cartransporter" nbslots="4" picture="img/trailer_cartransporter.png" />
-    <CARGOAREA_TYPE type="dump" nbslots="3" picture="img/trailer_dump.png" />
-    <CARGOAREA_TYPE type="rigidbox" nbslots="2" picture="img/trailer_rigid_box.png" />
-    <CARGOAREA_TYPE type="tandembox" nbslots="4" picture="img/trailer_tandem_box.png" />
-    <CARGOAREA_TYPE type="rigidcool" nbslots="2" picture="img/trailer_rigid_cool.png" />
-    <CARGOAREA_TYPE type="tandemcool" nbslots="4" picture="img/trailer_tandem_cool.png" />
+    <CARGOAREA_TYPE type="cartransporter" nbslots="6" picture="img/trailer_cartransporter.png" />
+    <CARGOAREA_TYPE type="dump" nbslots="4" picture="img/trailer_dump.png" />
+    <CARGOAREA_TYPE type="rigidbox" nbslots="3" picture="img/trailer_rigid_box.png" />
+    <CARGOAREA_TYPE type="tandembox" nbslots="6" picture="img/trailer_tandem_box.png" />
+    <CARGOAREA_TYPE type="rigidcool" nbslots="3" picture="img/trailer_rigid_cool.png" />
+    <CARGOAREA_TYPE type="tandemcool" nbslots="6" picture="img/trailer_tandem_cool.png" />
     
-    <CARGOAREA_TYPE type="ats_box_long_trailer" nbslots="8" picture="img/trailer_ats_box_long_trailer.png" />
-    <CARGOAREA_TYPE type="ats_box_trailer" nbslots="6" picture="img/trailer_ats_box_trailer.png" />
-    <CARGOAREA_TYPE type="ats_curtain_long_trailer" nbslots="8" picture="img/trailer_ats_curtain_trailer.png" />
-    <CARGOAREA_TYPE type="ats_curtain_trailer" nbslots="6" picture="img/trailer_ats_curtain_trailer.png" />
+    <CARGOAREA_TYPE type="ats_box_long_trailer" nbslots="6" picture="img/trailer_ats_box_long_trailer.png" />
+    <CARGOAREA_TYPE type="ats_box_trailer" nbslots="3" picture="img/trailer_ats_box_trailer.png" />
+    <CARGOAREA_TYPE type="ats_curtain_long_trailer" nbslots="6" picture="img/trailer_ats_curtain_trailer.png" />
+    <CARGOAREA_TYPE type="ats_curtain_trailer" nbslots="4" picture="img/trailer_ats_curtain_trailer.png" />
     <CARGOAREA_TYPE type="ats_food_tank_trailer" nbslots="4" picture="img/trailer_ats_food_tank_trailer.png" />
     <CARGOAREA_TYPE type="ats_fuel_tank_trailer" nbslots="6" picture="img/trailer_ats_fuel_tank_trailer.png" />
-    <CARGOAREA_TYPE type="ats_fuel_tank_long_trailer" nbslots="8" picture="img/trailer_ats_fuel_tank_trailer.png" />
+    <CARGOAREA_TYPE type="ats_fuel_tank_long_trailer" nbslots="6" picture="img/trailer_ats_fuel_tank_trailer.png" />
     <CARGOAREA_TYPE type="ats_gooseneck_trailer" nbslots="4" picture="img/trailer_ats_gooseneck_trailer.png" />
-    <CARGOAREA_TYPE type="ats_reefer_trailer" nbslots="6" picture="img/trailer_ats_reefer_trailer.png" />
-    <CARGOAREA_TYPE type="ats_reefer_long_trailer" nbslots="8" picture="img/trailer_ats_reefer_trailer.png" />
+    <CARGOAREA_TYPE type="ats_reefer_trailer" nbslots="4" picture="img/trailer_ats_reefer_trailer.png" />
+    <CARGOAREA_TYPE type="ats_reefer_long_trailer" nbslots="6" picture="img/trailer_ats_reefer_trailer.png" />
   </CARGOAREA_TYPES>
   <TRAILER_TYPES>
     <TRAILER_TYPE type="curtain.trailer.chassis" cargoarea="ats_curtain_trailer"/>    

@@ -538,10 +538,11 @@ class AboutWindow(QWidget):
         self.logoWidget.setPixmap(px)
 
         self.aboutText = QLabel()
-        self.aboutText.setText('CargoWorld ' + cargoworld.CARGOWORLD_VERSION + ' (' + cargoworld.CARGOWORLD_VERSION_NAME + ') - <https://sites.google.com/site/storymodsite>. This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program.  If not, see <http://www.gnu.org/licenses/>.')
+        self.aboutText.setText('CargoWorld ' + cargoworld.CARGOWORLD_VERSION + ' (' + cargoworld.CARGOWORLD_VERSION_NAME + ')<br/><a href="https://sites.google.com/site/storymodsite">https://sites.google.com/site/storymodsite</a><br/><br/>SCS Software forum thread<br/><a href="https://forum.scssoft.com/viewtopic.php?f=34&t=246807">https://forum.scssoft.com/viewtopic.php?f=34&t=246807</a><br/><br/> This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version. This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details. You should have received a copy of the GNU General Public License along with this program. If not, see <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.')
         self.aboutText.setFixedWidth(512)
         self.aboutText.setWordWrap(True)
-        
+        self.aboutText.setOpenExternalLinks(True)
+               
         self.layout.addWidget(self.logoWidget, 1, 1, 1, 1)
         self.layout.addWidget(self.aboutText, 2, 1, 1, 1)
         
@@ -549,8 +550,7 @@ class AboutWindow(QWidget):
  
         
     def initUI(self):
-        self.setGeometry(100, 100, 640, 512)
-        self.setMaximumSize(640, 512)
+        self.setGeometry(100, 100, 640, 640)
         windowname = 'CargoWorld ' + cargoworld.CARGOWORLD_VERSION + ' (' + cargoworld.CARGOWORLD_VERSION_NAME + ')'
         self.setWindowTitle(windowname)
         self.show()
