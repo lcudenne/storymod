@@ -911,13 +911,11 @@ class MainWindow(QWidget):
         if self.world.player.cargoarea is None:
             self.trailertypeWidget.trailerareaWidget.setText('')
             px = QPixmap("img/trailer_notrailer.png")
-            i = 0
-            while i < self.cargoareaEntryListWidget.count():
-                ca = self.cargoareaEntryListWidget.itemWidget(self.cargoareaEntryListWidget.item(i))
-                self.cargoareaEntryListWidget.takeItem(i)
+            while self.cargoareaEntryListWidget.count() > 0:
+                ca = self.cargoareaEntryListWidget.itemWidget(self.cargoareaEntryListWidget.item(0))
+                self.cargoareaEntryListWidget.takeItem(0)
                 ca.cargo.cargowidget.setParent(None)
                 ca.cargo.cargowidget = None
-                i += 1
             
         else:
             px = QPixmap(self.world.player.cargoarea.type.picture)
