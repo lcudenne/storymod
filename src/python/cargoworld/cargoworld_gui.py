@@ -481,7 +481,7 @@ class CargoEntryWidget(QWidget):
         self.typeWidget.setText(str(cargo.type.type))
 
         self.nbSlotsWidget = QLabel()
-        self.nbSlotsWidget.setText("#slots: " + str(cargo.type.nbslots))
+        self.nbSlotsWidget.setText("slots: " + str(cargo.type.nbslots))
         
         self.fromLocationWidget = QLabel()
         self.fromLocationWidget.setText(cargo.location.name)
@@ -513,7 +513,6 @@ class CargoEntryWidget(QWidget):
         self.layout.addWidget(self.nbSlotsWidget, 2, 3)
         self.layout.addWidget(self.fromLocationWidget, 1, 4)
         self.layout.addWidget(self.toLocationWidget, 2, 4)
-
 #        self.layout.addWidget(self.fromTypeWidget, 1, 5)        
 #        self.layout.addWidget(self.toTypeWidget, 2, 5)        
 
@@ -1080,14 +1079,21 @@ class MainWindow(QWidget):
         cargo.areaslot = -1
         cargo.cargowidget.setParent(None)
         cargo.cargowidget = None
+        
         i = 0
-        while i < self.cargoareaEntryListWidget.count():
+        found = False
+        while not found and i < self.cargoareaEntryListWidget.count():
             ca = self.cargoareaEntryListWidget.itemWidget(self.cargoareaEntryListWidget.item(i))
             if ca.cargo.id == cargo.id:
                 self.cargoareaEntryListWidget.takeItem(i)
+                found = True
+
             i += 1
-        self.refreshCargoList()
+            
         self.message = "cargo "+ cargo.name + " (" + cargo.type.type + ") unloaded"
+        self.world.removeCargoFromArea(cargo)
+        self.refreshCargoList()
+
         self.updateMessage()
 
         

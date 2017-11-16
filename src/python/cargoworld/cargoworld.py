@@ -473,7 +473,16 @@ class World(QObject):
                                 print(locfrom.name, '->', locto.name, ':',
                                       cargotype.type, 'range', cargotype.cargorange)
 
-        
+
+    def removeCargoFromArea(self, cargo):
+        self.lock.acquire()
+        if cargo.destination is self.player.closelocation:
+            cargo.destination.removeCargo(cargo)
+            self.cargostree.removeRecursive(cargo)
+        self.lock.release()
+
+
+                                
     def start(self):
         self.state = 'PAUSED'
         self.automata()

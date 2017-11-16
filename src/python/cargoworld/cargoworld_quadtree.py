@@ -136,6 +136,16 @@ class QuadTree:
                         self.ne.remove(element, x, y)
 
                         
+    def removeRecursive(self, element):
+        if element in self.elements:
+            del self.elements[element]
+        else:
+            if self.nw is not None:
+                self.removeRecursive(element, sw)
+                self.removeRecursive(element, nw)
+                self.removeRecursive(element, se)
+                self.removeRecursive(element, ne)
+
             
     def display(self):
         print('Depth', self.depth, self.elements)
