@@ -141,10 +141,10 @@ class QuadTree:
             del self.elements[element]
         else:
             if self.nw is not None:
-                self.removeRecursive(element, sw)
-                self.removeRecursive(element, nw)
-                self.removeRecursive(element, se)
-                self.removeRecursive(element, ne)
+                self.sw.removeRecursive(element)
+                self.nw.removeRecursive(element)
+                self.se.removeRecursive(element)
+                self.ne.removeRecursive(element)
 
             
     def display(self):
