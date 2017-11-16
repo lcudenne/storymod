@@ -388,9 +388,9 @@ class TelemetryWidget(QWidget):
 
         self.speedButton.setStyleSheet(TELEMETRY_STYLE_GREEN)
         if trailerconnected:
-            if speed > self.simulator.speedwarning:
+            if int(speed) > self.simulator.speedwarning:
                 self.speedButton.setStyleSheet(TELEMETRY_STYLE_BLUE)
-        if speed > self.simulator.speedover:
+        if int(speed) > self.simulator.speedover:
             self.speedButton.setStyleSheet(TELEMETRY_STYLE_RED)
 
         if engine:
