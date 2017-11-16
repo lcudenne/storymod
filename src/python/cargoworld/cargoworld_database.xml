@@ -39,7 +39,7 @@
     <LOCATION_TYPE type="supermarket" inputcargo="electronics,milk,cool_seafood,fresh_food,cool_food,food,furnitures" outputcargo="transport_pallets,furnitures" />
   </LOCATION_TYPES>
   <CARGO_TYPES>
-    <CARGO_TYPE type="farm_equipment" picture="img/cargo_default.png" cargoarea="ats_box_long_trailer,ats_box_trailer,ats_curtain_trailer,ats_curtain_long_trailer,ats_gooseneck_trailer,ets2_curtain,ets2_container,ets2_rigidbox,ets2_tandembox" nbslots="1" names="Farm equipment,Agricultural equipment,Agricultural supplies" range="country" />        
+    <CARGO_TYPE type="farm_equipment" picture="img/cargo_bulk_bag.png" cargoarea="ats_box_long_trailer,ats_box_trailer,ats_curtain_trailer,ats_curtain_long_trailer,ats_gooseneck_trailer,ets2_curtain,ets2_container,ets2_rigidbox,ets2_tandembox" nbslots="1" names="Farm equipment,Agricultural equipment,Agricultural supplies" range="country" />        
     <CARGO_TYPE type="car" picture="img/cargo_car.png" cargoarea="ets2_cartransporter" nbslots="1" names="Cars" range="world" />    
     <CARGO_TYPE type="car_parts" picture="img/cargo_car_parts.png" cargoarea="ats_box_long_trailer,ats_box_trailer,ats_curtain_trailer,ats_curtain_long_trailer,ats_gooseneck_trailer,ets2_curtain,ets2_container,ets2_rigidbox,ets2_tandembox" nbslots="1" names="Engine parts,Interior parts,Suspension parts,Tires,Steering parts,Exhaust systems" range="world" />
     <CARGO_TYPE type="truck_parts" picture="img/cargo_truck_parts.png" cargoarea="ats_box_long_trailer,ats_box_trailer,ats_curtain_trailer,ats_curtain_long_trailer,ats_gooseneck_trailer,ets2_curtain,ets2_container,ets2_rigidbox,ets2_tandembox" nbslots="1" names="Engine parts,Cabin parts,Suspension parts,Tires,Steering parts,Exhaust systems" range="world" />
