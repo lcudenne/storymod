@@ -825,7 +825,7 @@ class MainWindow(QWidget):
         self.graphbtn.setIconSize(QSize(64,64))
         self.graphbtn.setStyleSheet('border:none')
         self.graphbtn.clicked.connect(self.graph)
-        self.graphbtn.setToolTip('Generate and display the cargo graph. Graphviz needed.')
+        self.graphbtn.setToolTip('Generate and display the cargo graph.')
         self.playbtn = QPushButton('', self)
         self.playbtn.setIcon(QIcon("img/playbutton.png"))
         self.playbtn.setIconSize(QSize(64,64))
