@@ -983,8 +983,20 @@ class MainWindow(QWidget):
                         i += 1
                     if cafound is None:
                         if cargo.areaslot == -1:
-                            self.addCargoList(cargo)
+                            if self.world.player.cargoarea is not None:
+                                if self.world.player.cargoarea.type in cargo.type.cargoareatypes:
+                                    self.addCargoList(cargo)
+                            else:
+                                self.addCargoList(cargo)
                     else:
+                        if cargo.areaslot == -1:
+                            if self.world.player.cargoarea is not None:
+                                if not self.world.player.cargoarea.type in cargo.type.cargoareatypes:
+                                    cafound.loadButton.setEnabled(False)
+                                    cafound.loadButton.setText('Trailer type')
+                                    caitem = self.cargoEntryListWidget.takeItem(i - 1)
+                                    caitem = None
+                                    
                         if cargo.areaslot > -1:
                             cafound.loadButton.setEnabled(False)
                             cafound.loadButton.setText('Loaded')
