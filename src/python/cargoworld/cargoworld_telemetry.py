@@ -94,8 +94,12 @@ class SCS:
         
     def getIpAddress(self):
         s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-        s.connect(("8.8.8.8", 80))
-        return s.getsockname()[0]
+        try:
+            s.connect(("8.8.8.8", 80))
+            res = s.getsockname()[0]
+        except socket.error as msg:
+            res = "127.0.0.1"
+        return res
 
     def openTelelog(self):
         filename = time.strftime("driving_trace_%Y_%m_%d_%H_%M_%S")
