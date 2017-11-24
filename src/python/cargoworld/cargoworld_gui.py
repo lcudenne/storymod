@@ -45,8 +45,10 @@ TELEMETRY_TIMEOUT = 60
 TELEMETRY_STYLE_RED = "background-color:rgb(255,180,180); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_GREEN = "background-color:rgb(200,255,200); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_GREY = "background-color:rgb(220,220,220); color:rgb(100, 100, 100)"
+TELEMETRY_STYLE_LIGHTGREY = "background-color:rgb(240,240,240); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_ORANGE = "background-color:rgb(255,200,100); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_BLUE = "background-color:rgb(100,200,255); color:rgb(100, 100, 100)"
+TELEMETRY_STYLE_LIGHTBLUE = "background-color:rgb(210,230,255); color:rgb(100, 100, 100)"
 
 CARGOAREA_AREA_WIDTH = 750
 CARGOAREA_CARGO_HEIGHT = 200
@@ -85,18 +87,14 @@ class TrailerTypeWidget(QWidget):
         self.trailerWidget.setAlignment(Qt.AlignCenter)
         self.trailerWidget.setReadOnly(True)
         self.trailerWidget.setAutoFillBackground(True)
-        p = self.trailerWidget.palette()
-        p.setColor(self.trailerWidget.backgroundRole(), self.bgcolor)
-        self.trailerWidget.setPalette(p)
+        self.trailerWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)        
 
         self.trailerareaWidget = QLineEdit()
         self.trailerareaWidget.setText('')
         self.trailerareaWidget.setAlignment(Qt.AlignCenter)
         self.trailerareaWidget.setReadOnly(True)
         self.trailerareaWidget.setAutoFillBackground(True)
-        p = self.trailerareaWidget.palette()
-        p.setColor(self.trailerareaWidget.backgroundRole(), self.bgcolor)
-        self.trailerareaWidget.setPalette(p)       
+        self.trailerareaWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)        
 
         self.dumpWidget = QLabel()
         self.dumpWidget.setText('Add current trailer')
@@ -160,22 +158,18 @@ class PositionWidget(QWidget):
         self.headerWidget.setFont(font)
         
         self.curposWidget = QLineEdit()
-        self.curposWidget.setText('current position')
+        self.curposWidget.setText('')
         self.curposWidget.setAlignment(Qt.AlignCenter)
         self.curposWidget.setReadOnly(True)
         self.curposWidget.setAutoFillBackground(True)
-        p = self.curposWidget.palette()
-        p.setColor(self.curposWidget.backgroundRole(), self.bgcolor)
-        self.curposWidget.setPalette(p)
+        self.curposWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)        
         
         self.curtypeWidget = QLineEdit()
         self.curtypeWidget.setText('')
         self.curtypeWidget.setAlignment(Qt.AlignCenter)
         self.curtypeWidget.setReadOnly(True)
         self.curtypeWidget.setAutoFillBackground(True)
-        p = self.curtypeWidget.palette()
-        p.setColor(self.curtypeWidget.backgroundRole(), self.bgcolor)
-        self.curtypeWidget.setPalette(p)
+        self.curtypeWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)        
 
         self.dumpWidget = QLabel()
         self.dumpWidget.setText('Add current position')
@@ -212,16 +206,33 @@ class PositionWidget(QWidget):
     def updatePosition(self):
         self.world.lock.acquire()
         location = self.world.player.closelocation
+
         if location is not None:
             self.curposWidget.setText(location.name)
+
+            unload = False
+            if self.world.player.cargoarea is not None:
+                unload = self.world.player.cargoarea.isUnloadLocation(location)
+                
+            if location.isShared() or unload:
+                self.curposWidget.setStyleSheet(TELEMETRY_STYLE_GREEN)
+                self.curtypeWidget.setStyleSheet(TELEMETRY_STYLE_GREEN)
+            else:
+                self.curposWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)
+                self.curtypeWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)
+
             if location.type is not None:
                 self.curtypeWidget.setText(location.type.type)
             else:
                 self.curtypeWidget.setText('')
         else:
             self.curposWidget.setText('')
-            self.curtypeWidget.setText('')            
+            self.curtypeWidget.setText('')
+            self.curposWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)
+            self.curtypeWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)
+
         self.world.lock.release()
+
         if location != self.prevlocation:
             self.world.window.refreshCargoList()
             self.world.window.refreshCargoarea(location)
@@ -276,9 +287,7 @@ class TelemetryWidget(QWidget):
         self.clientWidget.setAlignment(Qt.AlignCenter)
         self.clientWidget.setReadOnly(True)
         self.clientWidget.setAutoFillBackground(True)
-        p = self.clientWidget.palette()
-        p.setColor(self.clientWidget.backgroundRole(), self.bgcolor)
-        self.clientWidget.setPalette(p)
+        self.clientWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)        
         
         self.coordxWidget = QLabel()
         self.coordxWidget.setText('0')
@@ -847,9 +856,7 @@ class MainWindow(QWidget):
         self.msgWidget.setAlignment(Qt.AlignLeft)
         self.msgWidget.setReadOnly(True)
         self.msgWidget.setAutoFillBackground(True)
-        p = self.msgWidget.palette()
-        p.setColor(self.msgWidget.backgroundRole(), self.bgcolor)
-        self.msgWidget.setPalette(p)
+        self.msgWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)        
 
         self.slotindicators = [None]*self.world.cargoareamaxslots
         for i in range(0,self.world.cargoareamaxslots):

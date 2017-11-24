@@ -164,7 +164,19 @@ class Cargoarea:
             if self.area[i] is not None and self.area[i].id == cargo.id:
                 self.area[i] = None
 
-            
+
+    def isUnloadLocation(self, location):
+        unload = False
+        i = 0
+        while not unload and i < self.type.nbslots:
+            if self.area[i] is not None:
+                unload = (self.area[i].destination == location)
+            i += 1
+
+        return unload
+
+
+                
 
 # LOCATION ------------------------------------------------------------------------
 
@@ -244,7 +256,9 @@ class Location:
         return inrange
 
 
-        
+    def isShared(self):
+        return len(self.positions) > 1
+    
             
     def display(self):
         print("Location", self.name, "Positions", self.positions)
