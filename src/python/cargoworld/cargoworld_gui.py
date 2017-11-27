@@ -42,12 +42,12 @@ import cargoworld
 
 TELEMETRY_TIMEOUT = 60
 
-TELEMETRY_STYLE_RED = "background-color:rgb(255,180,180); color:rgb(100, 100, 100)"
+TELEMETRY_STYLE_RED = "background-color:rgb(255,180,180); color:rgb(255, 255, 255)"
 TELEMETRY_STYLE_GREEN = "background-color:rgb(200,255,200); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_GREY = "background-color:rgb(220,220,220); color:rgb(100, 100, 100)"
 TELEMETRY_STYLE_LIGHTGREY = "background-color:rgb(240,240,240); color:rgb(100, 100, 100)"
-TELEMETRY_STYLE_ORANGE = "background-color:rgb(255,200,100); color:rgb(100, 100, 100)"
-TELEMETRY_STYLE_BLUE = "background-color:rgb(100,200,255); color:rgb(100, 100, 100)"
+TELEMETRY_STYLE_ORANGE = "background-color:rgb(255,200,100); color:rgb(255, 255, 255)"
+TELEMETRY_STYLE_BLUE = "background-color:rgb(100,200,255); color:rgb(255, 255, 255)"
 TELEMETRY_STYLE_LIGHTBLUE = "background-color:rgb(210,230,255); color:rgb(100, 100, 100)"
 
 CARGOAREA_AREA_WIDTH = 750
@@ -199,8 +199,7 @@ class PositionWidget(QWidget):
         self.world.positionsignal.connect(self.updatePosition)
 
     def dumpPosition(self):
-        self.world.interface.dumpPlayerPosition(self.world, self.posnameWidget.text(),
-                                                self.typeCombo.currentText())
+        self.world.dumpPosition(self.posnameWidget.text(), self.typeCombo.currentText())
         self.world.window.msgWidget.setText("position " + self.posnameWidget.text() + " (" + self.typeCombo.currentText() + ") added")
         
     def updatePosition(self):
@@ -213,10 +212,13 @@ class PositionWidget(QWidget):
             unload = False
             if self.world.player.cargoarea is not None:
                 unload = self.world.player.cargoarea.isUnloadLocation(location)
-                
-            if location.isShared() or unload:
+
+            if unload:
                 self.curposWidget.setStyleSheet(TELEMETRY_STYLE_GREEN)
                 self.curtypeWidget.setStyleSheet(TELEMETRY_STYLE_GREEN)
+            elif location.isShared():
+                self.curposWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTBLUE)
+                self.curtypeWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTBLUE)
             else:
                 self.curposWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)
                 self.curtypeWidget.setStyleSheet(TELEMETRY_STYLE_LIGHTGREY)
@@ -1059,6 +1061,13 @@ class MainWindow(QWidget):
     def addCargoareaList(self, cargo):
         if self.cargoareaEntryListWidget is not None:
             cargoareaentry = CargoEntryWidget(self, cargo, False)
+
+            self.world.lock.acquire()
+            location = self.world.player.closelocation
+            self.world.lock.release()
+            if location.isShared():
+                cargoareaentry.loadButton.setEnabled(True)
+
             qlistwidgetitem = QListWidgetItem(self.cargoareaEntryListWidget)
             qlistwidgetitem.setSizeHint(cargoareaentry.sizeHint())
             self.cargoareaEntryListWidget.addItem(qlistwidgetitem)
@@ -1120,7 +1129,7 @@ class MainWindow(QWidget):
         i = 0
         while i < self.cargoareaEntryListWidget.count():
             ca = self.cargoareaEntryListWidget.itemWidget(self.cargoareaEntryListWidget.item(i))
-            if ca.cargo.destination == location:
+            if ca.cargo.destination == location or (location is not None and location.isShared()):
                 ca.loadButton.setEnabled(True)
             else:                
                 ca.loadButton.setEnabled(False)

@@ -33,6 +33,7 @@ import glob
 import sys
 import math
 import random
+import uuid
 
 try:
     from lxml import etree
@@ -195,32 +196,7 @@ class WorldInterface:
         print('Added types:', nlocations, 'locations', ncargoarea, 'cargoarea',
               ncargo, 'cargo', ntrailer, 'trailers')
 
-                
-
-    def addPosition(self, world, simulator, name, type, x, y, z):
-        locationtype = None
-        if type is not None:
-            for typecandidate in world.locationtypes:
-                if typecandidate.type == type:
-                    locationtype = typecandidate
-            if locationtype is None:
-                print('Could not find location type', type)
-
-        location = None
-        for loccandidate in world.locations:
-            if loccandidate.name == name:
-                location = loccandidate
-
-        returnlocation = None
-        if location is None:
-            location = cargoworld.Location(name, locationtype)
-            returnlocation = location
-            
-        world.locations.append(location)
-        location.addPosition(simulator, [x, y, z])
-        
-        return returnlocation
-        
+         
 
                 
     def loadPositions(self, world):
@@ -242,7 +218,7 @@ class WorldInterface:
                         y = float(positionnode.get('y'))
                         z = float(positionnode.get('z'))
 
-                        self.addPosition(world, simulator, name, type, x, y, z)
+                        world.addPosition(simulator, name, type, x, y, z)
                     
                 else:
                     print('Could not find simulator', simid)
@@ -300,7 +276,7 @@ class WorldInterface:
 
 
 
-    def dumpPlayerPosition(self, world, name, type):
+    def dumpPlayerPosition(self, world, name, type, x, y, z):
         print("adding", name, " type ", type)
         filename = CARGOWORLD_DATABASE_BASENAME + "_positions_" + world.simulator.id + "_" + world.player.name + ".xml"
         files = glob.glob(filename)
@@ -311,13 +287,7 @@ class WorldInterface:
         
         tree = etree.parse(filename)
         root = tree.getroot()
-        positions = tree.find('.//POSITIONS')       
-
-        world.simulator.telemetry.lock.acquire()
-        x = world.simulator.telemetry.x
-        y = world.simulator.telemetry.y
-        z = world.simulator.telemetry.z
-        world.simulator.telemetry.lock.release()
+        positions = tree.find('.//POSITIONS')
         
         positionnode = tree.find(".//POSITION[@name='" + name + "']")
         if positionnode is None:
@@ -331,9 +301,6 @@ class WorldInterface:
 
         tree.write(filename)
             
-        location = self.addPosition(world, world.simulator, name, type, x, y, z)
-        if location is not None:                
-            world.locationstree.add(location, x, y)
 
 
     def dumpPlayerTrailer(self, world, type, cargoarea):
@@ -365,5 +332,64 @@ class WorldInterface:
         filename = "cargolist_" + player.name
         file = open(filename, "a+")
         for cargo in player.cargodelivered:
-            file.write(cargo.name + "\t" + cargo.type.type + "\t" + cargo.location.name + "\t" + cargo.destination.name + "\n")
+            file.write(cargo.name + "\t" + cargo.type.type + "\t" + cargo.origin.name + "\t" + cargo.destination.name + "\n")
         file.close()
+
+
+    def loadSharedCargoList(self, world):
+        for file in glob.glob('.' + '/**/' + CARGOWORLD_DATABASE_BASENAME + '*.xml', recursive=True):
+            tree = etree.parse(file)
+            root = tree.getroot()
+            for cargonode in tree.findall('.//CARGO'):
+
+                id = cargonode.get('id')
+                name = cargonode.get('name')
+
+                originname = cargonode.get('origin')
+                locationname = cargonode.get('location')
+                destinationname = cargonode.get('destination')
+                locorigin = world.getLocationByName(originname)
+                loclocation = world.getLocationByName(locationname)
+                locdestination = world.getLocationByName(destinationname)
+
+                cargotypeid = cargonode.get('type')
+                cargotype = world.cargotypes[cargotypeid]
+                
+                cargo = cargoworld.Cargo(name, cargotype, loclocation, locdestination)
+                cargo.id = uuid.UUID(id)
+                cargo.origin = locorigin
+
+                position = loclocation.positions[world.simulator.id]
+                x = position[0]
+                y = position[1]
+                world.cargostree.add(cargo, x, y)
+
+
+
+        
+    def dumpSharedCargo(self, world, cargo):
+        print("adding ", cargo.id, " (", cargo.name, ") to shared location ", cargo.location.name)
+        filename = CARGOWORLD_DATABASE_BASENAME + "_sharedcargo_" + world.player.name + ".xml"
+        files = glob.glob(filename)
+        if not files:
+            file = open(filename, "w")
+            file.write("<?xml version=\"1.0\"?>\n<!DOCTYPE CARGOWORLD_DATABASE>\n<CARGOWORLD_DATABASE version=\"" + world.version + "\" author=\"" + world.player.name + "\">\n<CARGO_LIST>\n</CARGO_LIST>\n</CARGOWORLD_DATABASE>\n")
+            file.close()
+        
+        tree = etree.parse(filename)
+        root = tree.getroot()
+        cargolist = tree.find('.//CARGO_LIST')       
+        
+        cargonode = tree.find(".//CARGO[@id='" + str(cargo.id) + "']")
+        if cargonode is None:
+            cargonode = etree.SubElement(cargolist, 'CARGO')
+            cargonode.set("id", str(cargo.id))
+
+        cargonode.set("name", cargo.name)
+        cargonode.set("type", cargo.type.type)
+        cargonode.set("origin", cargo.origin.name)
+        cargonode.set("location", cargo.location.name)
+        cargonode.set("destination", cargo.destination.name)
+
+        tree.write(filename)
+

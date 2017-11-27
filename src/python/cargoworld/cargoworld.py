@@ -38,8 +38,8 @@ import cargoworld_telemetry
 
 # DEFINITIONS ----------------------------------------------------------------------
 
-CARGOWORLD_VERSION = '0.2'
-CARGOWORLD_VERSION_NAME = 'Los Pollos Hermanos'
+CARGOWORLD_VERSION = '0.3'
+CARGOWORLD_VERSION_NAME = 'Chartreuse 1605'
 
 CARGOWORLD_LOCATION_DISTANCE_DETECTION = 100
 CARGOWORLD_AUTOMATA_LOOP_DELAY = 2
@@ -291,6 +291,7 @@ class Cargo:
         self.id = uuid.uuid4()
         self.name = name
         self.type = type
+        self.origin = locfrom
         self.location = locfrom
         self.destination = locto
         self.areaslot = -1
@@ -348,7 +349,57 @@ class World(QObject):
         self.interface.loadTypes(self)
         self.interface.loadPositions(self)
         self.interface.configRead(self)
+
+
+    def getLocationTypeByName(self, type):
+        locationtype = None
+        for typecandidate in self.locationtypes:
+            if typecandidate.type == type:
+                locationtype = typecandidate
+        return locationtype
+
+
         
+    def getLocationByName(self, name):
+        i = 0
+        loc = None
+        if self.locations is not None:
+            while loc is None and i < len(self.locations):
+                if self.locations[i].name == name:
+                    loc = self.locations[i]
+                i = i + 1
+        return loc
+
+    
+    def addPosition(self, simulator, name, type, x, y, z):
+        location = self.getLocationByName(name)
+        if location is None:
+            locationtype = self.getLocationTypeByName(type)
+            location = Location(name, locationtype)
+            self.locations.append(location)
+
+        if self.locationstree is not None:
+            position = location.getPosition(simulator)
+            if position is None:
+                self.locationstree.add(location, x, y)
+
+        location.addPosition(simulator, [x, y, z])
+                
+                
+
+
+    def dumpPosition(self, name, type):
+        self.simulator.telemetry.lock.acquire()
+        x = self.simulator.telemetry.x
+        y = self.simulator.telemetry.y
+        z = self.simulator.telemetry.z
+        self.simulator.telemetry.lock.release()
+        
+        self.addPosition(self.simulator, name, type, x, y, z)
+        self.interface.dumpPlayerPosition(self, name, type, x, y, z)
+
+
+    
         
     def chooseSimulator(self, window):
         self.window = window
@@ -360,14 +411,15 @@ class World(QObject):
 
     def setSimulator(self, simulator):
         self.simulator = simulator
-                
+        self.interface.positionsQuadTree(self)
+        self.interface.loadSharedCargoList(self)
+        
 
     def addPlayer(self, name, simulator):
         player = Player(0, name)
         player.simulator = simulator
         self.player = player
         self.players.add(player)
-        self.interface.positionsQuadTree(self)
         
     def getPlayerPosition(self):
         pos = None
@@ -451,9 +503,10 @@ class World(QObject):
                     i = 0
                     while locfrom is None and i < len(locations):
                         location = locations[i]
-                        if location.type is not None:
-                            if location.type.outputcargo is not None:
-                                locfrom = location
+                        if not location.isShared():
+                            if location.type is not None:
+                                if location.type.outputcargo is not None:
+                                    locfrom = location
                         i += 1
                         
                     if locfrom is not None:
@@ -465,18 +518,19 @@ class World(QObject):
                             i = 0
                             while locto is None and i < len(self.locations):
                                 location = self.locations[i]
-                                if locfrom.isInRange(location, cargotype.cargorange):
-                                    if location.type is not None:
-                                        if location.type.isCargoInput(cargotype.type):
-                                            # disables inter-simulator cargos
-                                            if location.getPosition(self.simulator) is not None:
-                                                locto = location
+                                if not location.isShared():
+                                    if locfrom.isInRange(location, cargotype.cargorange):
+                                        if location.type is not None:
+                                            if location.type.isCargoInput(cargotype.type):
+                                                # disables inter-simulator cargos
+                                                if location.getPosition(self.simulator) is not None:
+                                                    locto = location
                                 i += 1
                             if locto is not None and locto is not locfrom:
                                 name = cargotype.names[random.randint(0,
                                                                       len(cargotype.names) - 1)] 
                                 cargo = Cargo(name, cargotype, locfrom, locto)
-                                position = locfrom.positions[world.simulator.id]
+                                position = locfrom.positions[self.simulator.id]
                                 x = position[0]
                                 y = position[1]
                                 self.lock.acquire()
@@ -493,6 +547,16 @@ class World(QObject):
         if cargo.destination is self.player.closelocation:
             cargo.destination.removeCargo(cargo)
             self.cargostree.removeRecursive(cargo)
+        else:
+            if self.player.closelocation.isShared():
+                cargo.location = self.player.closelocation
+                position = cargo.location.positions[self.simulator.id]
+                x = position[0]
+                y = position[1]
+                self.cargostree.removeRecursive(cargo)
+                self.cargostree.add(cargo, x, y)
+                self.interface.dumpSharedCargo(self, cargo)
+                
         self.lock.release()
 
 
